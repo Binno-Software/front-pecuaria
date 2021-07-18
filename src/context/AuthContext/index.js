@@ -11,8 +11,9 @@ const AuthProvider = ({ children }) => {
     const usuario = localStorage.getItem('@BINNO_AGRO_UUI')
     console.log(usuario)
     if (usuario) {
-      api.defaults.headers.authorization = `Bearer ${usuario.token}`
-      return usuario
+      const parsed = JSON.parse(usuario)
+      api.defaults.headers.authorization = `Bearer ${parsed.token}`
+      return parsed
     }
 
     return {
@@ -23,8 +24,7 @@ const AuthProvider = ({ children }) => {
   const login = useCallback(async credentials => {
     try {
       const { data } = await api.post('auth', credentials)
-      console.log({ isLoggedIn: true, ...data })
-      window.localStorage.setItem('@BINNO_AGRO_UUI', { isLoggedIn: true, ...data })
+      window.localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }))
       setUser({ isLoggedIn: true, ...data })
       return true
     } catch (error) {
@@ -35,7 +35,9 @@ const AuthProvider = ({ children }) => {
 
   const logout = useCallback(() => {
     localStorage.clear()
-    setUser(null)
+    setUser({
+      isLoggedIn: false
+    })
   }, [setUser])
 
 

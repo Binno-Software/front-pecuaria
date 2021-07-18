@@ -13,20 +13,13 @@ import {
 } from '@material-ui/core';
 import {
   BarChart as BarChartIcon,
-  ShoppingBag as ShoppingBagIcon,
-  Users as UsersIcon,
-  ShoppingCart,
-  DollarSign,
-  FilePlus,
-  UserCheck,
-  CreditCard,
-  File
 } from 'react-feather';
 import NavItem from './NavItem';
+import { useAuth } from 'src/context/AuthContext'
 
 const user = {
   avatar: '/static/images/avatars/logo.jpg',
-  jobTitle: 'Globo EPI',
+  jobTitle: 'Bem vindo',
   name: 'Nilton'
 };
 
@@ -36,46 +29,46 @@ const items = [
     icon: BarChartIcon,
     title: 'Dashboard'
   },
-  {
-    href: '/app/fornecedores',
-    icon: UserCheck,
-    title: 'Fornecedores'
-  },
-  {
-    href: '/app/customers',
-    icon: UsersIcon,
-    title: 'Clientes'
-  },
-  {
-    href: '/app/produtos',
-    icon: ShoppingBagIcon,
-    title: 'Produtos'
-  },
-  {
-    href: '/app/compras',
-    icon: ShoppingCart,
-    title: 'Compras'
-  },
-  {
-    href: '/app/orcamento',
-    icon: File,
-    title: 'Orçamento'
-  },
-  {
-    href: '/app/vendas',
-    icon: DollarSign,
-    title: 'Vendas'
-  },
-  {
-    href: '/app/titulos-a-receber',
-    icon: CreditCard,
-    title: 'A Receber'
-  },
-  {
-    href: '/app/relatorios',
-    icon: FilePlus,
-    title: 'Relatórios'
-  },
+  // {
+  //   href: '/app/fornecedores',
+  //   icon: UserCheck,
+  //   title: 'Fornecedores'
+  // },
+  // {
+  //   href: '/app/customers',
+  //   icon: UsersIcon,
+  //   title: 'Clientes'
+  // },
+  // {
+  //   href: '/app/produtos',
+  //   icon: ShoppingBagIcon,
+  //   title: 'Produtos'
+  // },
+  // {
+  //   href: '/app/compras',
+  //   icon: ShoppingCart,
+  //   title: 'Compras'
+  // },
+  // {
+  //   href: '/app/orcamento',
+  //   icon: File,
+  //   title: 'Orçamento'
+  // },
+  // {
+  //   href: '/app/vendas',
+  //   icon: DollarSign,
+  //   title: 'Vendas'
+  // },
+  // {
+  //   href: '/app/titulos-a-receber',
+  //   icon: CreditCard,
+  //   title: 'A Receber'
+  // },
+  // {
+  //   href: '/app/relatorios',
+  //   icon: FilePlus,
+  //   title: 'Relatórios'
+  // },
 ];
 
 const useStyles = makeStyles(() => ({
@@ -97,6 +90,7 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const { user: userReal } = useAuth();
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -128,13 +122,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+          Bem vindo {userReal.user.username}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {user.jobTitle}
         </Typography>
       </Box>
       <Divider />
