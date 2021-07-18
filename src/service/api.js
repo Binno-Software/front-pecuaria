@@ -12,19 +12,26 @@ instance.interceptors.response.use((response) => {
 }, (error) => {
     console.log(error.response?.data)
 
+    if (error?.response?.status === 403) {
+        toastError('Houve um problema com sua autenticação')
+        localStorage.clear()
+        window.location.reload()
+        return
+    }
+
     if (!error.response){
         toastError('Erro interno')
         throw error
     }
-        
+
     const messages = error.response.data.details || null
     if (messages) {
         messages.forEach(element => {
-            toastError(element)    
+            toastError(element)
         });
     }
 
     throw error
 })
 
-export default instance 
+export default instance

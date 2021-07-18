@@ -27,10 +27,10 @@ import FormularioOrcamento from 'src/pages/orcamento/FormularioOrcamento';
 import Orcamento from 'src/pages/orcamento'
 import TransformarEmVenda from 'src/pages/orcamento/TransformarEmVenda'
 
-const routes = [
+const routes = isLoggedIn => [
   {
     path: 'app',
-    element: <DashboardLayout />,
+    element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login"/>,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'cadastro-cliente', element: <CadastroCliente /> },
@@ -58,7 +58,7 @@ const routes = [
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: !isLoggedIn ?  <MainLayout /> : <Navigate to="/app/dashboard"/>,
     children: [
       { path: 'login', element: <LoginView /> },
       { path: 'register', element: <RegisterView /> },

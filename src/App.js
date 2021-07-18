@@ -10,8 +10,8 @@ import { useAuth } from './context/AuthContext'
 
 const App = () => {
   const { user } = useAuth();
-  const routing = useRoutes(routes);
-  console.log(user, routing)
+  const routing = useRoutes(routes(user.isLoggedIn));
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

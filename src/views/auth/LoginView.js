@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -6,15 +6,14 @@ import {
   Box,
   Button,
   Container,
-  Grid,
   Link,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
+  LinearProgress
 } from '@material-ui/core';
-import FacebookIcon from 'src/icons/Facebook';
-import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
+import { useAuth } from 'src/context/AuthContext'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [loading, setLoading] = useState(false)
+
+  if (loading)
+    return <LinearProgress  />
 
   return (
     <Page
@@ -43,15 +47,17 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              login: 'demo',
+              password: 'demo'
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-              password: Yup.string().max(255).required('Password is required')
+              password: Yup.string().max(255).required('Senha é obrigatoria')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            onSubmit={(values) => {
+              setLoading(true)
+              login(values).then(() => {
+                navigate('/app/dashboard', { replace: true });
+              })
             }}
           >
             {({
@@ -69,17 +75,17 @@ const LoginView = () => {
                     color="textPrimary"
                     variant="h2"
                   >
-                    Sign in
+                    Login
                   </Typography>
-                  <Typography
+                  {/* <Typography
                     color="textSecondary"
                     gutterBottom
                     variant="body2"
                   >
                     Sign in on the internal platform
-                  </Typography>
+                  </Typography> */}
                 </Box>
-                <Grid
+                {/* <Grid
                   container
                   spacing={3}
                 >
@@ -114,8 +120,8 @@ const LoginView = () => {
                       Login with Google
                     </Button>
                   </Grid>
-                </Grid>
-                <Box
+                </Grid> */}
+                {/* <Box
                   mt={3}
                   mb={1}
                 >
@@ -126,18 +132,18 @@ const LoginView = () => {
                   >
                     or login with email address
                   </Typography>
-                </Box>
+                </Box> */}
                 <TextField
-                  error={Boolean(touched.email && errors.email)}
+                  error={Boolean(touched.login && errors.login)}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
+                  helperText={touched.login && errors.login}
+                  label="Login"
                   margin="normal"
-                  name="email"
+                  name="login"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  type="normal"
+                  value={values.login}
                   variant="outlined"
                 />
                 <TextField
@@ -162,21 +168,21 @@ const LoginView = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    Login
                   </Button>
                 </Box>
                 <Typography
                   color="textSecondary"
                   variant="body1"
                 >
-                  Don&apos;t have an account?
+                  Ainda não tem uma conta?
                   {' '}
                   <Link
                     component={RouterLink}
                     to="/register"
                     variant="h6"
                   >
-                    Sign up
+                    Cadastre-se
                   </Link>
                 </Typography>
               </form>
