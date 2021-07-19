@@ -13,6 +13,7 @@ instance.interceptors.response.use((response) => {
     console.log(error.response?.data)
 
     if (error?.response?.status === 403) {
+        console.log('403')
         toastError('Houve um problema com sua autenticação')
         localStorage.clear()
         window.location.reload()

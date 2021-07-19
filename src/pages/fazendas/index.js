@@ -8,7 +8,7 @@ import {
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
-import api from '../../service/api'
+import api from 'src/service/api'
 
 const useStyles = makeStyles((theme) => ({
   root: {
