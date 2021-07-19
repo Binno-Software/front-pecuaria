@@ -29,8 +29,8 @@ const FazendaListView = () => {
   useEffect(() => {
       api.get('fazendas', {
         params: {
-          limit: limit,
-          offset: page
+          size: limit,
+          page
         }
       }).then(response => {
         setFazendas(response.data)
