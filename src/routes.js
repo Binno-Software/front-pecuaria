@@ -19,8 +19,8 @@ import ReportsView from 'src/views/reports/DashboardView';
 import Compras from 'src/pages/compras';
 import Vendas from 'src/pages/vendas';
 import SelecaoRelatorio from 'src/pages/relatorios';
-import FornecedoresListView from 'src/pages/fornecedores';
-import CadastroFornecedor from 'src/pages/fornecedores/CadastroFornecedor';
+import FazendaListView from 'src/pages/fazendas';
+import CadastroFazenda from 'src/pages/fazendas/CadastroFazenda';
 import TitulosAReceberListView from 'src/pages/titulosAReceber';
 import DetalhamentoTitulos from 'src/pages/titulosAReceber/DetalhamentoTitulos';
 import FormularioOrcamento from 'src/pages/orcamento/FormularioOrcamento';
@@ -34,7 +34,7 @@ const routes = isLoggedIn => [
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'cadastro-cliente', element: <CadastroCliente /> },
-      { path: 'cadastro-fornecedor', element: <CadastroFornecedor /> },
+      { path: 'cadastro-fazenda', element: <CadastroFazenda /> },
       { path: 'cadastro-produto', element: <CadastroProduto /> },
       { path: 'cadastro-compra', element: <CadastroCompra /> },
       { path: 'cadastro-venda', element: <CadastroVenda /> },
@@ -43,7 +43,7 @@ const routes = isLoggedIn => [
       { path: 'customers', element: <CustomerListView /> },
       { path: 'detalhamento-titulo', element: <DetalhamentoTitulos /> },
       { path: 'titulos-a-receber', element: <TitulosAReceberListView /> },
-      { path: 'fornecedores', element: <FornecedoresListView /> },
+      { path: 'fazendas', element: <FazendaListView /> },
       { path: 'relatorios', element: <SelecaoRelatorio /> },
       { path: 'compras', element: <Compras /> },
       { path: 'vendas', element: <Vendas /> },

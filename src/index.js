@@ -6,11 +6,11 @@ import App from './App';
 import AppContext from './context';
 
 ReactDOM.render((
-  <BrowserRouter>
-    <AppContext>
+  <AppContext>
+    <BrowserRouter>
       <App />
-    </AppContext>
-  </BrowserRouter>
+    </BrowserRouter>
+  </AppContext>
 ), document.getElementById('root'));
 
 serviceWorker.unregister();
