@@ -24,7 +24,8 @@ const AuthProvider = ({ children }) => {
   const login = useCallback(async credentials => {
     try {
       const { data } = await api.post('auth', credentials)
-      window.localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }))
+      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }))
+      api.defaults.headers.authorization = `Bearer ${data.token}`
       setUser({ isLoggedIn: true, ...data })
       return true
     } catch (error) {
