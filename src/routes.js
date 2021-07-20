@@ -11,8 +11,6 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
-import ProdutosListView from 'src/pages/produtos';
-import CadastroProduto from 'src/pages/produtos/CadastroProduto';
 import CadastroCompra from 'src/pages/compras/CadastroCompra';
 import CadastroVenda from 'src/pages/vendas/CadastroVenda';
 import ReportsView from 'src/views/reports/DashboardView';
@@ -26,6 +24,8 @@ import DetalhamentoTitulos from 'src/pages/titulosAReceber/DetalhamentoTitulos';
 import FormularioOrcamento from 'src/pages/orcamento/FormularioOrcamento';
 import Orcamento from 'src/pages/orcamento'
 import TransformarEmVenda from 'src/pages/orcamento/TransformarEmVenda'
+import FuncionarioListView from 'src/pages/funcionarios'
+import CadastroFuncionario from 'src/pages/funcionarios/CadastroFuncionario'
 
 const routes = isLoggedIn => [
   {
@@ -35,7 +35,7 @@ const routes = isLoggedIn => [
       { path: 'account', element: <AccountView /> },
       { path: 'cadastro-cliente', element: <CadastroCliente /> },
       { path: 'cadastro-fazenda', element: <CadastroFazenda /> },
-      { path: 'cadastro-produto', element: <CadastroProduto /> },
+      { path: 'cadastro-funcionario', element: <CadastroFuncionario /> },
       { path: 'cadastro-compra', element: <CadastroCompra /> },
       { path: 'cadastro-venda', element: <CadastroVenda /> },
       { path: 'formulario-orcamento', element: <FormularioOrcamento /> },
@@ -51,7 +51,7 @@ const routes = isLoggedIn => [
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'dashboard-view', element: <ReportsView /> },
       { path: 'products', element: <ProductListView /> },
-      { path: 'produtos', element: <ProdutosListView /> },
+      { path: 'funcionarios', element: <FuncionarioListView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]

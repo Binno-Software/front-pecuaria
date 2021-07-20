@@ -157,6 +157,7 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
         page={page}
         rowsPerPage={limit}
         rowsPerPageOptions={[5, 10, 25]}
+        labelRowsPerPage="Registros por pagina"
       />
     </Card>
   );

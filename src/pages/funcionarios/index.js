@@ -19,23 +19,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const FornecedoresListView = () => {
+const FuncionarioListView = () => {
   const classes = useStyles();
-  const [customers, setCustomers] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-      api.get('fornecedor/paginated', {
-        params: {
-          limit: limit,
-          offset: page
-        }
-      }).then(response => {
-        setCustomers(response.data)
-        setLoading(false)
-      })
+    api.get('funcionarios', {
+      params: {
+        size: limit,
+        page
+      }
+    }).then(response => {
+      setData(response.data)
+      setLoading(false)
+    })
   }, [limit, page])
 
   const reload = useCallback((limit, offset) => {
@@ -44,22 +44,22 @@ const FornecedoresListView = () => {
     setPage(offset)
   }, [])
 
-  if (loading) 
-    return <LinearProgress  />
+  if (loading)
+    return <LinearProgress />
 
   return (
     <Page
       className={classes.root}
-      title="Fornecedores"
+      title="Funcionarios"
     >
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
-          <Results data={customers} reload={reload} page={page} limit={limit} />
+          <Results data={data} reload={reload} page={page} limit={limit} />
         </Box>
       </Container>
     </Page>
   );
 };
 
-export default FornecedoresListView;
+export default FuncionarioListView;

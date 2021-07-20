@@ -13,7 +13,8 @@ import {
 } from '@material-ui/core';
 import {
   BarChart as BarChartIcon,
-  Home as HomeIcon
+  Home as HomeIcon,
+  User as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 import { useAuth } from 'src/context/AuthContext'
@@ -35,11 +36,11 @@ const items = [
     icon: HomeIcon,
     title: 'Fazendas'
   },
-  // {
-  //   href: '/app/customers',
-  //   icon: UsersIcon,
-  //   title: 'Clientes'
-  // },
+  {
+    href: '/app/funcionarios',
+    icon: UsersIcon,
+    title: 'Funcionarios'
+  },
   // {
   //   href: '/app/produtos',
   //   icon: ShoppingBagIcon,
