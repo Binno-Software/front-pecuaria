@@ -14,7 +14,8 @@ import {
 import {
   BarChart as BarChartIcon,
   Home as HomeIcon,
-  User as UsersIcon
+  User as UsersIcon,
+  Gitlab as GitlabIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 import { useAuth } from 'src/context/AuthContext'
@@ -41,11 +42,11 @@ const items = [
     icon: UsersIcon,
     title: 'Funcionarios'
   },
-  // {
-  //   href: '/app/produtos',
-  //   icon: ShoppingBagIcon,
-  //   title: 'Produtos'
-  // },
+  {
+    href: '/app/animais',
+    icon: GitlabIcon,
+    title: 'Animais'
+  },
   // {
   //   href: '/app/compras',
   //   icon: ShoppingCart,
