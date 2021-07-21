@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -14,7 +14,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -23,15 +23,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
+const Results = ({ className, data, reload, page, limit, ...rest }) => {
   const classes = useStyles();
+  const funcionarios = data.content;
   const [selectedIds, setSelectedIds] = useState([]);
+  const navigate = useNavigate()
+
+  const update = useCallback((item) => {
+    navigate('../cadastro-animais', { replace: true, state: item })
+  }, [navigate])
 
   const handleSelectAll = (event) => {
     let newSelectedIds;
 
     if (event.target.checked) {
-      newSelectedIds = data.map((reg) => reg.id);
+      newSelectedIds = funcionarios.map((element) => element.id);
     } else {
       newSelectedIds = [];
     }
@@ -60,11 +66,11 @@ const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
   };
 
   const handleLimitChange = (event) => {
-    reload(event.target.value, page);
+    reload(event.target.value, page)
   };
 
   const handlePageChange = (event, newPage) => {
-    reload(limit, newPage);
+    reload(limit, newPage)
   };
 
   return (
@@ -79,37 +85,41 @@ const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedIds.length === data.length}
+                    checked={selectedIds.length === funcionarios.length}
                     color="primary"
                     indeterminate={
                       selectedIds.length > 0
-                      && selectedIds.length < data.length
+                      && selectedIds.length < funcionarios.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
                 <TableCell>
-                  Data
+                  Numero
                 </TableCell>
                 <TableCell>
-                  Fornecedor
+                  Raça
                 </TableCell>
                 <TableCell>
-                  Total
+                  Estado Atual
+                </TableCell>
+                <TableCell>
+                  Apelido
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.slice(0, limit).map((reg) => (
+              {funcionarios.slice(0, limit).map((element) => (
                 <TableRow
                   hover
-                  key={reg.id}
-                  selected={selectedIds.indexOf(reg.id) !== -1}
+                  key={element.id}
+                  selected={selectedIds.indexOf(element.id) !== -1}
+                  onClick={() => update(element)}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedIds.indexOf(reg.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, reg.id)}
+                      checked={selectedIds.indexOf(element.id) !== -1}
+                      onChange={(event) => handleSelectOne(event, element.id)}
                       value="true"
                     />
                   </TableCell>
@@ -122,7 +132,7 @@ const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {moment(reg.dataCompra).format('DD/MM/yyyy')}
+                        {element.numero}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -135,7 +145,7 @@ const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {reg.fornecedor?.nome}
+                        {element.raca}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -148,7 +158,20 @@ const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        R$ {reg.valorTotal}
+                        {element.estadoAtual}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      alignItems="center"
+                      display="flex"
+                    >
+                      <Typography
+                        color="textPrimary"
+                        variant="body1"
+                      >
+                        {element.apelido}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -160,12 +183,13 @@ const Results = ({ className, data, reload, page, limit, total, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={total}
+        count={data.totalElements}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
         rowsPerPage={limit}
         rowsPerPageOptions={[5, 10, 25]}
+        labelRowsPerPage="Registros por pagina"
       />
     </Card>
   );

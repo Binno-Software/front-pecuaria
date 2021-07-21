@@ -19,21 +19,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductsListView = () => {
+const AnimaisListView = () => {
   const classes = useStyles();
-  const [products, setProducts] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    api.get('produto/paginated', {
+    api.get('animais', {
       params: {
-        limit: limit,
-        offset: page
+        size: limit,
+        page
       }
     }).then(response => {
-      setProducts(response.data)
+      setData(response.data)
       setLoading(false)
     })
   }, [limit, page])
@@ -50,16 +50,16 @@ const ProductsListView = () => {
   return (
     <Page
       className={classes.root}
-      title="Products"
+      title="Animais"
     >
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
-          <Results data={products} reload={reload} page={page} limit={limit} />
+          <Results data={data} reload={reload} page={page} limit={limit} />
         </Box>
       </Container>
     </Page>
   );
 };
 
-export default ProductsListView;
+export default AnimaisListView;

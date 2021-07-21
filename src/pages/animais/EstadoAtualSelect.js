@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -10,17 +10,29 @@ import {
     TextField,
     makeStyles
 } from '@material-ui/core';
-import api from 'src/service/api';
 
 const useStyles = makeStyles(() => ({
     root: {}
 }));
 
-const ClienteSelect = ({ addCliente, className, ...rest }) => {
+const EstadoAtualSelect = ({ add, className, ...rest }) => {
     const classes = useStyles();
-    const [clientes, setClientes] = useState([]);
+    const [data] = useState([
+        {
+            id: 'VAZIA',
+            desc: 'Vazia'
+        },
+        {
+            id: 'PARIDA',
+            desc: 'Parida'
+        },
+        {
+            id: 'PRENHA',
+            desc: 'Prenha'
+        }
+    ]);
     const [values, setValues] = useState({
-        clienteSelecionado: undefined
+        selecionado: undefined
     });
 
     const handleChange = (event) => {
@@ -28,17 +40,8 @@ const ClienteSelect = ({ addCliente, className, ...rest }) => {
             ...values,
             [event.target.name]: event.target.value
         });
-        addCliente(event.target.value)
+        add(event.target.value)
     };
-
-    useEffect(() => {
-        api.get('cliente').then(response => {
-            setClientes(response.data)
-            if (response.data.length >= 1) {
-                addCliente(response.data[0].id)
-            }
-        })
-    }, [addCliente])
 
     return (
         <form
@@ -49,7 +52,7 @@ const ClienteSelect = ({ addCliente, className, ...rest }) => {
         >
             <Card>
                 <CardHeader
-                    title="Cliente"
+                    title="Estado Atual"
                 />
                 <Divider />
                 <CardContent>
@@ -64,20 +67,20 @@ const ClienteSelect = ({ addCliente, className, ...rest }) => {
                         >
                             <TextField
                                 fullWidth
-                                name="clienteSelecionado"
+                                name="selecionado"
                                 onChange={handleChange}
                                 required
                                 select
                                 SelectProps={{ native: true }}
-                                value={values.clienteSelecionado}
+                                value={values.selecionado}
                                 variant="outlined"
                             >
-                                {clientes.map((cliente) => (
+                                {data.map((e) => (
                                     <option
-                                        key={cliente.id}
-                                        value={cliente.id}
+                                        key={e.id}
+                                        value={e.id}
                                     >
-                                        {cliente.nome}
+                                        {e.desc}
                                     </option>
                                 ))}
                             </TextField>
@@ -89,8 +92,8 @@ const ClienteSelect = ({ addCliente, className, ...rest }) => {
     );
 };
 
-ClienteSelect.propTypes = {
+EstadoAtualSelect.propTypes = {
     className: PropTypes.string
 };
 
-export default ClienteSelect;
+export default EstadoAtualSelect;
