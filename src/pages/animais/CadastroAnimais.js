@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -7,6 +8,8 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
+  Typography,
   Divider,
   TextField,
   makeStyles,
@@ -24,13 +27,14 @@ const useStyles = makeStyles(({
 const CadastroAnimais = ({ className, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
-    numero: 0,
+    numero: '',
     raca: '',
     apelido: '',
-    dataNascimento: new Date(),
-    numeroCrias: 0,
+    dataNascimento: moment().format("YYYY-MM-DD"),
+    numeroCria: 0,
     estadoAtual: 'VAZIA',
-    dataUltimoParto: new Date(),
+    dataUltimoParto: moment().format("YYYY-MM-DD"),
+    isFemea: true,
     descarteFuturo: false,
     justificativaDescarteFuturo: ''
   });
@@ -46,10 +50,11 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: state.raca,
         apelido: state.apelido,
         dataNascimento: state.dataNascimento,
-        numeroCrias: state.numeroCrias,
+        numeroCria: state.numeroCria,
         estadoAtual: state.estadoAtual,
         dataUltimoParto: state.dataUltimoParto,
-        descarteFuturo: false,
+        descarteFuturo: state.descarteFuturo,
+        isFemea: state.isFemea,
         justificativaDescarteFuturo: state.justificativaDescarteFuturo
       })
     }
@@ -103,10 +108,11 @@ const CadastroAnimais = ({ className, ...rest }) => {
       raca: values.raca,
       apelido: values.apelido,
       dataNascimento: values.dataNascimento,
-      numeroCrias: values.numeroCrias,
+      numeroCria: values.numeroCria,
       estadoAtual: values.estadoAtual,
       dataUltimoParto: values.dataUltimoParto,
-      descarteFuturo: false,
+      descarteFuturo: values.descarteFuturo,
+      isFemea: values.isFemea,
       justificativaDescarteFuturo: values.justificativaDescarteFuturo
     }).then(() => {
       toastSuccess('Animal cadastrado com sucesso')
@@ -115,7 +121,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: values.raca,
         apelido: '',
         dataNascimento: values.dataNascimento,
-        numeroCrias: values.numeroCrias,
+        numeroCria: 0,
         estadoAtual: values.estadoAtual,
         dataUltimoParto: values.dataUltimoParto,
         descarteFuturo: false,
@@ -153,6 +159,32 @@ const CadastroAnimais = ({ className, ...rest }) => {
             value={values.numero}
             variant="outlined"
           />
+          <Box
+            alignItems="center"
+            display="flex"
+            ml={-1}
+          >
+            <Checkbox
+              checked={values.isFemea}
+              name="isFemea"
+              onChange={() => {
+                const event = {
+                  target: {
+                    name: 'isFemea',
+                    value: !values.isFemea
+                  }
+                }
+
+                handleChange(event)
+              }}
+            />
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              Fêmea
+            </Typography>
+          </Box>
           <TextField
             fullWidth
             label="raca"
@@ -182,18 +214,21 @@ const CadastroAnimais = ({ className, ...rest }) => {
             type="date"
             value={values.dataNascimento}
             variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
           <TextField
             fullWidth
-            label="numeroCrias"
-            margin="numeroCrias"
-            name="dataNascimento"
+            label="numeroCria"
+            margin="normal"
+            name="numeroCria"
             onChange={handleChange}
             type="number"
-            value={values.numeroCrias}
+            value={values.numeroCria}
             variant="outlined"
           />
-          <EstadoAtualSelect add={add}/>
+          <EstadoAtualSelect add={add} />
           <TextField
             fullWidth
             label="dataUltimoParto"
@@ -204,18 +239,51 @@ const CadastroAnimais = ({ className, ...rest }) => {
             type="date"
             value={values.dataUltimoParto}
             variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
-          <TextField
-            fullWidth
-            label="justificativaDescarteFuturo"
-            margin="normal"
-            name="justificativaDescarteFuturo"
-            onChange={handleChange}
-            type="text"
-            value={values.justificativaDescarteFuturo}
-            variant="outlined"
-            multiline={true}
-          />
+          <Box
+            alignItems="center"
+            display="flex"
+            ml={-1}
+          >
+            <Checkbox
+              checked={values.descarteFuturo}
+              name="descarteFuturo"
+              onChange={() => {
+                const event = {
+                  target: {
+                    name: 'descarteFuturo',
+                    value: !values.descarteFuturo
+                  }
+                }
+
+                handleChange(event)
+              }}
+            />
+            <Typography
+              color="textSecondary"
+              variant="body1"
+            >
+              Descarte futuro
+            </Typography>
+          </Box>
+          {
+            values.descarteFuturo && (
+              <TextField
+                fullWidth
+                label="justificativaDescarteFuturo"
+                margin="normal"
+                name="justificativaDescarteFuturo"
+                onChange={handleChange}
+                type="text"
+                value={values.justificativaDescarteFuturo}
+                variant="outlined"
+                multiline={true}
+              />
+            )
+          }
         </CardContent>
         <Divider />
         <Box
