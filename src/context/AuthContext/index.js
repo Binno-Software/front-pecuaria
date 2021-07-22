@@ -9,7 +9,6 @@ const AuthContext = createContext({})
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const usuario = localStorage.getItem('@BINNO_AGRO_UUI')
-    console.log(usuario)
     if (usuario) {
       const parsed = JSON.parse(usuario)
       api.defaults.headers.authorization = `Bearer ${parsed.token}`
