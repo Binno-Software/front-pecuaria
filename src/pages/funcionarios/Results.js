@@ -13,8 +13,17 @@ import {
   TableRow,
   Typography,
   makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
+import { Trash } from 'react-feather';
+import api from 'src/service/api';
+import { toastSuccess } from 'src/utils/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -28,7 +37,28 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
   const funcionarios = data.content;
   const [selectedIds, setSelectedIds] = useState([]);
   const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(undefined);
 
+  const handleClickOpen = registro => {
+    setOpen(true);
+    setSelectedItem(registro);
+    console.log(registro)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const excluir = useCallback(() => {
+    api.delete(`funcionarios/${selectedItem.id}`).then(() => {
+      toastSuccess('Funcionario excluido');
+      handleClose();
+      window.location.reload()
+    })
+  }, [selectedItem])
+
+  // eslint-disable-next-line
   const update = useCallback((item) => {
     navigate('../cadastro-funcionario', { replace: true, state: item })
   }, [navigate])
@@ -80,6 +110,27 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Você tem certeza que quer excluir esse Funcionario?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {selectedItem?.nome}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Voltar
+              </Button>
+              <Button onClick={excluir} color="primary" autoFocus>
+                Excluir
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Table>
             <TableHead>
               <TableRow>
@@ -114,7 +165,7 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                   hover
                   key={element.id}
                   selected={selectedIds.indexOf(element.id) !== -1}
-                  onClick={() => update(element)}
+                  // onClick={() => update(element)}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
@@ -174,6 +225,9 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                         {element.fazenda.nome}
                       </Typography>
                     </Box>
+                  </TableCell>
+                  <TableCell padding="checkbox">
+                    <Trash onClick={() => handleClickOpen(element)} />
                   </TableCell>
                 </TableRow>
               ))}

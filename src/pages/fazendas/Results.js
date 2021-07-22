@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -14,7 +14,16 @@ import {
   TableRow,
   Typography,
   makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
 } from '@material-ui/core';
+import { Trash } from 'react-feather';
+import api from 'src/service/api';
+import { toastSuccess } from 'src/utils/toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -27,6 +36,26 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
   const classes = useStyles();
   const customers = data.content;
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(undefined);
+
+  const handleClickOpen = registro => {
+    setOpen(true);
+    setSelectedItem(registro);
+    console.log(registro)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const excluir = useCallback(() => {
+    api.delete(`fazendas/${selectedItem.id}`).then(() => {
+      toastSuccess('Fazenda excluida');
+      handleClose();
+      window.location.reload()
+    })
+  }, [selectedItem])
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -75,6 +104,27 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Você tem certeza que quer excluir essa fazenda?"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                {selectedItem?.nome}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Voltar
+              </Button>
+              <Button onClick={excluir} color="primary" autoFocus>
+                Excluir
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Table>
             <TableHead>
               <TableRow>
@@ -142,6 +192,9 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                         {customer.codigoEstab}
                       </Typography>
                     </Box>
+                  </TableCell>
+                  <TableCell padding="checkbox">
+                    <Trash onClick={() => handleClickOpen(customer)} />
                   </TableCell>
                 </TableRow>
               ))}
