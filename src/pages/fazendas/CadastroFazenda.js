@@ -77,7 +77,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
         <CardContent>
           <TextField
             fullWidth
-            label="nome"
+            label="Nome"
             margin="normal"
             name="nome"
             onChange={handleChange}
@@ -87,7 +87,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
           />
           <TextField
             fullWidth
-            label="codigoEstab"
+            label="Código fazenda"
             margin="normal"
             name="codigoEstab"
             onChange={handleChange}
@@ -97,7 +97,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
           />
             <TextField
             fullWidth
-            label="endereco"
+            label="Endereço"
             margin="normal"
             name="endereco"
             onChange={handleChange}
@@ -107,7 +107,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
           />
            <TextField
             fullWidth
-            label="tamanhoHectare"
+            label="Tamanho em hectares"
             margin="normal"
             name="tamanhoHectare"
             onChange={handleChange}
@@ -117,7 +117,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
           />
            <TextField
             fullWidth
-            label="capacidadeMaxGado"
+            label="Capacidade máxima de gado"
             margin="normal"
             name="capacidadeMaxGado"
             onChange={handleChange}
