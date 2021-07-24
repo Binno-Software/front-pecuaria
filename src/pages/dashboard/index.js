@@ -19,7 +19,7 @@ const _Dash = () => {
             color="textSecondary"
             variant="body1"
         >
-            Produto em fase de desenvolvimento. Para sugestões ou para informar problemas, enviar mensagem para 48 999 400 775
+            Produto em fase de desenvolvimento.
         </Typography>
     </>
 }
