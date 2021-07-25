@@ -143,7 +143,7 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                   Nome
                 </TableCell>
                 <TableCell>
-                  Numero Estabelecimento
+                  Código fazenda
                 </TableCell>
               </TableRow>
             </TableHead>

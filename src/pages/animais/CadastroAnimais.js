@@ -165,7 +165,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           <FazendaSelect addFazenda={addFazenda} />
           <TextField
             fullWidth
-            label="numero"
+            label="Número do animal"
             margin="normal"
             name="numero"
             onChange={handleChange}
@@ -201,7 +201,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           </Box>
           <TextField
             fullWidth
-            label="raca"
+            label="Raça"
             margin="normal"
             name="raca"
             onChange={handleChange}
@@ -211,7 +211,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           />
           <TextField
             fullWidth
-            label="apelido"
+            label="Apelido do animal"
             margin="normal"
             name="apelido"
             onChange={handleChange}
@@ -221,7 +221,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           />
           <TextField
             fullWidth
-            label="dataNascimento"
+            label="Data de nascimento"
             margin="normal"
             name="dataNascimento"
             onChange={handleChange}
@@ -231,21 +231,24 @@ const CadastroAnimais = ({ className, ...rest }) => {
             InputLabelProps={{
               shrink: true,
             }}
-          />
-          <TextField
-            fullWidth
-            label="numeroCria"
-            margin="normal"
-            name="numeroCria"
-            onChange={handleChange}
-            type="number"
-            value={values.numeroCria}
-            variant="outlined"
-          />
+          />{
+            (values.isFemea &&
+              <TextField
+                fullWidth
+                label="Número de crias"
+                margin="normal"
+                name="numeroCria"
+                onChange={handleChange}
+                type="number"
+                value={values.numeroCria}
+                variant="outlined"
+              />
+            )
+          }
           <EstadoAtualSelect add={add} />
           <TextField
             fullWidth
-            label="dataUltimoParto"
+            label="Data do último parto"
             margin="normal"
             name="dataUltimoParto"
             placeholder=""
@@ -287,7 +290,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
             values.descarteFuturo && (
               <TextField
                 fullWidth
-                label="justificativaDescarteFuturo"
+                label="Justificativa para o descarte"
                 margin="normal"
                 name="justificativaDescarteFuturo"
                 onChange={handleChange}
