@@ -21,7 +21,7 @@ import NavItem from './NavItem';
 import { useAuth } from 'src/context/AuthContext'
 
 const user = {
-  avatar: '/static/images/avatars/logo.jpg',
+  avatar: '/static/images/avatars/logo.jpeg',
   jobTitle: 'Bem vindo',
   name: 'Nilton'
 };
