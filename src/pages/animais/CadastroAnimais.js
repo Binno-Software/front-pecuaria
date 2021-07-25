@@ -19,6 +19,7 @@ import api from 'src/service/api';
 import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import EstadoAtualSelect from './EstadoAtualSelect';
+import FazendaSelect from '../funcionarios/FazendaSelect';
 
 const useStyles = makeStyles(({
   root: {}
@@ -26,6 +27,7 @@ const useStyles = makeStyles(({
 
 const CadastroAnimais = ({ className, ...rest }) => {
   const classes = useStyles();
+  const [fazenda, setFazenda] = useState({})
   const [values, setValues] = useState({
     numero: '',
     raca: '',
@@ -57,6 +59,10 @@ const CadastroAnimais = ({ className, ...rest }) => {
         isFemea: state.isFemea,
         justificativaDescarteFuturo: state.justificativaDescarteFuturo
       })
+      setFazenda({
+        id: state.fazenda.id,
+        nome: state.fazenda.nome
+      })
     }
 
   }, [state])
@@ -67,6 +73,12 @@ const CadastroAnimais = ({ className, ...rest }) => {
       [event.target.name]: event.target.value
     });
   };
+
+  const addFazenda = useCallback((fazenda) => {
+    setFazenda({
+      id: fazenda
+    })
+  }, [setFazenda])
 
   const add = useCallback((valor) => {
     setValues({
@@ -113,7 +125,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
       dataUltimoParto: values.dataUltimoParto,
       descarteFuturo: values.descarteFuturo,
       isFemea: values.isFemea,
-      justificativaDescarteFuturo: values.justificativaDescarteFuturo
+      justificativaDescarteFuturo: values.justificativaDescarteFuturo,
+      fazenda
     }).then(() => {
       toastSuccess('Animal cadastrado com sucesso')
       setValues({
@@ -131,7 +144,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
     }).catch(() => setLoading(false))
 
     setLoading(true)
-  }, [values, isUpdate, updateForm])
+  }, [values, isUpdate, updateForm, fazenda])
 
   if (loading) {
     return <LinearProgress />
@@ -149,9 +162,10 @@ const CadastroAnimais = ({ className, ...rest }) => {
         />
         <Divider />
         <CardContent>
+          <FazendaSelect addFazenda={addFazenda} />
           <TextField
             fullWidth
-            label="numero"
+            label="Número do animal"
             margin="normal"
             name="numero"
             onChange={handleChange}
@@ -187,7 +201,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           </Box>
           <TextField
             fullWidth
-            label="raca"
+            label="Raça"
             margin="normal"
             name="raca"
             onChange={handleChange}
@@ -197,7 +211,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           />
           <TextField
             fullWidth
-            label="apelido"
+            label="Apelido do animal"
             margin="normal"
             name="apelido"
             onChange={handleChange}
@@ -207,7 +221,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           />
           <TextField
             fullWidth
-            label="dataNascimento"
+            label="Data de nascimento"
             margin="normal"
             name="dataNascimento"
             onChange={handleChange}
@@ -217,21 +231,24 @@ const CadastroAnimais = ({ className, ...rest }) => {
             InputLabelProps={{
               shrink: true,
             }}
-          />
-          <TextField
-            fullWidth
-            label="numeroCria"
-            margin="normal"
-            name="numeroCria"
-            onChange={handleChange}
-            type="number"
-            value={values.numeroCria}
-            variant="outlined"
-          />
+          />{
+            (values.isFemea &&
+              <TextField
+                fullWidth
+                label="Número de crias"
+                margin="normal"
+                name="numeroCria"
+                onChange={handleChange}
+                type="number"
+                value={values.numeroCria}
+                variant="outlined"
+              />
+            )
+          }
           <EstadoAtualSelect add={add} />
           <TextField
             fullWidth
-            label="dataUltimoParto"
+            label="Data do último parto"
             margin="normal"
             name="dataUltimoParto"
             placeholder=""
@@ -273,7 +290,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
             values.descarteFuturo && (
               <TextField
                 fullWidth
-                label="justificativaDescarteFuturo"
+                label="Justificativa para o descarte"
                 margin="normal"
                 name="justificativaDescarteFuturo"
                 onChange={handleChange}

@@ -130,7 +130,7 @@ const CadastroFuncionario = ({ className, ...rest }) => {
         <CardContent>
           <TextField
             fullWidth
-            label="nome"
+            label="Nome"
             margin="normal"
             name="nome"
             onChange={handleChange}
