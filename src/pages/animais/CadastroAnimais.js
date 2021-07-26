@@ -19,7 +19,7 @@ import api from 'src/service/api';
 import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import EstadoAtualSelect from './EstadoAtualSelect';
-import FazendaSelect from '../funcionarios/FazendaSelect';
+import FazendaSelect from 'src/components/FazendaSelect';
 
 const useStyles = makeStyles(({
   root: {}
