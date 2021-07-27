@@ -20,6 +20,7 @@ import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import EstadoAtualSelect from './EstadoAtualSelect';
 import FazendaSelect from 'src/components/FazendaSelect';
+import AnimalFoto from './FotoAnimal';
 
 const useStyles = makeStyles(({
   root: {}
@@ -302,6 +303,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
             )
           }
         </CardContent>
+        <Divider />
+        <AnimalFoto />
         <Divider />
         <Box
           display="flex"
