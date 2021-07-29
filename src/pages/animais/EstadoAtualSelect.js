@@ -35,7 +35,7 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
     selecionado: undefined
   });
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -66,7 +66,7 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {data.map(e => (
+                {data.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.desc}
                   </option>
