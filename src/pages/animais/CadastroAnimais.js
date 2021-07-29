@@ -18,25 +18,26 @@ import {
 import api from 'src/service/api';
 import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
-import EstadoAtualSelect from './EstadoAtualSelect';
 import FazendaSelect from 'src/components/FazendaSelect';
+import EstadoAtualSelect from './EstadoAtualSelect';
+import RacaAnimalSelect from './RacaAnimalSelect';
 import AnimalFoto from './FotoAnimal';
 
-const useStyles = makeStyles(({
+const useStyles = makeStyles({
   root: {}
-}));
+});
 
 const CadastroAnimais = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [fazenda, setFazenda] = useState({})
+  const [fazenda, setFazenda] = useState({});
   const [values, setValues] = useState({
     numero: '',
-    raca: '',
+    raca: 'NELORE',
     apelido: '',
-    dataNascimento: moment().format("YYYY-MM-DD"),
+    dataNascimento: moment().format('YYYY-MM-DD'),
     numeroCria: 0,
     estadoAtual: 'VAZIA',
-    dataUltimoParto: moment().format("YYYY-MM-DD"),
+    dataUltimoParto: moment().format('YYYY-MM-DD'),
     isFemea: true,
     descarteFuturo: false,
     justificativaDescarteFuturo: ''
@@ -47,7 +48,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
 
   useEffect(() => {
     if (state) {
-      setIsUpdate(true)
+      setIsUpdate(true);
       setValues({
         numero: state.numero,
         raca: state.raca,
@@ -59,108 +60,122 @@ const CadastroAnimais = ({ className, ...rest }) => {
         descarteFuturo: state.descarteFuturo,
         isFemea: state.isFemea,
         justificativaDescarteFuturo: state.justificativaDescarteFuturo
-      })
+      });
       setFazenda({
         id: state.fazenda.id,
         nome: state.fazenda.nome
-      })
+      });
     }
+  }, [state]);
 
-  }, [state])
-
-  const handleChange = (event) => {
+  const handleChange = event => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
     });
   };
 
-  const addFazenda = useCallback((fazenda) => {
-    setFazenda({
-      id: fazenda
-    })
-  }, [setFazenda])
+  const addFazenda = useCallback(
+    fazenda => {
+      setFazenda({
+        id: fazenda
+      });
+    },
+    [setFazenda]
+  );
 
-  const add = useCallback((valor) => {
-    setValues({
-      ...values,
-      estadoAtual: valor,
-    })
-  }, [values])
+  const add = useCallback(
+    valor => {
+      setValues({
+        ...values,
+        estadoAtual: valor
+      });
+    },
+    [values]
+  );
+
+  const addRaca = useCallback(
+    valor => {
+      setValues({
+        ...values,
+        raca: valor
+      });
+    },
+    [values]
+  );
 
   const updateForm = useCallback(() => {
-    api.put(`produto/${values.id}`, {
-      nome: values.nome,
-      ca: values.ca,
-      estoque: values.estoque,
-      valorVenda: values.valorVenda,
-      valorCompra: values.valorCompra
-    }).then(() => {
-      toastSuccess('Produto alterado com sucesso')
-      setValues({
-        nome: '',
-        ca: '',
-        estoque: 0,
-        valorVenda: 0,
-        valorCompra: 0
+    api
+      .put(`produto/${values.id}`, {
+        nome: values.nome,
+        ca: values.ca,
+        estoque: values.estoque,
+        valorVenda: values.valorVenda,
+        valorCompra: values.valorCompra
       })
-      setLoading(false)
-      setIsUpdate(false)
-    })
+      .then(() => {
+        toastSuccess('Produto alterado com sucesso');
+        setValues({
+          nome: '',
+          ca: '',
+          estoque: 0,
+          valorVenda: 0,
+          valorCompra: 0
+        });
+        setLoading(false);
+        setIsUpdate(false);
+      });
 
-    setLoading(true)
-  }, [values])
+    setLoading(true);
+  }, [values]);
 
   const submitForm = useCallback(() => {
     if (isUpdate) {
-      return updateForm()
+      return updateForm();
     }
 
-    api.post('animais', {
-      numero: values.numero,
-      raca: values.raca,
-      apelido: values.apelido,
-      dataNascimento: values.dataNascimento,
-      numeroCria: values.numeroCria,
-      estadoAtual: values.estadoAtual,
-      dataUltimoParto: values.dataUltimoParto,
-      descarteFuturo: values.descarteFuturo,
-      isFemea: values.isFemea,
-      justificativaDescarteFuturo: values.justificativaDescarteFuturo,
-      fazenda
-    }).then(() => {
-      toastSuccess('Animal cadastrado com sucesso')
-      setValues({
-        numero: Number(values.numero) + 1,
+    api
+      .post('animais', {
+        numero: values.numero,
         raca: values.raca,
-        apelido: '',
+        apelido: values.apelido,
         dataNascimento: values.dataNascimento,
-        numeroCria: 0,
+        numeroCria: values.numeroCria,
         estadoAtual: values.estadoAtual,
         dataUltimoParto: values.dataUltimoParto,
-        descarteFuturo: false,
-        justificativaDescarteFuturo: values.justificativaDescarteFuturo
+        descarteFuturo: values.descarteFuturo,
+        isFemea: values.isFemea,
+        justificativaDescarteFuturo: values.justificativaDescarteFuturo,
+        fazenda
       })
-      setLoading(false)
-    }).catch(() => setLoading(false))
+      .then(() => {
+        toastSuccess('Animal cadastrado com sucesso');
+        setValues({
+          numero: Number(values.numero) + 1,
+          raca: values.raca,
+          apelido: '',
+          dataNascimento: values.dataNascimento,
+          numeroCria: 0,
+          estadoAtual: values.estadoAtual,
+          dataUltimoParto: values.dataUltimoParto,
+          descarteFuturo: false,
+          justificativaDescarteFuturo: values.justificativaDescarteFuturo
+        });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
 
-    setLoading(true)
-  }, [values, isUpdate, updateForm, fazenda])
+    setLoading(true);
+  }, [values, isUpdate, updateForm, fazenda]);
 
   if (loading) {
-    return <LinearProgress />
+    return <LinearProgress />;
   }
 
   return (
-    <form
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <form className={clsx(classes.root, className)} {...rest}>
       <Card>
-        <CardHeader
-          subheader="inserindo novo animal"
-          title="Animal"
-        />
+        <CardHeader subheader="inserindo novo animal" title="Animal" />
         <Divider />
         <CardContent>
           <FazendaSelect addFazenda={addFazenda} />
@@ -174,11 +189,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
             value={values.numero}
             variant="outlined"
           />
-          <Box
-            alignItems="center"
-            display="flex"
-            ml={-1}
-          >
+          <Box alignItems="center" display="flex" ml={-1}>
             <Checkbox
               checked={values.isFemea}
               name="isFemea"
@@ -188,28 +199,15 @@ const CadastroAnimais = ({ className, ...rest }) => {
                     name: 'isFemea',
                     value: !values.isFemea
                   }
-                }
+                };
 
-                handleChange(event)
+                handleChange(event);
               }}
             />
-            <Typography
-              color="textSecondary"
-              variant="body1"
-            >
+            <Typography color="textSecondary" variant="body1">
               Fêmea
             </Typography>
           </Box>
-          <TextField
-            fullWidth
-            label="Raça"
-            margin="normal"
-            name="raca"
-            onChange={handleChange}
-            type="text"
-            value={values.raca}
-            variant="outlined"
-          />
           <TextField
             fullWidth
             label="Apelido do animal"
@@ -230,10 +228,11 @@ const CadastroAnimais = ({ className, ...rest }) => {
             value={values.dataNascimento}
             variant="outlined"
             InputLabelProps={{
-              shrink: true,
+              shrink: true
             }}
-          />{
-            (values.isFemea &&
+          />
+          {values.isFemea && (
+            <>
               <TextField
                 fullWidth
                 label="Número de crias"
@@ -244,28 +243,25 @@ const CadastroAnimais = ({ className, ...rest }) => {
                 value={values.numeroCria}
                 variant="outlined"
               />
-            )
-          }
-          <EstadoAtualSelect add={add} />
-          <TextField
-            fullWidth
-            label="Data do último parto"
-            margin="normal"
-            name="dataUltimoParto"
-            placeholder=""
-            onChange={handleChange}
-            type="date"
-            value={values.dataUltimoParto}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <Box
-            alignItems="center"
-            display="flex"
-            ml={-1}
-          >
+              <EstadoAtualSelect add={add} />
+              <TextField
+                fullWidth
+                label="Data do último parto"
+                margin="normal"
+                name="dataUltimoParto"
+                placeholder=""
+                onChange={handleChange}
+                type="date"
+                value={values.dataUltimoParto}
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </>
+          )}
+          <RacaAnimalSelect add={addRaca} />
+          <Box alignItems="center" display="flex" ml={-1}>
             <Checkbox
               checked={values.descarteFuturo}
               name="descarteFuturo"
@@ -275,47 +271,34 @@ const CadastroAnimais = ({ className, ...rest }) => {
                     name: 'descarteFuturo',
                     value: !values.descarteFuturo
                   }
-                }
+                };
 
-                handleChange(event)
+                handleChange(event);
               }}
             />
-            <Typography
-              color="textSecondary"
-              variant="body1"
-            >
+            <Typography color="textSecondary" variant="body1">
               Descarte futuro
             </Typography>
           </Box>
-          {
-            values.descarteFuturo && (
-              <TextField
-                fullWidth
-                label="Justificativa para o descarte"
-                margin="normal"
-                name="justificativaDescarteFuturo"
-                onChange={handleChange}
-                type="text"
-                value={values.justificativaDescarteFuturo}
-                variant="outlined"
-                multiline={true}
-              />
-            )
-          }
+          {values.descarteFuturo && (
+            <TextField
+              fullWidth
+              label="Justificativa para o descarte"
+              margin="normal"
+              name="justificativaDescarteFuturo"
+              onChange={handleChange}
+              type="text"
+              value={values.justificativaDescarteFuturo}
+              variant="outlined"
+              multiline
+            />
+          )}
         </CardContent>
         <Divider />
         <AnimalFoto />
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={submitForm}
-          >
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button color="primary" variant="contained" onClick={submitForm}>
             Salvar
           </Button>
         </Box>
