@@ -13,7 +13,7 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import { useAuth } from 'src/context/AuthContext'
+import { useAuth } from 'src/context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +28,9 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  if (loading)
-    return <LinearProgress  />
+  if (loading) return <LinearProgress />;
 
   return (
     <Page
@@ -54,10 +53,10 @@ const LoginView = () => {
               password: Yup.string().max(255).required('Senha é obrigatoria')
             })}
             onSubmit={(values) => {
-              setLoading(true)
+              setLoading(true);
               login(values).then(() => {
                 navigate('/app/dashboard', { replace: true });
-              })
+              });
             }}
           >
             {({

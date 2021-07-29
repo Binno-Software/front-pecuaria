@@ -39,28 +39,28 @@ const CadastroFazenda = ({ className, ...rest }) => {
 
   const submitForm = useCallback(() => {
     api.post('fazendas', {
-        nome: values.nome,
-        codigoEstab: values.codigoEstab,
-        endereco: values.endereco,
-        tamanhoHectare: values.tamanhoHectare,
-        capacidadeMaxGado: values.capacidadeMaxGado
+      nome: values.nome,
+      codigoEstab: values.codigoEstab,
+      endereco: values.endereco,
+      tamanhoHectare: values.tamanhoHectare,
+      capacidadeMaxGado: values.capacidadeMaxGado
     }).then(() => {
-        toastSuccess('Fazenda cadastrado com sucesso')
-        setValues({
-          nome: undefined,
-          codigoEstab: 0,
-          endereco: '',
-          tamanhoHectare: 0,
-          capacidadeMaxGado: 0
-        })
-        setLoading(false)
-    }).catch(() => setLoading(false))
+      toastSuccess('Fazenda cadastrado com sucesso');
+      setValues({
+        nome: undefined,
+        codigoEstab: 0,
+        endereco: '',
+        tamanhoHectare: 0,
+        capacidadeMaxGado: 0
+      });
+      setLoading(false);
+    }).catch(() => setLoading(false));
 
-    setLoading(true)
-  }, [values])
+    setLoading(true);
+  }, [values]);
 
   if (loading) {
-      return <LinearProgress/>
+    return <LinearProgress />;
   }
 
   return (
@@ -80,6 +80,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             label="Nome"
             margin="normal"
             name="nome"
+            required
             onChange={handleChange}
             type="text"
             value={values.nome}
@@ -95,7 +96,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             value={values.codigoEstab}
             variant="outlined"
           />
-            <TextField
+          <TextField
             fullWidth
             label="Endereço"
             margin="normal"
@@ -105,7 +106,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             value={values.endereco}
             variant="outlined"
           />
-           <TextField
+          <TextField
             fullWidth
             label="Tamanho em hectares"
             margin="normal"
@@ -115,7 +116,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             value={values.tamanhoHectare}
             variant="outlined"
           />
-           <TextField
+          <TextField
             fullWidth
             label="Capacidade máxima de gado"
             margin="normal"
@@ -135,6 +136,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
+            disabled={!values.nome?.length}
             onClick={submitForm}
           >
             Salvar
