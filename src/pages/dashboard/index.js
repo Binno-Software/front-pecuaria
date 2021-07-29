@@ -1,27 +1,39 @@
 import React from 'react';
-import {Typography} from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
-const _Dash = () => {
-    return <>
-        <Typography
+const Dash = () => {
+  return (
+    <>
+      <Grid
+        container
+        spacing={0}
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: '90vh' }}
+      >
+        <Grid item xs={6}>
+          <Typography
             color="textSecondary"
             variant="body1"
-        >
+          >
             Binno Agro - Alpha version
-        </Typography>
-        <Typography
+          </Typography>
+          <Typography
             color="textSecondary"
             variant="body1"
-        >
+          >
             Sistema para gerenciamento de fazendas
-        </Typography>
-        <Typography
+          </Typography>
+          <Typography
             color="textSecondary"
             variant="body1"
-        >
+          >
             Produto em fase de desenvolvimento.
-        </Typography>
+          </Typography>
+        </Grid>
+      </Grid>
     </>
-}
+  );
+};
 
-export default _Dash
+export default Dash;

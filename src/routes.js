@@ -11,15 +11,15 @@ import SettingsView from 'src/views/settings/SettingsView';
 import ReportsView from 'src/views/reports/DashboardView';
 import FazendaListView from 'src/pages/fazendas';
 import CadastroFazenda from 'src/pages/fazendas/CadastroFazenda';
-import FuncionarioListView from 'src/pages/funcionarios'
-import CadastroFuncionario from 'src/pages/funcionarios/CadastroFuncionario'
-import AnimaisListView from 'src/pages/animais'
-import CadastroAnimais from 'src/pages/animais/CadastroAnimais'
+import FuncionarioListView from 'src/pages/funcionarios';
+import CadastroFuncionario from 'src/pages/funcionarios/CadastroFuncionario';
+import AnimaisListView from 'src/pages/animais';
+import CadastroAnimais from 'src/pages/animais/CadastroAnimais';
 
-const routes = isLoggedIn => [
+const routes = (isLoggedIn) => [
   {
     path: 'app',
-    element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login"/>,
+    element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'cadastro-fazenda', element: <CadastroFazenda /> },
@@ -36,7 +36,7 @@ const routes = isLoggedIn => [
   },
   {
     path: '/',
-    element: !isLoggedIn ?  <MainLayout /> : <Navigate to="/app/dashboard"/>,
+    element: !isLoggedIn ? <MainLayout /> : <Navigate to="/app/dashboard" />,
     children: [
       { path: 'login', element: <LoginView /> },
       { path: 'register', element: <RegisterView /> },
