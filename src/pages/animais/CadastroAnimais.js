@@ -208,16 +208,6 @@ const CadastroAnimais = ({ className, ...rest }) => {
               Fêmea
             </Typography>
           </Box>
-          {/* <TextField
-            fullWidth
-            label="Raça"
-            margin="normal"
-            name="raca"
-            onChange={handleChange}
-            type="text"
-            value={values.raca}
-            variant="outlined"
-          /> */}
           <TextField
             fullWidth
             label="Apelido do animal"
