@@ -15,20 +15,52 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const EstadoAtualSelect = ({ add, className, ...rest }) => {
+const RacaAnimalSelect = ({ add, className, ...rest }) => {
   const classes = useStyles();
   const [data] = useState([
     {
-      id: 'VAZIA',
-      desc: 'Vazia'
+      id: 'NELORE',
+      desc: 'Nelore'
     },
     {
-      id: 'PARIDA',
-      desc: 'Parida'
+      id: 'SENEPOL',
+      desc: 'Senepol'
     },
     {
-      id: 'PRENHA',
-      desc: 'Prenha'
+      id: 'ANGUS',
+      desc: 'Angus'
+    },
+    {
+      id: 'BRAHMAN',
+      desc: 'Brahman'
+    },
+    {
+      id: 'BRANGUS',
+      desc: 'Brangus'
+    },
+    {
+      id: 'HEREFORD',
+      desc: 'Hereford'
+    },
+    {
+      id: 'CARACU',
+      desc: 'Caracu'
+    },
+    {
+      id: 'CHAROLES',
+      desc: 'Charoles'
+    },
+    {
+      id: 'GUZERA',
+      desc: 'Guzera'
+    },
+    {
+      id: 'TABAPUA',
+      desc: 'Tabapua'
+    },
+    {
+      id: 'BUFALO',
+      desc: 'Bufalo'
     }
   ]);
   const [values, setValues] = useState({
@@ -51,7 +83,7 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
       {...rest}
     >
       <Card>
-        <CardHeader title="Estado Atual" />
+        <CardHeader title="Raça do animal" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
@@ -80,8 +112,8 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
   );
 };
 
-EstadoAtualSelect.propTypes = {
+RacaAnimalSelect.propTypes = {
   className: PropTypes.string
 };
 
-export default EstadoAtualSelect;
+export default RacaAnimalSelect;
