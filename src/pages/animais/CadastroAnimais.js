@@ -35,6 +35,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
     raca: 'NELORE',
     apelido: '',
     dataNascimento: moment().format('YYYY-MM-DD'),
+    peso: 0.0,
+    dataPesagem: moment().format('YYYY-MM-DD'),
     numeroCria: 0,
     estadoAtual: 'VAZIA',
     dataUltimoParto: moment().format('YYYY-MM-DD'),
@@ -54,6 +56,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: state.raca,
         apelido: state.apelido,
         dataNascimento: state.dataNascimento,
+        peso: state.peso,
+        dataPesagem: state.dataPesagem,
         numeroCria: state.numeroCria,
         estadoAtual: state.estadoAtual,
         dataUltimoParto: state.dataUltimoParto,
@@ -140,6 +144,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: values.raca,
         apelido: values.apelido,
         dataNascimento: values.dataNascimento,
+        peso: parseFloat(values.peso),
+        dataPesagem: values.dataPesagem,
         numeroCria: values.numeroCria,
         estadoAtual: values.estadoAtual,
         dataUltimoParto: values.dataUltimoParto,
@@ -155,6 +161,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           raca: values.raca,
           apelido: '',
           dataNascimento: values.dataNascimento,
+          peso: 0,
           numeroCria: 0,
           estadoAtual: values.estadoAtual,
           dataUltimoParto: values.dataUltimoParto,
@@ -226,6 +233,29 @@ const CadastroAnimais = ({ className, ...rest }) => {
             onChange={handleChange}
             type="date"
             value={values.dataNascimento}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <TextField
+            fullWidth
+            label="Peso do animal"
+            margin="normal"
+            name="peso"
+            onChange={handleChange}
+            type="number"
+            value={values.peso}
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            label="Data pessagem"
+            margin="normal"
+            name="dataPesagem"
+            onChange={handleChange}
+            type="date"
+            value={values.dataPesagem}
             variant="outlined"
             InputLabelProps={{
               shrink: true
