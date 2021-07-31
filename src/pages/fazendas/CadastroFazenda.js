@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -13,6 +13,7 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import api from 'src/service/api';
+import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import TipoMetragemSelect from './TipoMetragemSelect';
 
@@ -27,10 +28,24 @@ const CadastroFazenda = ({ className, ...rest }) => {
     codigoEstab: 0,
     endereco: '',
     metragem: 0,
-    tipoMetragem: 'ALQUEIRE',
+    tipoMetragem: 'HECTARE',
     capacidadeMaxGado: 0
   });
   const [loading, setLoading] = useState(false);
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (state) {
+      setValues({
+        nome: state.nome,
+        codigoEstab: state.codigoEstab,
+        endereco: state.endereco,
+        metragem: state.metragem,
+        tipoMetragem: state.tipoMetragem,
+        capacidadeMaxGado: state.capacidadeMaxGado
+      });
+    }
+  }, [state]);
 
   const add = useCallback(
     valor => {

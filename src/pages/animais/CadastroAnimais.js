@@ -43,12 +43,10 @@ const CadastroAnimais = ({ className, ...rest }) => {
     justificativaDescarteFuturo: ''
   });
   const [loading, setLoading] = useState(false);
-  const [isUpdate, setIsUpdate] = useState(false);
   const { state } = useLocation();
 
   useEffect(() => {
     if (state) {
-      setIsUpdate(true);
       setValues({
         numero: state.numero,
         raca: state.raca,
@@ -104,36 +102,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
     [values]
   );
 
-  const updateForm = useCallback(() => {
-    api
-      .put(`produto/${values.id}`, {
-        nome: values.nome,
-        ca: values.ca,
-        estoque: values.estoque,
-        valorVenda: values.valorVenda,
-        valorCompra: values.valorCompra
-      })
-      .then(() => {
-        toastSuccess('Produto alterado com sucesso');
-        setValues({
-          nome: '',
-          ca: '',
-          estoque: 0,
-          valorVenda: 0,
-          valorCompra: 0
-        });
-        setLoading(false);
-        setIsUpdate(false);
-      });
-
-    setLoading(true);
-  }, [values]);
-
   const submitForm = useCallback(() => {
-    if (isUpdate) {
-      return updateForm();
-    }
-
     api
       .post('animais', {
         numero: values.numero,
@@ -166,7 +135,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
       .catch(() => setLoading(false));
 
     setLoading(true);
-  }, [values, isUpdate, updateForm, fazenda]);
+  }, [values, fazenda]);
 
   if (loading) {
     return <LinearProgress />;
