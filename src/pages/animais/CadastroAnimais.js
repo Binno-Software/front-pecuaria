@@ -66,7 +66,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
     }
   }, [state]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -74,16 +74,16 @@ const CadastroAnimais = ({ className, ...rest }) => {
   };
 
   const addFazenda = useCallback(
-    fazenda => {
+    (_fazenda) => {
       setFazenda({
-        id: fazenda
+        id: _fazenda
       });
     },
     [setFazenda]
   );
 
   const add = useCallback(
-    valor => {
+    (valor) => {
       setValues({
         ...values,
         estadoAtual: valor
@@ -93,7 +93,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
   );
 
   const addRaca = useCallback(
-    valor => {
+    (valor) => {
       setValues({
         ...values,
         raca: valor
