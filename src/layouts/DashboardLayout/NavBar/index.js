@@ -15,10 +15,11 @@ import {
   BarChart as BarChartIcon,
   Home as HomeIcon,
   User as UsersIcon,
-  Gitlab as GitlabIcon
+  Gitlab as GitlabIcon,
+  Heart as HeartIcon,
 } from 'react-feather';
+import { useAuth } from 'src/context/AuthContext';
 import NavItem from './NavItem';
-import { useAuth } from 'src/context/AuthContext'
 
 const user = {
   avatar: '/static/images/avatars/logo.jpeg',
@@ -47,11 +48,11 @@ const items = [
     icon: GitlabIcon,
     title: 'Animais'
   },
-  // {
-  //   href: '/app/compras',
-  //   icon: ShoppingCart,
-  //   title: 'Compras'
-  // },
+  {
+    href: '/app/medicamentos',
+    icon: HeartIcon,
+    title: 'Medicamentos'
+  },
   // {
   //   href: '/app/orcamento',
   //   icon: File,
@@ -125,13 +126,14 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          Bem vindo {userReal.user.username}
+          Bem vindo
+          {' '}
+          {userReal.user.username}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
-        >
-        </Typography>
+        />
       </Box>
       <Divider />
       <Box p={2}>

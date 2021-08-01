@@ -33,7 +33,7 @@ const Toolbar = ({ className, ...rest }) => {
     >
       <Box
         display="flex"
-        justifyContent="flex-end"
+        justifyContent="flex-start"
       >
         <Button
           color="primary"
