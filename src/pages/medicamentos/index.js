@@ -6,8 +6,8 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import Toolbar from 'src/components/Toolbar';
 import Results from './Results';
-import Toolbar from './Toolbar';
 import api from '../../service/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const FuncionarioListView = () => {
+const MedicamentosListView = () => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ const FuncionarioListView = () => {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    api.get('funcionarios', {
+    api.get('medicamentos', {
       params: {
         size: limit,
         page
@@ -49,10 +49,10 @@ const FuncionarioListView = () => {
   return (
     <Page
       className={classes.root}
-      title="Funcionarios"
+      title="Medicamentos"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar href="/app/cadastro-medicamento" title="medicamento" />
         <Box mt={3}>
           <Results data={data} reload={reload} page={page} limit={limit} />
         </Box>
@@ -61,4 +61,4 @@ const FuncionarioListView = () => {
   );
 };
 
-export default FuncionarioListView;
+export default MedicamentosListView;

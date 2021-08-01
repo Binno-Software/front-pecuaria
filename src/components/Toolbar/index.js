@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
-
   return (
     <div
       className={clsx(classes.root, className)}
@@ -38,9 +37,11 @@ const Toolbar = ({ className, ...rest }) => {
         <Button
           color="primary"
           variant="contained"
-          href='/app/cadastro-animais'
+          href={rest.href}
         >
-          Novo Animal
+          Novo
+          {' '}
+          {rest.title}
         </Button>
       </Box>
       <Box mt={3}>

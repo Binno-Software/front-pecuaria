@@ -16,6 +16,9 @@ import CadastroFuncionario from 'src/pages/funcionarios/CadastroFuncionario';
 import AnimaisListView from 'src/pages/animais';
 import CadastroAnimais from 'src/pages/animais/CadastroAnimais';
 
+import MedicamentosListView from './pages/medicamentos';
+import CadastroMedicamento from './pages/medicamentos/CadastroMedicamento';
+
 const routes = (isLoggedIn) => [
   {
     path: 'app',
@@ -30,6 +33,8 @@ const routes = (isLoggedIn) => [
       { path: 'dashboard-view', element: <ReportsView /> },
       { path: 'animais', element: <AnimaisListView /> },
       { path: 'funcionarios', element: <FuncionarioListView /> },
+      { path: 'medicamentos', element: <MedicamentosListView /> },
+      { path: 'cadastro-medicamento', element: <CadastroMedicamento /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
