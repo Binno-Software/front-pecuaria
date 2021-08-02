@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -13,11 +13,13 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import api from 'src/service/api';
+import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
+import TipoMetragemSelect from './TipoMetragemSelect';
 
-const useStyles = makeStyles(({
+const useStyles = makeStyles({
   root: {}
-}));
+});
 
 const CadastroFazenda = ({ className, ...rest }) => {
   const classes = useStyles();
@@ -25,12 +27,37 @@ const CadastroFazenda = ({ className, ...rest }) => {
     nome: undefined,
     codigoEstab: 0,
     endereco: '',
-    tamanhoHectare: 0,
+    metragem: 0,
+    tipoMetragem: 'HECTARE',
     capacidadeMaxGado: 0
   });
   const [loading, setLoading] = useState(false);
+  const { state } = useLocation();
 
-  const handleChange = (event) => {
+  useEffect(() => {
+    if (state) {
+      setValues({
+        nome: state.nome,
+        codigoEstab: state.codigoEstab,
+        endereco: state.endereco,
+        metragem: state.metragem,
+        tipoMetragem: state.tipoMetragem,
+        capacidadeMaxGado: state.capacidadeMaxGado
+      });
+    }
+  }, [state]);
+
+  const add = useCallback(
+    valor => {
+      setValues({
+        ...values,
+        tipoMetragem: valor
+      });
+    },
+    [values]
+  );
+
+  const handleChange = event => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -38,23 +65,27 @@ const CadastroFazenda = ({ className, ...rest }) => {
   };
 
   const submitForm = useCallback(() => {
-    api.post('fazendas', {
-      nome: values.nome,
-      codigoEstab: values.codigoEstab,
-      endereco: values.endereco,
-      tamanhoHectare: values.tamanhoHectare,
-      capacidadeMaxGado: values.capacidadeMaxGado
-    }).then(() => {
-      toastSuccess('Fazenda cadastrado com sucesso');
-      setValues({
-        nome: undefined,
-        codigoEstab: 0,
-        endereco: '',
-        tamanhoHectare: 0,
-        capacidadeMaxGado: 0
-      });
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    api
+      .post('fazendas', {
+        nome: values.nome,
+        codigoEstab: values.codigoEstab,
+        endereco: values.endereco,
+        metragem: values.metragem,
+        tipoMetragem: values.tipoMetragem,
+        capacidadeMaxGado: values.capacidadeMaxGado
+      })
+      .then(() => {
+        toastSuccess('Fazenda cadastrado com sucesso');
+        setValues({
+          nome: undefined,
+          codigoEstab: 0,
+          endereco: '',
+          metragem: 0,
+          tipoMetragem: values.tipoMetragem
+        });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
 
     setLoading(true);
   }, [values]);
@@ -64,15 +95,9 @@ const CadastroFazenda = ({ className, ...rest }) => {
   }
 
   return (
-    <form
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <form className={clsx(classes.root, className)} {...rest}>
       <Card>
-        <CardHeader
-          subheader="Inserindo nova Fazenda"
-          title="Fazenda"
-        />
+        <CardHeader subheader="Inserindo nova Fazenda" title="Fazenda" />
         <Divider />
         <CardContent>
           <TextField
@@ -106,14 +131,15 @@ const CadastroFazenda = ({ className, ...rest }) => {
             value={values.endereco}
             variant="outlined"
           />
+          <TipoMetragemSelect add={add} />
           <TextField
             fullWidth
-            label="Tamanho em hectares"
+            label="Tamanho da fazenda"
             margin="normal"
-            name="tamanhoHectare"
+            name="metragem"
             onChange={handleChange}
             type="number"
-            value={values.tamanhoHectare}
+            value={values.metragem}
             variant="outlined"
           />
           <TextField
@@ -128,11 +154,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
           />
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
+        <Box display="flex" justifyContent="flex-end" p={2}>
           <Button
             color="primary"
             variant="contained"
