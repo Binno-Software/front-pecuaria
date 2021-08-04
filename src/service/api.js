@@ -8,6 +8,8 @@ const instance = axios.create({
   baseURL
 });
 
+const StatusConflict = 409;
+
 instance.interceptors.response.use((response) => {
   return response;
 }, (error) => {
@@ -18,6 +20,12 @@ instance.interceptors.response.use((response) => {
     toastError('Houve um problema com sua autenticação');
     localStorage.clear();
     window.location.reload();
+    return;
+  }
+
+  if (error?.response?.status === StatusConflict) {
+    console.log(StatusConflict);
+    toastError('Login já existe');
     return;
   }
 
