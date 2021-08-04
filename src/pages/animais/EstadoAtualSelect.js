@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from 'src/service/api';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -17,25 +18,19 @@ const useStyles = makeStyles(() => ({
 
 const EstadoAtualSelect = ({ add, className, ...rest }) => {
   const classes = useStyles();
-  const [data] = useState([
-    {
-      id: 'VAZIA',
-      desc: 'Vazia'
-    },
-    {
-      id: 'PARIDA',
-      desc: 'Parida'
-    },
-    {
-      id: 'PRENHA',
-      desc: 'Prenha'
-    }
-  ]);
+  const [enums, setEnums] = useState([]);
   const [values, setValues] = useState({
     selecionado: undefined
   });
 
-  const handleChange = (event) => {
+  useEffect(() => {
+    api.get('enums').then(response => {
+      const { data } = response;
+      setEnums(data.EstadoAtual);
+    });
+  }, []);
+
+  const handleChange = event => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -66,9 +61,9 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {data.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.desc}
+                {enums.map(e => (
+                  <option key={e.chave} value={e.chave}>
+                    {e.valor}
                   </option>
                 ))}
               </TextField>
