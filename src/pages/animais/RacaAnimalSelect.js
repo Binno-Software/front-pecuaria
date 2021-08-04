@@ -61,9 +61,9 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {enums.map(e => (
-                  <option key={e.chave} value={e.chave}>
-                    {e.valor}
+                {enums.map(_enum => (
+                  <option key={_enum.chave} value={_enum.chave}>
+                    {_enum.valor}
                   </option>
                 ))}
               </TextField>
