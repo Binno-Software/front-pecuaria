@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import api from 'src/service/api';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -17,52 +18,7 @@ const useStyles = makeStyles(() => ({
 
 const RacaAnimalSelect = ({ add, className, ...rest }) => {
   const classes = useStyles();
-  const [data] = useState([
-    {
-      id: 'NELORE',
-      desc: 'Nelore'
-    },
-    {
-      id: 'SENEPOL',
-      desc: 'Senepol'
-    },
-    {
-      id: 'ANGUS',
-      desc: 'Angus'
-    },
-    {
-      id: 'BRAHMAN',
-      desc: 'Brahman'
-    },
-    {
-      id: 'BRANGUS',
-      desc: 'Brangus'
-    },
-    {
-      id: 'HEREFORD',
-      desc: 'Hereford'
-    },
-    {
-      id: 'CARACU',
-      desc: 'Caracu'
-    },
-    {
-      id: 'CHAROLES',
-      desc: 'Charoles'
-    },
-    {
-      id: 'GUZERA',
-      desc: 'Guzera'
-    },
-    {
-      id: 'TABAPUA',
-      desc: 'Tabapua'
-    },
-    {
-      id: 'BUFALO',
-      desc: 'Bufalo'
-    }
-  ]);
+  const [enums, setEnums] = useState([]);
   const [values, setValues] = useState({
     selecionado: undefined
   });
@@ -74,6 +30,13 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
     });
     add(event.target.value);
   };
+
+  useEffect(() => {
+    api.get('enums').then(response => {
+      const { data } = response;
+      setEnums(data.RacaAnimal);
+    });
+  }, []);
 
   return (
     <form
@@ -98,9 +61,9 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {data.map(e => (
-                  <option key={e.id} value={e.id}>
-                    {e.desc}
+                {enums.map(_enum => (
+                  <option key={_enum.chave} value={_enum.chave}>
+                    {_enum.valor}
                   </option>
                 ))}
               </TextField>
