@@ -6,9 +6,9 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import Toolbar from 'src/components/Toolbar';
+import api from 'src/service/api';
 import Results from './Results';
-import Toolbar from '../../components/Toolbar';
-import api from '../../service/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,10 +38,9 @@ const AnimaisListView = () => {
     });
   }, [limit, page]);
 
-  // eslint-disable-next-line no-shadow
-  const reload = useCallback((limit, offset) => {
+  const reload = useCallback((_limit, offset) => {
     setLoading(true);
-    setLimit(limit);
+    setLimit(_limit);
     setPage(offset);
   }, []);
 
