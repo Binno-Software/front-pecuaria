@@ -55,6 +55,7 @@ const Results = ({
     }
     setEnumsEstadoAtual(getGroupEnum('EstadoAtual'));
     setEnumsRacaAnimal(getGroupEnum('RacaAnimal'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingEnum]);
 
   const handleClickOpen = (registro) => {
