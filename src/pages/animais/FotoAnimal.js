@@ -101,7 +101,8 @@ const AnimalFoto = ({ className, animalRef, ...rest }) => {
 };
 
 AnimalFoto.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  animalRef: PropTypes.string
 };
 
 export default AnimalFoto;

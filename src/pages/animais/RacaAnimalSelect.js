@@ -23,7 +23,7 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
     selecionado: undefined
   });
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -32,7 +32,7 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
   };
 
   useEffect(() => {
-    api.get('enums').then(response => {
+    api.get('enums').then((response) => {
       const { data } = response;
       setEnums(data.RacaAnimal);
     });
@@ -61,7 +61,7 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {enums.map(_enum => (
+                {enums.map((_enum) => (
                   <option key={_enum.chave} value={_enum.chave}>
                     {_enum.valor}
                   </option>
@@ -76,7 +76,8 @@ const RacaAnimalSelect = ({ add, className, ...rest }) => {
 };
 
 RacaAnimalSelect.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  add: PropTypes.func
 };
 
 export default RacaAnimalSelect;

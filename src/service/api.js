@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { toastError } from 'src/utils/toast';
 
-export const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://api-pecuaria.herokuapp.com';
-// export const baseURL = 'https://api-pecuaria.herokuapp.com';
+// export const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://api-pecuaria.herokuapp.com';
+export const baseURL = 'https://api-pecuaria.herokuapp.com';
 
 const instance = axios.create({
   baseURL
@@ -25,7 +25,7 @@ instance.interceptors.response.use((response) => {
 
   if (error?.response?.status === StatusConflict) {
     console.log(StatusConflict);
-    toastError('Login já existe');
+    toastError('Conflito');
     return;
   }
 

@@ -14,7 +14,7 @@ import CadastroFazenda from 'src/pages/fazendas/CadastroFazenda';
 import FuncionarioListView from 'src/pages/funcionarios';
 import CadastroFuncionario from 'src/pages/funcionarios/CadastroFuncionario';
 import AnimaisListView from 'src/pages/animais';
-import CadastroAnimais from 'src/pages/animais/CadastroAnimais';
+import CadastroAnimal from 'src/pages/animais/CadastroAnimal';
 
 import MedicamentosListView from './pages/medicamentos';
 import CadastroMedicamento from './pages/medicamentos/CadastroMedicamento';
@@ -27,7 +27,7 @@ const routes = (isLoggedIn) => [
       { path: 'account', element: <AccountView /> },
       { path: 'cadastro-fazenda', element: <CadastroFazenda /> },
       { path: 'cadastro-funcionario', element: <CadastroFuncionario /> },
-      { path: 'cadastro-animais', element: <CadastroAnimais /> },
+      { path: 'cadastro-animais', element: <CadastroAnimal /> },
       { path: 'fazendas', element: <FazendaListView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'dashboard-view', element: <ReportsView /> },

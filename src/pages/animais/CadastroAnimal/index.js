@@ -19,9 +19,9 @@ import api from 'src/service/api';
 import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import FazendaSelect from 'src/components/FazendaSelect';
-import EstadoAtualSelect from './EstadoAtualSelect';
-import RacaAnimalSelect from './RacaAnimalSelect';
-import AnimalFoto from './FotoAnimal';
+import EstadoAtualSelect from '../EstadoAtualSelect';
+import RacaAnimalSelect from '../RacaAnimalSelect';
+import AnimalFoto from '../FotoAnimal';
 
 const useStyles = makeStyles({
   root: {}

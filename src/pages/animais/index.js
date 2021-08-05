@@ -7,8 +7,8 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Results from './Results';
-import Toolbar from './Toolbar';
-import api from '../../service/api'
+import Toolbar from '../../components/Toolbar';
+import api from '../../service/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,20 +32,20 @@ const AnimaisListView = () => {
         size: limit,
         page
       }
-    }).then(response => {
-      setData(response.data)
-      setLoading(false)
-    })
-  }, [limit, page])
+    }).then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+  }, [limit, page]);
 
+  // eslint-disable-next-line no-shadow
   const reload = useCallback((limit, offset) => {
-    setLoading(true)
-    setLimit(limit)
-    setPage(offset)
-  }, [])
+    setLoading(true);
+    setLimit(limit);
+    setPage(offset);
+  }, []);
 
-  if (loading)
-    return <LinearProgress />
+  if (loading) return <LinearProgress />;
 
   return (
     <Page
@@ -53,7 +53,7 @@ const AnimaisListView = () => {
       title="Animais"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar href="/app/cadastro-animais" title="animal" />
         <Box mt={3}>
           <Results data={data} reload={reload} page={page} limit={limit} />
         </Box>
