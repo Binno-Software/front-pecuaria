@@ -25,7 +25,7 @@ instance.interceptors.response.use((response) => {
 
   if (error?.response?.status === StatusConflict) {
     console.log(StatusConflict);
-    toastError('Login já existe');
+    toastError('Conflito ao salvar o registro');
     return;
   }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import api from 'src/service/api';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -11,6 +10,7 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
+import useEnums from 'src/components/useEnums';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -22,15 +22,16 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
   const [values, setValues] = useState({
     selecionado: undefined
   });
+  const [{ loadingEnum }, getGroupEnum] = useEnums();
 
   useEffect(() => {
-    api.get('enums').then(response => {
-      const { data } = response;
-      setEnums(data.EstadoAtual);
-    });
-  }, []);
+    if (loadingEnum) {
+      return;
+    }
+    setEnums(getGroupEnum('EstadoAtual'));
+  }, [loadingEnum, getGroupEnum]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -61,7 +62,7 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {enums.map(_enum => (
+                {enums.map((_enum) => (
                   <option key={_enum.chave} value={_enum.chave}>
                     {_enum.valor}
                   </option>
@@ -76,7 +77,8 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
 };
 
 EstadoAtualSelect.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  add: PropTypes.func
 };
 
 export default EstadoAtualSelect;

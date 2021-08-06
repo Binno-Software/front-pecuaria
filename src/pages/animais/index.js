@@ -6,9 +6,9 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import Toolbar from 'src/components/Toolbar';
+import api from 'src/service/api';
 import Results from './Results';
-import Toolbar from './Toolbar';
-import api from '../../service/api'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,20 +32,19 @@ const AnimaisListView = () => {
         size: limit,
         page
       }
-    }).then(response => {
-      setData(response.data)
-      setLoading(false)
-    })
-  }, [limit, page])
+    }).then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+  }, [limit, page]);
 
-  const reload = useCallback((limit, offset) => {
-    setLoading(true)
-    setLimit(limit)
-    setPage(offset)
-  }, [])
+  const reload = useCallback((_limit, offset) => {
+    setLoading(true);
+    setLimit(_limit);
+    setPage(offset);
+  }, []);
 
-  if (loading)
-    return <LinearProgress />
+  if (loading) return <LinearProgress />;
 
   return (
     <Page
@@ -53,7 +52,7 @@ const AnimaisListView = () => {
       title="Animais"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar href="/app/cadastro-animais" title="animal" />
         <Box mt={3}>
           <Results data={data} reload={reload} page={page} limit={limit} />
         </Box>
