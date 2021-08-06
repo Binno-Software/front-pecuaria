@@ -29,8 +29,7 @@ const EstadoAtualSelect = ({ add, className, ...rest }) => {
       return;
     }
     setEnums(getGroupEnum('EstadoAtual'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingEnum]);
+  }, [loadingEnum, getGroupEnum]);
 
   const handleChange = (event) => {
     setValues({
