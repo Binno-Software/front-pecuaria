@@ -135,7 +135,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
           estadoAtual: values.estadoAtual,
           dataUltimoParto: values.dataUltimoParto,
           descarteFuturo: false,
-          justificativaDescarteFuturo: values.justificativaDescarteFuturo
+          justificativaDescarteFuturo: values.justificativaDescarteFuturo,
+          isFemea: true,
         });
         setLoading(false);
       })
