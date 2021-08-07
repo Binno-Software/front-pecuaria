@@ -10,10 +10,12 @@ import {
   TextField,
   Typography,
   makeStyles,
-  LinearProgress
+  LinearProgress,
+  Grid
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import { useAuth } from 'src/context/AuthContext';
+import GoogleIcon from 'src/icons/Google';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
 
   if (loading) return <LinearProgress />;
@@ -76,15 +78,8 @@ const LoginView = () => {
                   >
                     Login
                   </Typography>
-                  {/* <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    Sign in on the internal platform
-                  </Typography> */}
                 </Box>
-                {/* <Grid
+                <Grid
                   container
                   spacing={3}
                 >
@@ -93,7 +88,7 @@ const LoginView = () => {
                     xs={12}
                     md={6}
                   >
-                    <Button
+                    {/* <Button
                       color="primary"
                       fullWidth
                       startIcon={<FacebookIcon />}
@@ -101,8 +96,8 @@ const LoginView = () => {
                       size="large"
                       variant="contained"
                     >
-                      Login with Facebook
-                    </Button>
+                      Login com Facebook
+                    </Button> */}
                   </Grid>
                   <Grid
                     item
@@ -112,26 +107,14 @@ const LoginView = () => {
                     <Button
                       fullWidth
                       startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
+                      onClick={loginWithGoogle}
                       size="large"
                       variant="contained"
                     >
-                      Login with Google
+                      Login com Google
                     </Button>
                   </Grid>
-                </Grid> */}
-                {/* <Box
-                  mt={3}
-                  mb={1}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
-                  </Typography>
-                </Box> */}
+                </Grid>
                 <TextField
                   error={Boolean(touched.login && errors.login)}
                   fullWidth
