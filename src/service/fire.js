@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_APP_ID,
-  projectId: process.env.REACT_APP_AUTH_DOMAIN,
-  storageBucket: process.env.REACT_APP_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGE_ID,
-  appId: process.env.REACT_APP_PROJECT_ID
+    apiKey: "AIzaSyDHYgBhNSF9ceEpMLbD-Zgyqn33gSGTQwQ",
+    authDomain: "binno-software.firebaseapp.com",
+    projectId: "binno-software",
+    storageBucket: "binno-software.appspot.com",
+    messagingSenderId: "816935504379",
+    appId: "1:816935504379:web:3206e97a57f8c05aeaa35e"
 };
 
 firebase.initializeApp(firebaseConfig);
