@@ -1,38 +1,57 @@
 import React from 'react';
-import { Typography, Grid } from '@material-ui/core';
+import TotalFemea from './components/totalFemea';
+import TotalMacho from './components/totalMacho';
+import {
+  Container,
+  Grid,
+  makeStyles
+} from '@material-ui/core';
+import Page from 'src/components/Page';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
+  }
+}));
 
 const Dash = () => {
+  const classes = useStyles();
+
   return (
-    <>
-      <Grid
-        container
-        spacing={0}
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: '90vh' }}
-      >
-        <Grid item xs={6}>
-          <Typography
-            color="textSecondary"
-            variant="body1"
+    <Page
+      className={classes.root}
+      title="Dashboard"
+    >
+      <Container maxWidth={false}>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
           >
-            Binno Agro - Alpha version
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
+            <TotalFemea />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
           >
-            Sistema para gerenciamento de fazendas
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
-            Produto em fase de desenvolvimento.
-          </Typography>
+            <TotalMacho />
+          </Grid>
+
         </Grid>
-      </Grid>
-    </>
+      </Container>
+    </Page>
   );
 };
 
