@@ -27,23 +27,25 @@ const useStyles = makeStyles({
   root: {}
 });
 
+const initialState = {
+  numero: '',
+  raca: 'NELORE',
+  apelido: '',
+  dataNascimento: moment().format('YYYY-MM-DD'),
+  peso: undefined,
+  dataPesagem: moment().format('YYYY-MM-DD'),
+  numeroCria: 0,
+  estadoAtual: 'VAZIA',
+  dataUltimoParto: moment().format('YYYY-MM-DD'),
+  isFemea: true,
+  descarteFuturo: false,
+  justificativaDescarteFuturo: ''
+};
+
 const CadastroAnimais = ({ className, ...rest }) => {
   const classes = useStyles();
   const [fazenda, setFazenda] = useState({});
-  const [values, setValues] = useState({
-    numero: '',
-    raca: 'NELORE',
-    apelido: '',
-    dataNascimento: moment().format('YYYY-MM-DD'),
-    peso: 0.0,
-    dataPesagem: moment().format('YYYY-MM-DD'),
-    numeroCria: 0,
-    estadoAtual: 'VAZIA',
-    dataUltimoParto: moment().format('YYYY-MM-DD'),
-    isFemea: true,
-    descarteFuturo: false,
-    justificativaDescarteFuturo: ''
-  });
+  const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
 
@@ -125,19 +127,9 @@ const CadastroAnimais = ({ className, ...rest }) => {
       })
       .then(() => {
         toastSuccess('Animal cadastrado com sucesso');
-        setValues({
-          numero: Number(values.numero) + 1,
-          raca: values.raca,
-          apelido: '',
-          dataNascimento: values.dataNascimento,
-          peso: 0,
-          numeroCria: 0,
-          estadoAtual: values.estadoAtual,
-          dataUltimoParto: values.dataUltimoParto,
-          descarteFuturo: false,
-          justificativaDescarteFuturo: values.justificativaDescarteFuturo,
-          isFemea: true,
-        });
+        const state = initialState;
+        state.numero = Number(values.numero) + 1;
+        setValues(state);
         setLoading(false);
       })
       .catch(() => setLoading(false));
