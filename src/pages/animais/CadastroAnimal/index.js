@@ -19,9 +19,9 @@ import api from 'src/service/api';
 import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import FazendaSelect from 'src/components/FazendaSelect';
-import EstadoAtualSelect from '../EstadoAtualSelect';
-import RacaAnimalSelect from '../RacaAnimalSelect';
-import AnimalFoto from '../FotoAnimal';
+import FotosAnimal from 'src/components/FotosAnimal';
+import EstadoAtualSelect from 'src/components/EstadoAtualSelect';
+import RacaAnimalSelect from 'src/components/RacaAnimalSelect';
 
 const useStyles = makeStyles({
   root: {}
@@ -39,7 +39,8 @@ const initialState = {
   dataUltimoParto: moment().format('YYYY-MM-DD'),
   isFemea: true,
   descarteFuturo: false,
-  justificativaDescarteFuturo: ''
+  justificativaDescarteFuturo: '',
+  imagens: []
 };
 
 const CadastroAnimais = ({ className, ...rest }) => {
@@ -47,6 +48,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
   const [fazenda, setFazenda] = useState({});
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const { state } = useLocation();
 
   useEffect(() => {
@@ -63,7 +65,8 @@ const CadastroAnimais = ({ className, ...rest }) => {
         dataUltimoParto: state.dataUltimoParto,
         descarteFuturo: state.descarteFuturo,
         isFemea: state.isFemea,
-        justificativaDescarteFuturo: state.justificativaDescarteFuturo
+        justificativaDescarteFuturo: state.justificativaDescarteFuturo,
+        imagens: state.imagens
       });
       setFazenda({
         id: state.fazenda.id,
@@ -108,6 +111,26 @@ const CadastroAnimais = ({ className, ...rest }) => {
     [values]
   );
 
+  const addImagem = useCallback(
+    (url) => {
+      setValues({
+        ...values,
+        imagens: [...values.imagens, url]
+      });
+    },
+    [values]
+  );
+
+  const removerImagem = useCallback(
+    (url) => {
+      setValues({
+        ...values,
+        imagens: [values.imagens.filter((img) => img !== url)]
+      });
+    },
+    [values]
+  );
+
   const submitForm = useCallback(() => {
     api
       .post('animais', {
@@ -123,13 +146,13 @@ const CadastroAnimais = ({ className, ...rest }) => {
         descarteFuturo: values.descarteFuturo,
         isFemea: values.isFemea,
         justificativaDescarteFuturo: values.justificativaDescarteFuturo,
-        fazenda
+        fazenda,
+        imagens: values.imagens
       })
       .then(() => {
         toastSuccess('Animal cadastrado com sucesso');
-        const state = initialState;
-        state.numero = Number(values.numero) + 1;
-        setValues(state);
+        initialState.numero = Number(values.numero) + 1;
+        setValues(initialState);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -287,10 +310,19 @@ const CadastroAnimais = ({ className, ...rest }) => {
           )}
         </CardContent>
         <Divider />
-        <AnimalFoto />
+        <FotosAnimal
+          addImagem={addImagem}
+          removerImagem={removerImagem}
+          setLoadingImage={setLoadingImage}
+        />
         <Divider />
         <Box display="flex" justifyContent="flex-end" p={2}>
-          <Button color="primary" variant="contained" onClick={submitForm}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={submitForm}
+            disabled={loadingImage}
+          >
             Salvar
           </Button>
         </Box>

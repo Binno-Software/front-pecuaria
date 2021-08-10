@@ -24,11 +24,14 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const AnimalFoto = ({ className, animalRef, ...rest }) => {
+const FotosAnimal = ({
+  className, animalRef, addImagem, removerImagem, setLoadingImage, ...rest
+}) => {
   const classes = useStyles();
   const [imagens, setImagens] = useState([]);
 
   const uploadFunction = (file) => {
+    setLoadingImage(true);
     const form = new FormData();
     form.append('file', file);
     api.post('file/upload', form, {
@@ -36,7 +39,9 @@ const AnimalFoto = ({ className, animalRef, ...rest }) => {
     })
       .then((response) => {
         toastSuccess('Imagem Enviada com sucesso');
+        addImagem(response.data);
         console.log(response);
+        setLoadingImage(false);
       })
       .catch((response) => {
         toastError('Falha no envio da imagem');
@@ -54,6 +59,7 @@ const AnimalFoto = ({ className, animalRef, ...rest }) => {
 
   const remove = useCallback((image) => {
     setImagens(imagens.filter((img) => img !== image));
+    removerImagem(image);
   }, [imagens]);
 
   return (
@@ -100,9 +106,12 @@ const AnimalFoto = ({ className, animalRef, ...rest }) => {
   );
 };
 
-AnimalFoto.propTypes = {
+FotosAnimal.propTypes = {
   className: PropTypes.string,
-  animalRef: PropTypes.string
+  animalRef: PropTypes.string,
+  addImagem: PropTypes.func,
+  removerImagem: PropTypes.func,
+  setLoadingImage: PropTypes.func
 };
 
-export default AnimalFoto;
+export default FotosAnimal;
