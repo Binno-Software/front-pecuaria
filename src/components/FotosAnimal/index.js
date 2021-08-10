@@ -55,12 +55,12 @@ const FotosAnimal = ({
       setImagens([URL.createObjectURL(img), ...imagens]);
       uploadFunction(img);
     }
-  }, [imagens]);
+  }, [imagens, uploadFunction]);
 
   const remove = useCallback((image) => {
     setImagens(imagens.filter((img) => img !== image));
     removerImagem(image);
-  }, [imagens]);
+  }, [imagens, removerImagem]);
 
   return (
     <Box sx={{ width: '100%' }}>
