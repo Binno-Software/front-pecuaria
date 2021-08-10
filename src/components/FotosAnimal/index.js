@@ -30,32 +30,32 @@ const FotosAnimal = ({
   const classes = useStyles();
   const [imagens, setImagens] = useState([]);
 
-  const uploadFunction = (file) => {
-    setLoadingImage(true);
-    const form = new FormData();
-    form.append('file', file);
-    api.post('file/upload', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-      .then((response) => {
-        toastSuccess('Imagem Enviada com sucesso');
-        addImagem(response.data);
-        console.log(response);
-        setLoadingImage(false);
-      })
-      .catch((response) => {
-        toastError('Falha no envio da imagem');
-        console.log(response);
-      });
-  };
-
   const onImageChange = useCallback((event) => {
+    const uploadFunction = (file) => {
+      setLoadingImage(true);
+      const form = new FormData();
+      form.append('file', file);
+      api.post('file/upload', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+        .then((response) => {
+          toastSuccess('Imagem Enviada com sucesso');
+          addImagem(response.data);
+          console.log(response);
+          setLoadingImage(false);
+        })
+        .catch((response) => {
+          toastError('Falha no envio da imagem');
+          console.log(response);
+        });
+    };
+
     if (event.target.files && event.target.files[0]) {
       const img = event.target.files[0];
       setImagens([URL.createObjectURL(img), ...imagens]);
       uploadFunction(img);
     }
-  }, [imagens, uploadFunction]);
+  }, [imagens, addImagem, setLoadingImage]);
 
   const remove = useCallback((image) => {
     setImagens(imagens.filter((img) => img !== image));
