@@ -16,6 +16,7 @@ import {
 import Page from 'src/components/Page';
 import { useAuth } from 'src/context/AuthContext';
 import GoogleIcon from 'src/icons/Google';
+import FacebookIcon from 'src/icons/Facebook';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, loginWithFacebook } = useAuth();
   const [loading, setLoading] = useState(false);
 
   if (loading) return <LinearProgress />;
@@ -88,16 +89,16 @@ const LoginView = () => {
                     xs={12}
                     md={6}
                   >
-                    {/* <Button
+                    <Button
                       color="primary"
                       fullWidth
                       startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
+                      onClick={loginWithFacebook}
                       size="large"
                       variant="contained"
                     >
                       Login com Facebook
-                    </Button> */}
+                    </Button>
                   </Grid>
                   <Grid
                     item

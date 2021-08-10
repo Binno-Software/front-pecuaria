@@ -4,7 +4,7 @@ import React, {
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import api from 'src/service/api';
-import { auth, provider } from 'src/service/fire';
+import { auth, provider, facebookProvider } from 'src/service/fire';
 
 toast.configure();
 
@@ -56,6 +56,26 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const loginWithFacebook = useCallback(async () => {
+    try {
+      const result = await auth.signInWithPopup(facebookProvider)
+      console.log(result)
+      const { data } = await api.post('auth/google', {
+        nome: result.user.displayName,
+        email: result.user.email,
+        uid: result.user.uid,
+        photoURL: result.user.photoURL
+      })
+      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
+      setUser({ isLoggedIn: true, ...data });
+      api.defaults.headers.authorization = `Bearer ${data.token}`;
+      return true;
+    } catch (error) {
+      toast.error('Falha no login');
+      return false;
+    }
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.clear();
     setUser({
@@ -64,7 +84,7 @@ const AuthProvider = ({ children }) => {
   }, [setUser]);
 
   return (
-    <AuthContext.Provider value={{ user, login, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, loginWithFacebook, logout }}>
       {children}
     </AuthContext.Provider>
   );
