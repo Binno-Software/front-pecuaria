@@ -41,12 +41,10 @@ const FotosAnimal = ({
         .then((response) => {
           toastSuccess('Imagem Enviada com sucesso');
           addImagem(response.data);
-          console.log(response);
           setLoadingImage(false);
         })
-        .catch((response) => {
+        .catch(() => {
           toastError('Falha no envio da imagem');
-          console.log(response);
         });
     };
 
