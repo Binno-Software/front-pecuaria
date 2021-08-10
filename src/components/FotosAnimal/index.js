@@ -24,37 +24,41 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const AnimalFoto = ({ className, animalRef, ...rest }) => {
+const FotosAnimal = ({
+  className, animalRef, addImagem, removerImagem, setLoadingImage, ...rest
+}) => {
   const classes = useStyles();
   const [imagens, setImagens] = useState([]);
 
-  const uploadFunction = (file) => {
-    const form = new FormData();
-    form.append('file', file);
-    api.post('file/upload', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-      .then((response) => {
-        toastSuccess('Imagem Enviada com sucesso');
-        console.log(response);
-      })
-      .catch((response) => {
-        toastError('Falha no envio da imagem');
-        console.log(response);
-      });
-  };
-
   const onImageChange = useCallback((event) => {
+    const uploadFunction = (file) => {
+      setLoadingImage(true);
+      const form = new FormData();
+      form.append('file', file);
+      api.post('file/upload', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+        .then((response) => {
+          toastSuccess('Imagem Enviada com sucesso');
+          addImagem(response.data);
+          setLoadingImage(false);
+        })
+        .catch(() => {
+          toastError('Falha no envio da imagem');
+        });
+    };
+
     if (event.target.files && event.target.files[0]) {
       const img = event.target.files[0];
       setImagens([URL.createObjectURL(img), ...imagens]);
       uploadFunction(img);
     }
-  }, [imagens]);
+  }, [imagens, addImagem, setLoadingImage]);
 
   const remove = useCallback((image) => {
     setImagens(imagens.filter((img) => img !== image));
-  }, [imagens]);
+    removerImagem(image);
+  }, [imagens, removerImagem]);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -100,9 +104,12 @@ const AnimalFoto = ({ className, animalRef, ...rest }) => {
   );
 };
 
-AnimalFoto.propTypes = {
+FotosAnimal.propTypes = {
   className: PropTypes.string,
-  animalRef: PropTypes.string
+  animalRef: PropTypes.string,
+  addImagem: PropTypes.func,
+  removerImagem: PropTypes.func,
+  setLoadingImage: PropTypes.func
 };
 
-export default AnimalFoto;
+export default FotosAnimal;
