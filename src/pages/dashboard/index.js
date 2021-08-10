@@ -1,12 +1,11 @@
 import React from 'react';
-import TotalFemea from './components/totalFemea';
-import TotalMacho from './components/totalMacho';
 import {
   Container,
   Grid,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import CardTotalizadorBySexo from 'src/components/CardTotalizadorBySexo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +36,7 @@ const Dash = () => {
             xl={3}
             xs={12}
           >
-            <TotalFemea />
+            <CardTotalizadorBySexo isFemea />
           </Grid>
           <Grid
             item
@@ -46,7 +45,7 @@ const Dash = () => {
             xl={3}
             xs={12}
           >
-            <TotalMacho />
+            <CardTotalizadorBySexo />
           </Grid>
 
         </Grid>
