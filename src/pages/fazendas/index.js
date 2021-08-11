@@ -8,7 +8,8 @@ import {
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
-import api from 'src/service/api'
+import api from 'src/service/api';
+import EmptyData from 'src/components/EmptyData';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,15 +28,15 @@ const FazendaListView = () => {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-      api.get('fazendas', {
-        params: {
-          size: limit,
-          page
-        }
-      }).then(response => {
-        setFazendas(response.data)
-        setLoading(false)
-      })
+    api.get('fazendas', {
+      params: {
+        size: limit,
+        page
+      }
+    }).then(response => {
+      setFazendas(response.data)
+      setLoading(false)
+    })
   }, [limit, page])
 
   const reload = useCallback((limit, offset) => {
@@ -45,7 +46,7 @@ const FazendaListView = () => {
   }, [])
 
   if (loading)
-    return <LinearProgress  />
+    return <LinearProgress />
 
   return (
     <Page
@@ -54,9 +55,16 @@ const FazendaListView = () => {
     >
       <Container maxWidth={false}>
         <Toolbar />
-        <Box mt={3}>
-          <Results data={fazendas} reload={reload} page={page} limit={limit} />
-        </Box>
+        {fazendas.content.length > 0 ? (
+          <>
+            <Box mt={3}>
+              <Results data={fazendas} reload={reload} page={page} limit={limit} />
+            </Box>
+          </>
+        ) : (
+          <EmptyData />
+        )}
+
       </Container>
     </Page>
   );

@@ -9,6 +9,7 @@ import Page from 'src/components/Page';
 import Toolbar from 'src/components/Toolbar';
 import api from 'src/service/api';
 import Results from './Results';
+import EmptyData from 'src/components/EmptyData';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,9 +54,13 @@ const AnimaisListView = () => {
     >
       <Container maxWidth={false}>
         <Toolbar href="/app/cadastro-animais" title="animal" />
-        <Box mt={3}>
-          <Results data={data} reload={reload} page={page} limit={limit} />
-        </Box>
+        {data.content.length > 0 ? (
+          <Box mt={3}>
+            <Results data={data} reload={reload} page={page} limit={limit} />
+          </Box>
+        ) : (
+          <EmptyData />
+        )}
       </Container>
     </Page>
   );

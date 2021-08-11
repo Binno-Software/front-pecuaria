@@ -9,6 +9,7 @@ import Page from 'src/components/Page';
 import Toolbar from 'src/components/Toolbar';
 import Results from './Results';
 import api from '../../service/api';
+import EmptyData from 'src/components/EmptyData';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,9 +54,13 @@ const MedicamentosListView = () => {
     >
       <Container maxWidth={false}>
         <Toolbar href="/app/cadastro-medicamento" title="medicamento" />
-        <Box mt={3}>
-          <Results data={data} reload={reload} page={page} limit={limit} />
-        </Box>
+        {data.content.length > 0 ? (
+          <Box mt={3}>
+            <Results data={data} reload={reload} page={page} limit={limit} />
+          </Box>
+        ) : (
+          <EmptyData />
+        )}
       </Container>
     </Page>
   );
