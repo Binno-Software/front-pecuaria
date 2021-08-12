@@ -16,7 +16,9 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const TipoMetragemSelect = ({ add, className, ...rest }) => {
+const TipoMetragemSelect = ({
+  add, tipoMetragemSelected, className, ...rest
+}) => {
   const classes = useStyles();
   const [enums, setEnums] = useState([]);
   const [values, setValues] = useState({
@@ -28,7 +30,13 @@ const TipoMetragemSelect = ({ add, className, ...rest }) => {
       const { data } = response;
       setEnums(data.TipoMetragem);
     });
-  }, []);
+    if (tipoMetragemSelected) {
+      setValues({
+        ...values,
+        selecionado: tipoMetragemSelected
+      });
+    }
+  }, [tipoMetragemSelected]);
 
   const handleChange = (event) => {
     setValues({
@@ -77,7 +85,8 @@ const TipoMetragemSelect = ({ add, className, ...rest }) => {
 
 TipoMetragemSelect.propTypes = {
   className: PropTypes.string,
-  add: PropTypes.func
+  add: PropTypes.func,
+  tipoMetragemSelected: PropTypes.string
 };
 
 export default TipoMetragemSelect;

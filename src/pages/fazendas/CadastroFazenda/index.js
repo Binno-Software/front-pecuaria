@@ -13,7 +13,7 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import api from 'src/service/api';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import TipoMetragemSelect from 'src/components/TipoMetragemSelect';
 
@@ -24,19 +24,22 @@ const useStyles = makeStyles({
 const CadastroFazenda = ({ className, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
+    id: undefined,
     nome: undefined,
     codigoEstab: 0,
     endereco: '',
     metragem: 0,
-    tipoMetragem: 'HECTARE',
+    tipoMetragem: undefined,
     capacidadeMaxGado: 0
   });
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (state) {
       setValues({
+        id: state.id,
         nome: state.nome,
         codigoEstab: state.codigoEstab,
         endereco: state.endereco,
@@ -67,6 +70,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   const submitForm = useCallback(() => {
     api
       .post('fazendas', {
+        id: values.id,
         nome: values.nome,
         codigoEstab: values.codigoEstab,
         endereco: values.endereco,
@@ -75,8 +79,9 @@ const CadastroFazenda = ({ className, ...rest }) => {
         capacidadeMaxGado: values.capacidadeMaxGado
       })
       .then(() => {
-        toastSuccess('Fazenda cadastrado com sucesso');
+        toastSuccess(`Fazenda ${values.id ? 'editada' : 'cadastrada'} com sucesso`);
         setValues({
+          id: undefined,
           nome: undefined,
           codigoEstab: 0,
           endereco: '',
@@ -84,6 +89,9 @@ const CadastroFazenda = ({ className, ...rest }) => {
           tipoMetragem: values.tipoMetragem
         });
         setLoading(false);
+        if (state) {
+          navigate('../../fazendas');
+        }
       })
       .catch(() => setLoading(false));
 
@@ -131,7 +139,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             value={values.endereco}
             variant="outlined"
           />
-          <TipoMetragemSelect add={add} />
+          <TipoMetragemSelect tipoMetragemSelected={values.tipoMetragem} add={add} />
           <TextField
             fullWidth
             label="Tamanho da fazenda"
