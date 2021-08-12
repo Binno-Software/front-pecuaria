@@ -15,7 +15,7 @@ import {
 import api from 'src/service/api';
 import { useLocation } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
-import TipoMetragemSelect from './TipoMetragemSelect';
+import TipoMetragemSelect from 'src/components/TipoMetragemSelect';
 
 const useStyles = makeStyles({
   root: {}
@@ -48,7 +48,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   }, [state]);
 
   const add = useCallback(
-    valor => {
+    (valor) => {
       setValues({
         ...values,
         tipoMetragem: valor
@@ -57,7 +57,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
     [values]
   );
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -97,7 +97,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   return (
     <form className={clsx(classes.root, className)} {...rest}>
       <Card>
-        <CardHeader subheader="Inserindo nova Fazenda" title="Fazenda" />
+        <CardHeader subheader={state ? 'Editando fazenda' : 'Inserindo fazenda'} title="Fazenda" />
         <Divider />
         <CardContent>
           <TextField

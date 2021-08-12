@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import PropTypes from 'prop-types';
 import {
   Avatar,
   Box,
@@ -22,8 +23,10 @@ import {
   Button
 } from '@material-ui/core';
 import { Trash } from 'react-feather';
+import CreateIcon from '@material-ui/icons/Create';
 import api from 'src/service/api';
 import { toastSuccess } from 'src/utils/toast';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -32,18 +35,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, data, reload, page, limit, ...rest }) => {
+const Results = ({
+  className, data, reload, page, limit, ...rest
+}) => {
   const classes = useStyles();
   const customers = data.content;
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(undefined);
+  const navigate = useNavigate();
 
-  const handleClickOpen = registro => {
+  const handleClickOpen = (registro) => {
     setOpen(true);
     setSelectedItem(registro);
-    console.log(registro)
+    console.log(registro);
   };
+  const update = useCallback((item) => {
+    navigate('../fazendas/fazenda', { replace: true, state: item });
+  }, [navigate]);
 
   const handleClose = () => {
     setOpen(false);
@@ -53,9 +62,9 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
     api.delete(`fazendas/${selectedItem.id}`).then(() => {
       toastSuccess('Fazenda excluida');
       handleClose();
-      window.location.reload()
-    })
-  }, [selectedItem])
+      window.location.reload();
+    });
+  }, [selectedItem]);
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -110,7 +119,7 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Você tem certeza que quer excluir essa fazenda?"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Você tem certeza que quer excluir essa fazenda?</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 {selectedItem?.nome}
@@ -194,6 +203,9 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                     </Box>
                   </TableCell>
                   <TableCell padding="checkbox">
+                    <CreateIcon onClick={() => update(customer)} />
+                  </TableCell>
+                  <TableCell padding="checkbox">
                     <Trash onClick={() => handleClickOpen(customer)} />
                   </TableCell>
                 </TableRow>
@@ -214,6 +226,14 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
       />
     </Card>
   );
+};
+
+Results.propTypes = {
+  className: PropTypes.string,
+  data: PropTypes.object,
+  reload: PropTypes.func,
+  page: PropTypes.number,
+  limit: PropTypes.number,
 };
 
 export default Results;

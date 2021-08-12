@@ -25,10 +25,10 @@ const routes = (isLoggedIn) => [
     element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
     children: [
       { path: 'account', element: <AccountView /> },
-      { path: 'cadastro-fazenda', element: <CadastroFazenda /> },
       { path: 'cadastro-funcionario', element: <CadastroFuncionario /> },
       { path: 'cadastro-animais', element: <CadastroAnimal /> },
       { path: 'fazendas', element: <FazendaListView /> },
+      { path: 'fazendas/fazenda', element: <CadastroFazenda /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'dashboard-view', element: <ReportsView /> },
       { path: 'animais', element: <AnimaisListView /> },
