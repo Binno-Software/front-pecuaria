@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import api from 'src/service/api';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -11,6 +10,7 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
+import useEnums from '../useEnums';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -24,19 +24,21 @@ const TipoMetragemSelect = ({
   const [values, setValues] = useState({
     selecionado: undefined
   });
+  const [{ loadingEnum }, getGroupEnum] = useEnums();
 
   useEffect(() => {
-    api.get('enums').then((response) => {
-      const { data } = response;
-      setEnums(data.TipoMetragem);
-    });
+    if (loadingEnum) {
+      return;
+    }
+    setEnums(getGroupEnum('TipoMetragem'));
     if (tipoMetragemSelected) {
       setValues({
         ...values,
         selecionado: tipoMetragemSelected
       });
     }
-  }, [tipoMetragemSelected, values]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tipoMetragemSelected, loadingEnum]);
 
   const handleChange = (event) => {
     setValues({

@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 const CadastroFazenda = ({ className, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
-    id: undefined,
     nome: undefined,
     codigoEstab: 0,
     endereco: '',
@@ -79,9 +78,8 @@ const CadastroFazenda = ({ className, ...rest }) => {
         capacidadeMaxGado: values.capacidadeMaxGado
       })
       .then(() => {
-        toastSuccess(`Fazenda ${values.id ? 'editada' : 'cadastrada'} com sucesso`);
+        toastSuccess('Fazenda cadastrada sucesso');
         setValues({
-          id: undefined,
           nome: undefined,
           codigoEstab: 0,
           endereco: '',
@@ -89,14 +87,28 @@ const CadastroFazenda = ({ className, ...rest }) => {
           tipoMetragem: values.tipoMetragem
         });
         setLoading(false);
-        if (state) {
-          navigate('../../fazendas');
-        }
       })
       .catch(() => setLoading(false));
 
     setLoading(true);
-  }, [values, navigate, state]);
+  }, [values]);
+
+  const update = useCallback(() => {
+    api
+      .put('fazendas', {
+        id: values.id,
+        nome: values.nome,
+        codigoEstab: values.codigoEstab,
+        endereco: values.endereco,
+        metragem: values.metragem,
+        tipoMetragem: values.tipoMetragem,
+        capacidadeMaxGado: values.capacidadeMaxGado
+      })
+      .then(() => {
+        toastSuccess('Fazenda editada com sucesso');
+        navigate('../../fazendas');
+      });
+  }, [values, navigate]);
 
   if (loading) {
     return <LinearProgress />;
@@ -167,7 +179,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             color="primary"
             variant="contained"
             disabled={!values.nome?.length}
-            onClick={submitForm}
+            onClick={values.id ? update : submitForm}
           >
             Salvar
           </Button>

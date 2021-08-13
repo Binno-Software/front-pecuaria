@@ -28,7 +28,7 @@ const routes = (isLoggedIn) => [
       { path: 'cadastro-funcionario', element: <CadastroFuncionario /> },
       { path: 'cadastro-animais', element: <CadastroAnimal /> },
       { path: 'fazendas', element: <FazendaListView /> },
-      { path: 'fazendas/fazenda', element: <CadastroFazenda /> },
+      { path: 'fazendas/:id', element: <CadastroFazenda /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'dashboard-view', element: <ReportsView /> },
       { path: 'animais', element: <AnimaisListView /> },

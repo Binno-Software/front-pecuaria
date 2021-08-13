@@ -39,7 +39,7 @@ const Results = ({
   className, data, reload, page, limit, ...rest
 }) => {
   const classes = useStyles();
-  const customers = data.content;
+  const fazendas = data.content;
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(undefined);
@@ -48,10 +48,9 @@ const Results = ({
   const handleClickOpen = (registro) => {
     setOpen(true);
     setSelectedItem(registro);
-    console.log(registro);
   };
   const update = useCallback((item) => {
-    navigate('../fazendas/fazenda', { replace: true, state: item });
+    navigate(`../fazendas/${item.id}`, { replace: true, state: item });
   }, [navigate]);
 
   const handleClose = () => {
@@ -70,7 +69,7 @@ const Results = ({
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer) => customer.id);
+      newSelectedCustomerIds = fazendas.map((fazenda) => fazenda.id);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -139,11 +138,11 @@ const Results = ({
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
+                    checked={selectedCustomerIds.length === fazendas.length}
                     color="primary"
                     indeterminate={
                       selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      && selectedCustomerIds.length < fazendas.length
                     }
                     onChange={handleSelectAll}
                   />
@@ -157,16 +156,16 @@ const Results = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
+              {fazendas.slice(0, limit).map((fazenda) => (
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  key={fazenda.id}
+                  selected={selectedCustomerIds.indexOf(fazenda.id) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.id)}
+                      checked={selectedCustomerIds.indexOf(fazenda.id) !== -1}
+                      onChange={(event) => handleSelectOne(event, fazenda.id)}
                       value="true"
                     />
                   </TableCell>
@@ -179,13 +178,13 @@ const Results = ({
                         className={classes.avatar}
                         src=""
                       >
-                        {customer.name}
+                        {fazenda.name}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.nome}
+                        {fazenda.nome}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -198,15 +197,15 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.codigoEstab}
+                        {fazenda.codigoEstab}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell padding="checkbox">
-                    <CreateIcon onClick={() => update(customer)} />
+                    <CreateIcon onClick={() => update(fazenda)} />
                   </TableCell>
                   <TableCell padding="checkbox">
-                    <Trash onClick={() => handleClickOpen(customer)} />
+                    <Trash onClick={() => handleClickOpen(fazenda)} />
                   </TableCell>
                 </TableRow>
               ))}
