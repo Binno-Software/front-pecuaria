@@ -78,7 +78,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
         capacidadeMaxGado: values.capacidadeMaxGado
       })
       .then(() => {
-        toastSuccess('Fazenda cadastrada sucesso');
+        toastSuccess('Fazenda cadastrada com sucesso');
         setValues({
           nome: undefined,
           codigoEstab: 0,
