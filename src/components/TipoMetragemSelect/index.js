@@ -36,7 +36,7 @@ const TipoMetragemSelect = ({
         selecionado: tipoMetragemSelected
       });
     }
-  }, [tipoMetragemSelected]);
+  }, [tipoMetragemSelected, values]);
 
   const handleChange = (event) => {
     setValues({

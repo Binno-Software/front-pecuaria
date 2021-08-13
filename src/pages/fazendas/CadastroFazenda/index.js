@@ -96,7 +96,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
       .catch(() => setLoading(false));
 
     setLoading(true);
-  }, [values]);
+  }, [values, navigate, state]);
 
   if (loading) {
     return <LinearProgress />;
