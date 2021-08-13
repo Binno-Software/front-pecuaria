@@ -8,8 +8,8 @@ import {
 import Page from 'src/components/Page';
 import Toolbar from 'src/components/Toolbar';
 import api from 'src/service/api';
-import Results from './Results';
 import EmptyData from 'src/components/EmptyData';
+import Results from './Results';
 
 const useStyles = makeStyles((theme) => ({
   root: {

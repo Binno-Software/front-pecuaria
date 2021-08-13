@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import api from 'src/service/api';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -11,26 +10,37 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
+import useEnums from '../useEnums';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const TipoMetragemSelect = ({ add, className, ...rest }) => {
+const TipoMetragemSelect = ({
+  add, tipoMetragemSelected, className, ...rest
+}) => {
   const classes = useStyles();
   const [enums, setEnums] = useState([]);
   const [values, setValues] = useState({
     selecionado: undefined
   });
+  const [{ loadingEnum }, getGroupEnum] = useEnums();
 
   useEffect(() => {
-    api.get('enums').then(response => {
-      const { data } = response;
-      setEnums(data.TipoMetragem);
-    });
-  }, []);
+    if (loadingEnum) {
+      return;
+    }
+    setEnums(getGroupEnum('TipoMetragem'));
+    if (tipoMetragemSelected) {
+      setValues({
+        ...values,
+        selecionado: tipoMetragemSelected
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tipoMetragemSelected, loadingEnum]);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -61,7 +71,7 @@ const TipoMetragemSelect = ({ add, className, ...rest }) => {
                 value={values.selecionado}
                 variant="outlined"
               >
-                {enums.map(_enum => (
+                {enums.map((_enum) => (
                   <option key={_enum.chave} value={_enum.chave}>
                     {_enum.valor}
                   </option>
@@ -76,7 +86,9 @@ const TipoMetragemSelect = ({ add, className, ...rest }) => {
 };
 
 TipoMetragemSelect.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  add: PropTypes.func,
+  tipoMetragemSelected: PropTypes.string
 };
 
 export default TipoMetragemSelect;

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import PropTypes from 'prop-types';
 import {
   Avatar,
   Box,
@@ -22,8 +23,10 @@ import {
   Button
 } from '@material-ui/core';
 import { Trash } from 'react-feather';
+import CreateIcon from '@material-ui/icons/Create';
 import api from 'src/service/api';
 import { toastSuccess } from 'src/utils/toast';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -32,18 +35,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, data, reload, page, limit, ...rest }) => {
+const Results = ({
+  className, data, reload, page, limit, ...rest
+}) => {
   const classes = useStyles();
-  const customers = data.content;
+  const fazendas = data.content;
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(undefined);
+  const navigate = useNavigate();
 
-  const handleClickOpen = registro => {
+  const handleClickOpen = (registro) => {
     setOpen(true);
     setSelectedItem(registro);
-    console.log(registro)
   };
+  const update = useCallback((item) => {
+    navigate(`../fazendas/${item.id}`, { replace: true, state: item });
+  }, [navigate]);
 
   const handleClose = () => {
     setOpen(false);
@@ -53,15 +61,15 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
     api.delete(`fazendas/${selectedItem.id}`).then(() => {
       toastSuccess('Fazenda excluida');
       handleClose();
-      window.location.reload()
-    })
-  }, [selectedItem])
+      window.location.reload();
+    });
+  }, [selectedItem]);
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer) => customer.id);
+      newSelectedCustomerIds = fazendas.map((fazenda) => fazenda.id);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -110,7 +118,7 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Você tem certeza que quer excluir essa fazenda?"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Você tem certeza que quer excluir essa fazenda?</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 {selectedItem?.nome}
@@ -130,11 +138,11 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
+                    checked={selectedCustomerIds.length === fazendas.length}
                     color="primary"
                     indeterminate={
                       selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      && selectedCustomerIds.length < fazendas.length
                     }
                     onChange={handleSelectAll}
                   />
@@ -148,16 +156,16 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
+              {fazendas.slice(0, limit).map((fazenda) => (
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  key={fazenda.id}
+                  selected={selectedCustomerIds.indexOf(fazenda.id) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.id)}
+                      checked={selectedCustomerIds.indexOf(fazenda.id) !== -1}
+                      onChange={(event) => handleSelectOne(event, fazenda.id)}
                       value="true"
                     />
                   </TableCell>
@@ -170,13 +178,13 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                         className={classes.avatar}
                         src=""
                       >
-                        {customer.name}
+                        {fazenda.name}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.nome}
+                        {fazenda.nome}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -189,12 +197,15 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.codigoEstab}
+                        {fazenda.codigoEstab}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell padding="checkbox">
-                    <Trash onClick={() => handleClickOpen(customer)} />
+                    <CreateIcon onClick={() => update(fazenda)} />
+                  </TableCell>
+                  <TableCell padding="checkbox">
+                    <Trash onClick={() => handleClickOpen(fazenda)} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -214,6 +225,14 @@ const Results = ({ className, data, reload, page, limit, ...rest }) => {
       />
     </Card>
   );
+};
+
+Results.propTypes = {
+  className: PropTypes.string,
+  data: PropTypes.object,
+  reload: PropTypes.func,
+  page: PropTypes.number,
+  limit: PropTypes.number,
 };
 
 export default Results;

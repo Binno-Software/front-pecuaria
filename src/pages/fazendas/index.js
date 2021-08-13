@@ -6,10 +6,10 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Results from './Results';
-import Toolbar from './Toolbar';
 import api from 'src/service/api';
 import EmptyData from 'src/components/EmptyData';
+import Toolbar from 'src/components/Toolbar';
+import Results from './Results';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,20 +33,19 @@ const FazendaListView = () => {
         size: limit,
         page
       }
-    }).then(response => {
-      setFazendas(response.data)
-      setLoading(false)
-    })
-  }, [limit, page])
+    }).then((response) => {
+      setFazendas(response.data);
+      setLoading(false);
+    });
+  }, [limit, page]);
 
-  const reload = useCallback((limit, offset) => {
-    setLoading(true)
-    setLimit(limit)
-    setPage(offset)
-  }, [])
+  const reload = useCallback((_limit, offset) => {
+    setLoading(true);
+    setLimit(_limit);
+    setPage(offset);
+  }, []);
 
-  if (loading)
-    return <LinearProgress />
+  if (loading) return <LinearProgress />;
 
   return (
     <Page
@@ -54,7 +53,7 @@ const FazendaListView = () => {
       title="Fazendas"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar href="/app/fazendas/fazenda" title="fazenda" />
         {fazendas.content.length > 0 ? (
           <>
             <Box mt={3}>

@@ -13,9 +13,9 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import api from 'src/service/api';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
-import TipoMetragemSelect from './TipoMetragemSelect';
+import TipoMetragemSelect from 'src/components/TipoMetragemSelect';
 
 const useStyles = makeStyles({
   root: {}
@@ -28,15 +28,17 @@ const CadastroFazenda = ({ className, ...rest }) => {
     codigoEstab: 0,
     endereco: '',
     metragem: 0,
-    tipoMetragem: 'HECTARE',
+    tipoMetragem: undefined,
     capacidadeMaxGado: 0
   });
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (state) {
       setValues({
+        id: state.id,
         nome: state.nome,
         codigoEstab: state.codigoEstab,
         endereco: state.endereco,
@@ -48,7 +50,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   }, [state]);
 
   const add = useCallback(
-    valor => {
+    (valor) => {
       setValues({
         ...values,
         tipoMetragem: valor
@@ -57,7 +59,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
     [values]
   );
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -67,6 +69,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   const submitForm = useCallback(() => {
     api
       .post('fazendas', {
+        id: values.id,
         nome: values.nome,
         codigoEstab: values.codigoEstab,
         endereco: values.endereco,
@@ -75,7 +78,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
         capacidadeMaxGado: values.capacidadeMaxGado
       })
       .then(() => {
-        toastSuccess('Fazenda cadastrado com sucesso');
+        toastSuccess('Fazenda cadastrada com sucesso');
         setValues({
           nome: undefined,
           codigoEstab: 0,
@@ -90,6 +93,23 @@ const CadastroFazenda = ({ className, ...rest }) => {
     setLoading(true);
   }, [values]);
 
+  const update = useCallback(() => {
+    api
+      .put('fazendas', {
+        id: values.id,
+        nome: values.nome,
+        codigoEstab: values.codigoEstab,
+        endereco: values.endereco,
+        metragem: values.metragem,
+        tipoMetragem: values.tipoMetragem,
+        capacidadeMaxGado: values.capacidadeMaxGado
+      })
+      .then(() => {
+        toastSuccess('Fazenda editada com sucesso');
+        navigate('../../fazendas');
+      });
+  }, [values, navigate]);
+
   if (loading) {
     return <LinearProgress />;
   }
@@ -97,7 +117,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   return (
     <form className={clsx(classes.root, className)} {...rest}>
       <Card>
-        <CardHeader subheader="Inserindo nova Fazenda" title="Fazenda" />
+        <CardHeader subheader={state ? 'Editando fazenda' : 'Inserindo fazenda'} title="Fazenda" />
         <Divider />
         <CardContent>
           <TextField
@@ -131,7 +151,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             value={values.endereco}
             variant="outlined"
           />
-          <TipoMetragemSelect add={add} />
+          <TipoMetragemSelect tipoMetragemSelected={values.tipoMetragem} add={add} />
           <TextField
             fullWidth
             label="Tamanho da fazenda"
@@ -159,7 +179,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
             color="primary"
             variant="contained"
             disabled={!values.nome?.length}
-            onClick={submitForm}
+            onClick={values.id ? update : submitForm}
           >
             Salvar
           </Button>
