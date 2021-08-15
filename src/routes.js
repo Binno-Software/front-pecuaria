@@ -25,7 +25,6 @@ const routes = (isLoggedIn) => [
     element: isLoggedIn ? <DashboardLayout /> : <Navigate to="/login" />,
     children: [
       { path: 'account', element: <AccountView /> },
-      { path: 'cadastro-funcionario', element: <CadastroFuncionario /> },
       { path: 'cadastro-animais', element: <CadastroAnimal /> },
       { path: 'fazendas', element: <FazendaListView /> },
       { path: 'fazendas/:id', element: <CadastroFazenda /> },
@@ -33,6 +32,7 @@ const routes = (isLoggedIn) => [
       { path: 'dashboard-view', element: <ReportsView /> },
       { path: 'animais', element: <AnimaisListView /> },
       { path: 'funcionarios', element: <FuncionarioListView /> },
+      { path: 'funcionarios/:id', element: <CadastroFuncionario /> },
       { path: 'medicamentos', element: <MedicamentosListView /> },
       { path: 'cadastro-medicamento', element: <CadastroMedicamento /> },
       { path: 'settings', element: <SettingsView /> },

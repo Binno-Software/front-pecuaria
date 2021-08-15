@@ -6,10 +6,10 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Results from './Results';
-import Toolbar from './Toolbar';
-import api from '../../service/api';
 import EmptyData from 'src/components/EmptyData';
+import Toolbar from 'src/components/Toolbar';
+import Results from './Results';
+import api from '../../service/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +53,7 @@ const FuncionarioListView = () => {
       title="Funcionarios"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar href="/app/funcionarios/funcionario" title="funcionario" />
         {data.content.length > 0 ? (
           <Box mt={3}>
             <Results data={data} reload={reload} page={page} limit={limit} />

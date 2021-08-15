@@ -16,7 +16,9 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const FazendaSelect = ({ addFazenda, className, ...rest }) => {
+const FazendaSelect = ({
+  addFazenda, fazendaSelected, className, ...rest
+}) => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [values, setValues] = useState({
@@ -32,11 +34,16 @@ const FazendaSelect = ({ addFazenda, className, ...rest }) => {
   };
 
   useEffect(() => {
+    if (fazendaSelected) {
+      setValues({
+        selecionado: fazendaSelected.toString()
+      });
+    }
+  }, [fazendaSelected]);
+
+  useEffect(() => {
     api.get('fazendas/listagem').then((response) => {
       setData(response.data);
-      if (response.data.length >= 1) {
-        addFazenda(response.data[0].id);
-      }
     });
   }, [addFazenda]);
 
@@ -91,7 +98,8 @@ const FazendaSelect = ({ addFazenda, className, ...rest }) => {
 
 FazendaSelect.propTypes = {
   className: PropTypes.string,
-  addFazenda: PropTypes.func
+  addFazenda: PropTypes.func,
+  fazendaSelected: PropTypes.number
 };
 
 export default FazendaSelect;
