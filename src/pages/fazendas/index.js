@@ -9,6 +9,7 @@ import Page from 'src/components/Page';
 import api from 'src/service/api';
 import EmptyData from 'src/components/EmptyData';
 import Toolbar from 'src/components/Toolbar';
+import InputSearch from 'src/components/InputSearch';
 import Results from './Results';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,18 +27,20 @@ const FazendaListView = () => {
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     api.get('fazendas', {
       params: {
         size: limit,
-        page
+        page,
+        nome: filter
       }
     }).then((response) => {
       setFazendas(response.data);
       setLoading(false);
     });
-  }, [limit, page]);
+  }, [limit, page, filter]);
 
   const reload = useCallback((_limit, offset) => {
     setLoading(true);
@@ -54,6 +57,7 @@ const FazendaListView = () => {
     >
       <Container maxWidth={false}>
         <Toolbar href="/app/fazendas/fazenda" title="fazenda" />
+        <InputSearch setFilter={setFilter} />
         {fazendas.content.length > 0 ? (
           <>
             <Box mt={3}>
