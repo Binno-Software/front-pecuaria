@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -25,10 +25,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FotosAnimal = ({
-  className, animalRef, addImagem, removerImagem, setLoadingImage, ...rest
+  className, stateImagens, animalRef, addImagem, removerImagem, setLoadingImage, ...rest
 }) => {
   const classes = useStyles();
   const [imagens, setImagens] = useState([]);
+
+  useEffect(() => {
+    if (stateImagens.length) {
+      setImagens(stateImagens);
+    }
+  }, [stateImagens]);
 
   const onImageChange = useCallback((event) => {
     const uploadFunction = (file) => {
@@ -106,6 +112,7 @@ const FotosAnimal = ({
 
 FotosAnimal.propTypes = {
   className: PropTypes.string,
+  stateImagens: PropTypes.array,
   animalRef: PropTypes.string,
   addImagem: PropTypes.func,
   removerImagem: PropTypes.func,

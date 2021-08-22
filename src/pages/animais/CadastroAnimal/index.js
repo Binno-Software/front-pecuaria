@@ -16,8 +16,8 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import api from 'src/service/api';
-import { useLocation } from 'react-router-dom';
-import { toastSuccess } from 'src/utils/toast';
+import { Navigate, useLocation } from 'react-router-dom';
+import { toastError, toastSuccess } from 'src/utils/toast';
 import FazendaSelect from 'src/components/FazendaSelect';
 import FotosAnimal from 'src/components/FotosAnimal';
 import EstadoAtualSelect from 'src/components/EstadoAtualSelect';
@@ -131,7 +131,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
     [values]
   );
 
-  const submitForm = useCallback(() => {
+  const create = useCallback(() => {
     api
       .post('animais', {
         numero: values.numero,
@@ -158,6 +158,32 @@ const CadastroAnimais = ({ className, ...rest }) => {
       .catch(() => setLoading(false));
 
     setLoading(true);
+  }, [values, fazenda]);
+
+  const update = useCallback(() => {
+    api
+      .put('animais', {
+        id: values.id,
+        numero: values.numero,
+        raca: values.raca,
+        apelido: values.apelido,
+        dataNascimento: values.dataNascimento,
+        peso: parseFloat(values.peso),
+        dataPesagem: values.dataPesagem,
+        numeroCria: values.numeroCria,
+        estadoAtual: values.estadoAtual,
+        dataUltimoParto: values.dataUltimoParto,
+        descarteFuturo: values.descarteFuturo,
+        isFemea: values.isFemea,
+        justificativaDescarteFuturo: values.justificativaDescarteFuturo,
+        fazenda,
+        imagens: values.imagens
+      })
+      .then(() => {
+        toastSuccess('Animal atualizado com sucesso');
+        Navigate('../../animais');
+      })
+      .catch(toastError('Erro ao atualizar o animal'));
   }, [values, fazenda]);
 
   if (loading) {
@@ -311,6 +337,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
         </CardContent>
         <Divider />
         <FotosAnimal
+          stateImagens={values.imagens}
           addImagem={addImagem}
           removerImagem={removerImagem}
           setLoadingImage={setLoadingImage}
@@ -320,7 +347,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={submitForm}
+            onClick={values.id ? update : create}
             disabled={loadingImage}
           >
             Salvar
