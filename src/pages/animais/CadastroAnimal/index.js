@@ -22,6 +22,7 @@ import FazendaSelect from 'src/components/FazendaSelect';
 import FotosAnimal from 'src/components/FotosAnimal';
 import EstadoAtualSelect from 'src/components/EstadoAtualSelect';
 import RacaAnimalSelect from 'src/components/RacaAnimalSelect';
+import PesoAnimaList from 'src/components/PesoAnimalList';
 
 const useStyles = makeStyles({
   root: {}
@@ -32,7 +33,7 @@ const initialState = {
   raca: 'NELORE',
   apelido: '',
   dataNascimento: moment().format('YYYY-MM-DD'),
-  peso: undefined,
+  pesos: [],
   dataPesagem: moment().format('YYYY-MM-DD'),
   numeroCria: 0,
   estadoAtual: 'VAZIA',
@@ -58,7 +59,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: state.raca,
         apelido: state.apelido,
         dataNascimento: state.dataNascimento,
-        peso: state.peso,
+        pesos: state.pesos,
         dataPesagem: state.dataPesagem,
         numeroCria: state.numeroCria,
         estadoAtual: state.estadoAtual,
@@ -111,6 +112,26 @@ const CadastroAnimais = ({ className, ...rest }) => {
     [values]
   );
 
+  const addPeso = useCallback(
+    (peso) => {
+      setValues({
+        ...values,
+        pesos: [...values.pesos, peso]
+      });
+    },
+    [values]
+  );
+
+  const removerPeso = useCallback(
+    (id) => {
+      setValues({
+        ...values,
+        pesos: [values.pesos.filter((peso) => peso.id !== id)]
+      });
+    },
+    [values]
+  );
+
   const addImagem = useCallback(
     (url) => {
       setValues({
@@ -138,7 +159,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: values.raca,
         apelido: values.apelido,
         dataNascimento: values.dataNascimento,
-        peso: parseFloat(values.peso),
+        pesos: values.pesos,
         dataPesagem: values.dataPesagem,
         numeroCria: values.numeroCria,
         estadoAtual: values.estadoAtual,
@@ -168,7 +189,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
         raca: values.raca,
         apelido: values.apelido,
         dataNascimento: values.dataNascimento,
-        peso: parseFloat(values.peso),
+        pesos: values.pesos,
         dataPesagem: values.dataPesagem,
         numeroCria: values.numeroCria,
         estadoAtual: values.estadoAtual,
@@ -249,7 +270,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
               shrink: true
             }}
           />
-          <TextField
+          {/* <TextField
             fullWidth
             label="Peso do animal"
             margin="normal"
@@ -271,6 +292,11 @@ const CadastroAnimais = ({ className, ...rest }) => {
             InputLabelProps={{
               shrink: true
             }}
+          /> */}
+          <PesoAnimaList
+            statePesos={values.pesos}
+            addPeso={addPeso}
+            removerPeso={removerPeso}
           />
           {values.isFemea && (
             <>
