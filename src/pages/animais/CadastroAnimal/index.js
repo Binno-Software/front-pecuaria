@@ -170,7 +170,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
         <CardHeader subheader="inserindo novo animal" title="Animal" />
         <Divider />
         <CardContent>
-          <FazendaSelect addFazenda={addFazenda} />
+          <FazendaSelect fazendaSelected={fazenda.id} addFazenda={addFazenda} />
           <TextField
             fullWidth
             label="Número do animal"

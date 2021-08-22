@@ -47,6 +47,12 @@ const FazendaSelect = ({
     });
   }, [addFazenda]);
 
+  useEffect(() => {
+    if (!fazendaSelected) {
+      addFazenda(data[0]?.id);
+    }
+  }, [data, addFazenda, fazendaSelected]);
+
   return (
     <form
       autoComplete="off"
