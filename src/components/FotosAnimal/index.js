@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -25,10 +25,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FotosAnimal = ({
-  className, animalRef, addImagem, removerImagem, setLoadingImage, ...rest
+  className, stateImagens, animalRef, addImagem, removerImagem, setLoadingImage, ...rest
 }) => {
   const classes = useStyles();
   const [imagens, setImagens] = useState([]);
+
+  useEffect(() => {
+    if (stateImagens.length) {
+      setImagens(stateImagens);
+    }
+  }, [stateImagens]);
 
   const onImageChange = useCallback((event) => {
     const uploadFunction = (file) => {
@@ -40,7 +46,7 @@ const FotosAnimal = ({
       })
         .then((response) => {
           toastSuccess('Imagem Enviada com sucesso');
-          addImagem(response.data);
+          addImagem({ imagemUrl: response.data });
           setLoadingImage(false);
         })
         .catch(() => {
@@ -50,14 +56,14 @@ const FotosAnimal = ({
 
     if (event.target.files && event.target.files[0]) {
       const img = event.target.files[0];
-      setImagens([URL.createObjectURL(img), ...imagens]);
+      setImagens({ imagemUrl: URL.createObjectURL(img) }, ...imagens);
       uploadFunction(img);
     }
   }, [imagens, addImagem, setLoadingImage]);
 
-  const remove = useCallback((image) => {
-    setImagens(imagens.filter((img) => img !== image));
-    removerImagem(image);
+  const remove = useCallback((url) => {
+    setImagens(imagens.filter((img) => img.imagemUrl !== url));
+    removerImagem(url);
   }, [imagens, removerImagem]);
 
   return (
@@ -81,7 +87,7 @@ const FotosAnimal = ({
                   <Avatar
                     variant="square"
                     className={classes.avatar}
-                    src={image}
+                    src={image.imagemUrl}
                   />
                 </Box>
               </CardContent>
@@ -91,7 +97,7 @@ const FotosAnimal = ({
                   color="danger"
                   fullWidth
                   variant="text"
-                  onClick={() => remove(image)}
+                  onClick={() => remove(image.imagemUrl)}
                 >
                   Remove
                 </Button>
@@ -106,6 +112,7 @@ const FotosAnimal = ({
 
 FotosAnimal.propTypes = {
   className: PropTypes.string,
+  stateImagens: PropTypes.array,
   animalRef: PropTypes.string,
   addImagem: PropTypes.func,
   removerImagem: PropTypes.func,

@@ -53,7 +53,7 @@ const AnimaisListView = () => {
       title="Animais"
     >
       <Container maxWidth={false}>
-        <Toolbar href="/app/cadastro-animais" title="animal" />
+        <Toolbar href="/app/animais/animal" title="animal" />
         {data.content.length > 0 ? (
           <Box mt={3}>
             <Results data={data} reload={reload} page={page} limit={limit} />

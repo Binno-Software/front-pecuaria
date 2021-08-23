@@ -28,6 +28,7 @@ import { toastSuccess } from 'src/utils/toast';
 import PropTypes from 'prop-types';
 import useEnums from 'src/components/useEnums';
 import getDescricaoEnum from 'src/utils/getDescricaoEnum';
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -55,7 +56,7 @@ const Results = ({
     }
     setEnumsEstadoAtual(getGroupEnum('EstadoAtual'));
     setEnumsRacaAnimal(getGroupEnum('RacaAnimal'));
-  }, [loadingEnum,getGroupEnum]);
+  }, [loadingEnum, getGroupEnum]);
 
   const handleClickOpen = (registro) => {
     setOpen(true);
@@ -74,9 +75,8 @@ const Results = ({
     });
   }, [selectedItem]);
 
-  // eslint-disable-next-line
   const update = useCallback((item) => {
-    navigate('../cadastro-animais', { replace: true, state: item });
+    navigate(`../animais/${item.id}`, { replace: true, state: item });
   }, [navigate]);
 
   const handleSelectAll = (event) => {
@@ -260,6 +260,9 @@ const Results = ({
                             {element.apelido}
                           </Typography>
                         </Box>
+                      </TableCell>
+                      <TableCell padding="checkbox">
+                        <CreateIcon onClick={() => update(element)} />
                       </TableCell>
                       <TableCell padding="checkbox">
                         <Trash onClick={() => handleClickOpen(element)} />
