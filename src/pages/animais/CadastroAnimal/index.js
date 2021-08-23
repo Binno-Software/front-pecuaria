@@ -16,8 +16,8 @@ import {
   LinearProgress
 } from '@material-ui/core';
 import api from 'src/service/api';
-import { Navigate, useLocation } from 'react-router-dom';
-import { toastError, toastSuccess } from 'src/utils/toast';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { toastSuccess } from 'src/utils/toast';
 import FazendaSelect from 'src/components/FazendaSelect';
 import FotosAnimal from 'src/components/FotosAnimal';
 import EstadoAtualSelect from 'src/components/EstadoAtualSelect';
@@ -51,10 +51,12 @@ const CadastroAnimais = ({ className, ...rest }) => {
   const [loading, setLoading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (state) {
       setValues({
+        id: state.id,
         numero: state.numero,
         raca: state.raca,
         apelido: state.apelido,
@@ -133,10 +135,10 @@ const CadastroAnimais = ({ className, ...rest }) => {
   );
 
   const addImagem = useCallback(
-    (url) => {
+    (image) => {
       setValues({
         ...values,
-        imagens: [...values.imagens, url]
+        imagens: [...values.imagens, image]
       });
     },
     [values]
@@ -146,7 +148,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
     (url) => {
       setValues({
         ...values,
-        imagens: [values.imagens.filter((img) => img !== url)]
+        imagens: values.imagens.filter((imagem) => imagem.imagemUrl !== url)
       });
     },
     [values]
@@ -202,10 +204,9 @@ const CadastroAnimais = ({ className, ...rest }) => {
       })
       .then(() => {
         toastSuccess('Animal atualizado com sucesso');
-        Navigate('../../animais');
-      })
-      .catch(toastError('Erro ao atualizar o animal'));
-  }, [values, fazenda]);
+        navigate('../../animais');
+      });
+  }, [values, fazenda, navigate]);
 
   if (loading) {
     return <LinearProgress />;
@@ -270,29 +271,6 @@ const CadastroAnimais = ({ className, ...rest }) => {
               shrink: true
             }}
           />
-          {/* <TextField
-            fullWidth
-            label="Peso do animal"
-            margin="normal"
-            name="peso"
-            onChange={handleChange}
-            type="number"
-            value={values.peso}
-            variant="outlined"
-          />
-          <TextField
-            fullWidth
-            label="Data pessagem"
-            margin="normal"
-            name="dataPesagem"
-            onChange={handleChange}
-            type="date"
-            value={values.dataPesagem}
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true
-            }}
-          /> */}
           <PesoAnimaList
             statePesos={values.pesos}
             addPeso={addPeso}
