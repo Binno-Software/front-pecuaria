@@ -15,10 +15,10 @@ import {
   BarChart as BarChartIcon,
   Home as HomeIcon,
   User as UsersIcon,
-  Gitlab as GitlabIcon,
   Heart as HeartIcon,
 } from 'react-feather';
 import { useAuth } from 'src/context/AuthContext';
+import { GiCow } from 'react-icons/gi';
 import NavItem from './NavItem';
 
 const user = {
@@ -45,7 +45,7 @@ const items = [
   },
   {
     href: '/app/animais',
-    icon: GitlabIcon,
+    icon: GiCow,
     title: 'Animais'
   },
   {
