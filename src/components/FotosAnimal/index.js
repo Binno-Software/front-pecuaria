@@ -71,7 +71,7 @@ const FotosAnimal = ({
       <UploadButton name="myImage" onChange={onImageChange} />
 
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {imagens.map((image) => (
+        {imagens.length ? (imagens.map((image) => (
           <Grid item xs={3}>
             <Card
               className={clsx(classes.root, className)}
@@ -104,7 +104,7 @@ const FotosAnimal = ({
               </CardActions>
             </Card>
           </Grid>
-        ))}
+        ))) : (<></>)}
       </Grid>
     </Box>
   );
