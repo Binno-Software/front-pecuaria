@@ -66,42 +66,6 @@ const PesoAnimaList = ({
   return (
     <Box sx={{ width: '50%' }}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {pesos.map((_peso) => (
-          <Grid item xs={3}>
-            <Card
-              className={clsx(classes.root, className)}
-              style={{ margin: 20 }}
-              {...rest}
-            >
-              <CardContent>
-                <TextField
-                  fullWidth
-                  disabled
-                  label="Peso do animal"
-                  margin="normal"
-                  name="peso"
-                  type="number"
-                  value={_peso.peso}
-                  variant="outlined"
-                />
-                <TextField
-                  fullWidth
-                  disabled
-                  label="Data pessagem"
-                  margin="normal"
-                  name="dataPesagem"
-                  type="date"
-                  value={_peso.dataPesagem}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-
         {/* Adiciona peso */}
         <Card
           className={clsx(classes.root, className)}
@@ -146,6 +110,42 @@ const PesoAnimaList = ({
             </Button>
           </CardActions>
         </Card>
+        {/* listagem */}
+        {pesos.map((_peso) => (
+          <Grid item xs={3}>
+            <Card
+              className={clsx(classes.root, className)}
+              style={{ margin: 20 }}
+              {...rest}
+            >
+              <CardContent>
+                <TextField
+                  fullWidth
+                  disabled
+                  label="Peso do animal"
+                  margin="normal"
+                  name="peso"
+                  type="number"
+                  value={_peso.peso}
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  disabled
+                  label="Data pessagem"
+                  margin="normal"
+                  name="dataPesagem"
+                  type="date"
+                  value={_peso.dataPesagem}
+                  variant="outlined"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );
