@@ -280,7 +280,7 @@ const Results = ({
             onChangeRowsPerPage={handleLimitChange}
             page={page}
             rowsPerPage={limit}
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 50]}
             labelRowsPerPage="Registros por pagina"
           />
         </Card>
