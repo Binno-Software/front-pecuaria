@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import api from 'src/service/api';
 import { auth, provider, facebookProvider } from 'src/service/fire';
+import clearStorage from 'src/utils/clearLocalStorage';
 
 toast.configure();
 
@@ -77,7 +78,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.clear();
+    clearStorage();
     setUser({
       isLoggedIn: false
     });

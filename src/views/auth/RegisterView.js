@@ -36,7 +36,6 @@ const RegisterView = () => {
   const register = useCallback((values) => {
     setLoading(true);
     api.post('usuarioacesso/criar', values).then((data) => {
-      console.log(data);
       login({
         login: values.login,
         password: values.password
