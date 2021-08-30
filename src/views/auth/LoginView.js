@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -11,12 +11,14 @@ import {
   Typography,
   makeStyles,
   LinearProgress,
+  Checkbox,
   Grid
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import { useAuth } from 'src/context/AuthContext';
 import GoogleIcon from 'src/icons/Google';
 import FacebookIcon from 'src/icons/Facebook';
+import { STORAGE_LOGIN, STORAGE_PASSWORD } from 'src/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +34,42 @@ const LoginView = () => {
   const navigate = useNavigate();
   const { login, loginWithGoogle, loginWithFacebook } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [isSaveLogin, setIsSaveLogin] = useState(true);
+  const [initialValues, setInitialValues] = useState({
+    login: '',
+    password: ''
+  });
+
+  const doLogin = useCallback((values) => {
+    setLoading(true);
+
+    if (isSaveLogin) {
+      window.localStorage.setItem(STORAGE_LOGIN, values.login);
+      window.localStorage.setItem(STORAGE_PASSWORD, values.password);
+    }
+
+    login(values).then(() => {
+      navigate('/app/dashboard', { replace: true });
+    });
+  }, [isSaveLogin, login, navigate]);
+
+  const changeSaveCredentials = useCallback(() => {
+    setIsSaveLogin(!isSaveLogin);
+    if (isSaveLogin) {
+      window.localStorage.clear();
+    }
+  }, [isSaveLogin]);
+
+  useEffect(() => {
+    const login = window.localStorage.getItem(STORAGE_LOGIN);
+    if (login) {
+      const password = window.localStorage.getItem(STORAGE_PASSWORD);
+      setInitialValues({
+        login,
+        password
+      });
+    }
+  }, []);
 
   if (loading) return <LinearProgress />;
 
@@ -48,19 +86,12 @@ const LoginView = () => {
       >
         <Container maxWidth="sm">
           <Formik
-            initialValues={{
-              login: '',
-              password: ''
-            }}
+            initialValues={initialValues}
+            enableReinitialize
             validationSchema={Yup.object().shape({
               password: Yup.string().max(255).required('Senha é obrigatoria')
             })}
-            onSubmit={(values) => {
-              setLoading(true);
-              login(values).then(() => {
-                navigate('/app/dashboard', { replace: true });
-              });
-            }}
+            onSubmit={doLogin}
           >
             {({
               errors,
@@ -153,6 +184,23 @@ const LoginView = () => {
                   >
                     Login
                   </Button>
+                </Box>
+                <Box
+                  alignItems="center"
+                  display="flex"
+                  ml={-1}
+                >
+                  <Checkbox
+                    checked={isSaveLogin}
+                    onChange={changeSaveCredentials}
+                  />
+                  <Typography
+                    color="textSecondary"
+                    variant="body1"
+                  >
+                    Lembrar minha conta
+                    {' '}
+                  </Typography>
                 </Box>
                 <Typography
                   color="textSecondary"
