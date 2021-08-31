@@ -102,7 +102,7 @@ const Results = ({
     reload(event.target.value, page);
   };
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (_, newPage) => {
     reload(limit, newPage);
   };
 
