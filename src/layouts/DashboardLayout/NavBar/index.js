@@ -21,12 +21,6 @@ import { useAuth } from 'src/context/AuthContext';
 import { GiCow } from 'react-icons/gi';
 import NavItem from './NavItem';
 
-const user = {
-  avatar: '/static/images/avatars/logo.jpeg',
-  jobTitle: 'Bem vindo',
-  name: 'Nilton'
-};
-
 const items = [
   {
     href: '/app/dashboard',
@@ -53,26 +47,6 @@ const items = [
     icon: HeartIcon,
     title: 'Medicamentos'
   },
-  // {
-  //   href: '/app/orcamento',
-  //   icon: File,
-  //   title: 'Orçamento'
-  // },
-  // {
-  //   href: '/app/vendas',
-  //   icon: DollarSign,
-  //   title: 'Vendas'
-  // },
-  // {
-  //   href: '/app/titulos-a-receber',
-  //   icon: CreditCard,
-  //   title: 'A Receber'
-  // },
-  // {
-  //   href: '/app/relatorios',
-  //   icon: FilePlus,
-  //   title: 'Relatórios'
-  // },
 ];
 
 const useStyles = makeStyles(() => ({
@@ -100,6 +74,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
@@ -118,7 +93,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
+          src={userReal.user.imagePerfilUrl || '/static/images/avatars/logo.jpeg'}
           to="/app/account"
         />
         <Typography
@@ -185,7 +160,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => {},
+  onMobileClose: () => { },
   openMobile: false
 };
 

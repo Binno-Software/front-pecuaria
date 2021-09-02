@@ -13,9 +13,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import { useAuth } from 'src/context/AuthContext';
 
 const user = {
-  avatar: '/static/images/avatars/logo.png',
   city: 'Los Angeles',
   country: 'USA',
   jobTitle: 'Senior Developer',
@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
 
 const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
+  const { user: userReal } = useAuth();
 
   return (
     <Card
@@ -47,7 +48,7 @@ const Profile = ({ className, ...rest }) => {
         >
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={userReal.user.imagePerfilUrl || '/static/images/avatars/logo.jpeg'}
           />
           <Typography
             color="textPrimary"
