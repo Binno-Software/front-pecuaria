@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -10,23 +10,12 @@ import {
   Divider,
   Grid,
   TextField,
-  makeStyles
+  makeStyles,
+  LinearProgress
 } from '@material-ui/core';
-
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+import api from 'src/service/api';
+import { useAuth } from 'src/context/AuthContext';
+import { toastSuccess } from 'src/utils/toast';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -34,14 +23,40 @@ const useStyles = makeStyles(() => ({
 
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
+  const [loading, setLoading] = useState(true);
+  const { user, logout } = useAuth();
+  const [values, setValues] = useState({});
+
+  useEffect(() => {
+    api.get('usuarioacesso', { params: { usuarioId: user.user.id } }).then(({ data }) => {
+      setLoading(false);
+      setValues({
+        firstName: data.nome,
+        lastName: data.sobrenome || '',
+        email: data.email,
+        phone: data.fone || '',
+        login: data.login,
+        password: undefined
+      });
+    });
+  }, [user]);
+
+  const atualizar = useCallback(() => {
+    setLoading(true);
+
+    api.put('usuarioacesso', {
+      id: user.user.id,
+      nome: values.firstName,
+      email: values.email,
+      sobrenome: values.lastName,
+      numero: values.phone,
+      login: values.login,
+      password: values.password
+    }).then(() => {
+      toastSuccess('Cadastro atualizado, é necessario fazer o login novamente');
+      logout();
+    });
+  }, [user, logout, values]);
 
   const handleChange = (event) => {
     setValues({
@@ -49,6 +64,8 @@ const ProfileDetails = ({ className, ...rest }) => {
       [event.target.name]: event.target.value
     });
   };
+
+  if (loading) return <LinearProgress />;
 
   return (
     <form
@@ -76,7 +93,7 @@ const ProfileDetails = ({ className, ...rest }) => {
               <TextField
                 fullWidth
                 helperText="Please specify the first name"
-                label="First name"
+                label="Nome"
                 name="firstName"
                 onChange={handleChange}
                 required
@@ -91,7 +108,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Last name"
+                label="Sobrenome"
                 name="lastName"
                 onChange={handleChange}
                 required
@@ -106,7 +123,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Email Address"
+                label="Email"
                 name="email"
                 onChange={handleChange}
                 required
@@ -121,7 +138,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
+                label="Telefone"
                 name="phone"
                 onChange={handleChange}
                 type="number"
@@ -136,11 +153,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
+                label="Login"
+                name="login"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={values.login}
                 variant="outlined"
               />
             </Grid>
@@ -151,24 +168,13 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Select State"
-                name="state"
+                label="Senha"
+                name="password"
                 onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
+                type="text"
+                value={values.password}
                 variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              />
             </Grid>
           </Grid>
         </CardContent>
@@ -181,8 +187,9 @@ const ProfileDetails = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
+            onClick={atualizar}
           >
-            Save details
+            Salvar
           </Button>
         </Box>
       </Card>

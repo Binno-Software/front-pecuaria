@@ -69,7 +69,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
   const { user: userReal } = useAuth();
-
+  
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();

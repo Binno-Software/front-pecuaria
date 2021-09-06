@@ -25,6 +25,11 @@ const AuthProvider = ({ children }) => {
     };
   });
 
+  const atualizarDadosUsuarioLocal = useCallback((data) => {
+    localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
+    setUser({ isLoggedIn: true, ...data });
+  }, []);
+
   const login = useCallback(async (credentials) => {
     try {
       const { data } = await api.post('auth', credentials);
@@ -79,13 +84,14 @@ const AuthProvider = ({ children }) => {
 
   const logout = useCallback(() => {
     clearStorage();
+    api.defaults.headers.authorization = ``;
     setUser({
       isLoggedIn: false
     });
   }, [setUser]);
 
   return (
-    <AuthContext.Provider value={{ user, login, loginWithGoogle, loginWithFacebook, logout }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, loginWithFacebook, logout, atualizarDadosUsuarioLocal }}>
       {children}
     </AuthContext.Provider>
   );
