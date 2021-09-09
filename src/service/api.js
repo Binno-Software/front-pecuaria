@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toastError } from 'src/utils/toast';
+import clearStorage from 'src/utils/clearLocalStorage';
 
 export const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://api-pecuaria.herokuapp.com';
 // export const baseURL = 'https://api-pecuaria.herokuapp.com';
@@ -18,7 +19,7 @@ instance.interceptors.response.use((response) => {
   if (error?.response?.status === 403) {
     console.log('403');
     toastError('Houve um problema com sua autenticação');
-    localStorage.clear();
+    clearStorage();
     window.location.reload();
     return;
   }

@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Box,
   Card,
   Checkbox,
@@ -174,12 +173,6 @@ const Results = ({
                       alignItems="center"
                       display="flex"
                     >
-                      <Avatar
-                        className={classes.avatar}
-                        src=""
-                      >
-                        {fazenda.name}
-                      </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
@@ -220,7 +213,7 @@ const Results = ({
         onChangeRowsPerPage={handleLimitChange}
         page={page}
         rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10, 25, 50]}
         labelRowsPerPage="Registros por pagina"
       />
     </Card>

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import api from 'src/service/api';
 import { auth, provider, facebookProvider } from 'src/service/fire';
+import clearStorage from 'src/utils/clearLocalStorage';
 
 toast.configure();
 
@@ -23,6 +24,11 @@ const AuthProvider = ({ children }) => {
       isLoggedIn: false
     };
   });
+
+  const atualizarDadosUsuarioLocal = useCallback((data) => {
+    localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
+    setUser({ isLoggedIn: true, ...data });
+  }, []);
 
   const login = useCallback(async (credentials) => {
     try {
@@ -77,14 +83,15 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.clear();
+    clearStorage();
+    api.defaults.headers.authorization = ``;
     setUser({
       isLoggedIn: false
     });
   }, [setUser]);
 
   return (
-    <AuthContext.Provider value={{ user, login, loginWithGoogle, loginWithFacebook, logout }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, loginWithFacebook, logout, atualizarDadosUsuarioLocal }}>
       {children}
     </AuthContext.Provider>
   );

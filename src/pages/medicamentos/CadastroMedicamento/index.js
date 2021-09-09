@@ -99,7 +99,7 @@ const CadastroMedicamento = ({ className, ...rest }) => {
           />
           <TextField
             fullWidth
-            label="Data de valdiade"
+            label="Data de validade"
             margin="normal"
             name="dataValidade"
             onChange={handleChange}

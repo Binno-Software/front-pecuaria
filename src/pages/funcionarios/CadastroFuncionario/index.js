@@ -18,7 +18,7 @@ import { toastSuccess } from 'src/utils/toast';
 import FazendaSelect from 'src/components/FazendaSelect';
 
 const useStyles = makeStyles(({
-  root: {}
+  root: { }
 }));
 
 const CadastroFuncionario = ({ className, ...rest }) => {
@@ -60,12 +60,11 @@ const CadastroFuncionario = ({ className, ...rest }) => {
     });
   };
 
-  const addFazenda = useCallback((idFazenda) => {
+  const addFazenda = useCallback((_fazenda) => {
     setFazenda({
-      ...fazenda,
-      id: idFazenda
+      id: _fazenda
     });
-  }, [setFazenda, fazenda]);
+  }, [setFazenda]);
 
   const updateForm = useCallback(() => {
     api.put('funcionarios', {

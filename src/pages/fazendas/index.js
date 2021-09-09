@@ -25,7 +25,7 @@ const FazendaListView = () => {
   const classes = useStyles();
   const [fazendas, setFazendas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
   const [filter, setFilter] = useState('');
 

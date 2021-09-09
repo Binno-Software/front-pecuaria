@@ -24,7 +24,7 @@ const FuncionarioListView = () => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
