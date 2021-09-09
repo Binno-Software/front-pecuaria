@@ -119,10 +119,10 @@ const Results = ({
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">Você tem certeza que quer excluir esse Funcionario?</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Você tem certeza que quer reverter esse Processo?</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                {selectedItem?.nome}
+                {selectedItem?.id}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -149,16 +149,13 @@ const Results = ({
                   />
                 </TableCell>
                 <TableCell>
-                  Nome
+                  Data
                 </TableCell>
                 <TableCell>
-                  Cargo
+                  Total animais
                 </TableCell>
                 <TableCell>
-                  CPF
-                </TableCell>
-                <TableCell>
-                  Fazenda
+                  Medicamento
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -185,7 +182,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.nome}
+                        {element.dataProcesso}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -198,7 +195,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.cargo}
+                        {element.totalAnimaisVacinados}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -211,20 +208,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.cpf}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
-                        {element.fazenda.nome}
+                        {element.medicamento.descricao}
                       </Typography>
                     </Box>
                   </TableCell>

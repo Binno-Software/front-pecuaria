@@ -8,7 +8,7 @@ import {
 import Page from 'src/components/Page';
 import EmptyData from 'src/components/EmptyData';
 import Toolbar from 'src/components/Toolbar';
-import Results from '../vacinacao/ProcessoVacinacao/GridAnimaisSelecionados';
+import Results from './Results';
 import api from '../../service/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const FuncionarioListView = () => {
+const VacinacaoListView = () => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ const FuncionarioListView = () => {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    api.get('funcionarios', {
+    api.get('vacinacao', {
       params: {
         size: limit,
         page
@@ -50,10 +50,10 @@ const FuncionarioListView = () => {
   return (
     <Page
       className={classes.root}
-      title="Funcionarios"
+      title="Vacinacao"
     >
       <Container maxWidth={false}>
-        <Toolbar href="/app/funcionarios/funcionario" title="funcionario" />
+        <Toolbar href="/app/vacinacao/novo-processo" title="processo de vacinação" />
         {data.content.length > 0 ? (
           <Box mt={3}>
             <Results data={data} reload={reload} page={page} limit={limit} />
@@ -66,4 +66,4 @@ const FuncionarioListView = () => {
   );
 };
 
-export default FuncionarioListView;
+export default VacinacaoListView;
