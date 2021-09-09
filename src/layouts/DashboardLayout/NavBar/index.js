@@ -14,11 +14,11 @@ import {
 import {
   BarChart as BarChartIcon,
   Home as HomeIcon,
-  User as UsersIcon,
-  Heart as HeartIcon,
+  User as UsersIcon
 } from 'react-feather';
 import { useAuth } from 'src/context/AuthContext';
-import { GiCow } from 'react-icons/gi';
+import { GiCow, GiMedicines } from 'react-icons/gi';
+import { FaSyringe } from 'react-icons/fa';
 import NavItem from './NavItem';
 
 const user = {
@@ -50,14 +50,14 @@ const items = [
   },
   {
     href: '/app/medicamentos',
-    icon: HeartIcon,
+    icon: GiMedicines,
     title: 'Medicamentos'
   },
-  // {
-  //   href: '/app/orcamento',
-  //   icon: File,
-  //   title: 'Orçamento'
-  // },
+  {
+    href: '/app/vacinacao',
+    icon: FaSyringe,
+    title: 'Vacinação'
+  },
   // {
   //   href: '/app/vendas',
   //   icon: DollarSign,

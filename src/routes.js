@@ -9,15 +9,20 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import ReportsView from 'src/views/reports/DashboardView';
+
 import FazendaListView from 'src/pages/fazendas';
 import CadastroFazenda from 'src/pages/fazendas/CadastroFazenda';
+
 import FuncionarioListView from 'src/pages/funcionarios';
 import CadastroFuncionario from 'src/pages/funcionarios/CadastroFuncionario';
+
 import AnimaisListView from 'src/pages/animais';
 import CadastroAnimal from 'src/pages/animais/CadastroAnimal';
 
 import MedicamentosListView from './pages/medicamentos';
 import CadastroMedicamento from './pages/medicamentos/CadastroMedicamento';
+
+import VacinacaoListView from './pages/vacinacao';
 
 const routes = (isLoggedIn) => [
   {
@@ -35,6 +40,7 @@ const routes = (isLoggedIn) => [
       { path: 'funcionarios/:id', element: <CadastroFuncionario /> },
       { path: 'medicamentos', element: <MedicamentosListView /> },
       { path: 'cadastro-medicamento', element: <CadastroMedicamento /> },
+      { path: 'vacinacao', element: <VacinacaoListView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
