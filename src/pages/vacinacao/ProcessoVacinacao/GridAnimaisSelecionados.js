@@ -18,7 +18,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { Trash } from 'react-feather';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({
+const GridAnimaisSelecionados = ({
   className, data, reload, page, limit, ...rest
 }) => {
   const classes = useStyles();
@@ -254,7 +254,7 @@ const Results = ({
   );
 };
 
-Results.propTypes = {
+GridAnimaisSelecionados.propTypes = {
   className: PropTypes.string,
   data: PropTypes.object,
   reload: PropTypes.func,
@@ -262,4 +262,4 @@ Results.propTypes = {
   limit: PropTypes.number,
 };
 
-export default Results;
+export default GridAnimaisSelecionados;
