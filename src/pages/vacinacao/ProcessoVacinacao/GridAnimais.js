@@ -13,12 +13,6 @@ import {
   TableRow,
   Typography,
   makeStyles,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -29,41 +23,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({
-  className, data, reload, page, limit, ...rest
+const GridAnimais = ({
+  className, addAnimal, data, reload, page, limit, ...rest
 }) => {
   const classes = useStyles();
-  const funcionarios = data.content;
+  const registros = data.content;
   const [selectedIds, setSelectedIds] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(undefined);
-
-  // eslint-disable-next-line
-  const handleClickOpen = (registro) => {
-    setOpen(true);
-    setSelectedItem(registro);
-    console.log(registro);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleSelectAll = (event) => {
     let newSelectedIds;
 
     if (event.target.checked) {
-      newSelectedIds = funcionarios.map((element) => element.id);
+      newSelectedIds = registros.map((element) => element.id);
+      addAnimal(registros);
     } else {
       newSelectedIds = [];
+      addAnimal([]);
     }
 
     setSelectedIds(newSelectedIds);
   };
 
-  const handleSelectOne = (event, id) => {
+  const handleSelectOne = (event, element) => {
+    const id = element.id;
     const selectedIndex = selectedIds.indexOf(id);
     let newSelectedIds = [];
+    addAnimal(element);
 
     if (selectedIndex === -1) {
       newSelectedIds = newSelectedIds.concat(selectedIds, id);
@@ -96,54 +81,33 @@ const Results = ({
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">Você tem certeza que quer reverter esse Processo?</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {selectedItem?.id}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Voltar
-              </Button>
-              <Button color="primary" autoFocus>
-                Excluir
-              </Button>
-            </DialogActions>
-          </Dialog>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedIds.length === funcionarios.length}
+                    checked={selectedIds.length === registros.length}
                     color="primary"
                     indeterminate={
                       selectedIds.length > 0
-                      && selectedIds.length < funcionarios.length
+                      && selectedIds.length < registros.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
                 <TableCell>
-                  Data
+                  Numeração
                 </TableCell>
                 <TableCell>
-                  Total animais
+                  Apelido
                 </TableCell>
                 <TableCell>
-                  Medicamento
+                  Fazenda
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {funcionarios.slice(0, limit).map((element) => (
+              {registros.slice(0, limit).map((element) => (
                 <TableRow
                   hover
                   key={element.id}
@@ -152,7 +116,7 @@ const Results = ({
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedIds.indexOf(element.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, element.id)}
+                      onChange={(event) => handleSelectOne(event, element)}
                       value="true"
                     />
                   </TableCell>
@@ -165,7 +129,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.dataProcesso}
+                        {element.numero}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -178,7 +142,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.totalAnimaisVacinados}
+                        {element.apelido}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -191,13 +155,10 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.medicamento.descricao}
+                        {element.fazenda.nome}
                       </Typography>
                     </Box>
                   </TableCell>
-                  {/* <TableCell padding="checkbox">
-                    <CreateIcon onClick={() => update(element)} />
-                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
@@ -218,7 +179,7 @@ const Results = ({
   );
 };
 
-Results.propTypes = {
+GridAnimais.propTypes = {
   className: PropTypes.string,
   data: PropTypes.object,
   reload: PropTypes.func,
@@ -226,4 +187,4 @@ Results.propTypes = {
   limit: PropTypes.number,
 };
 
-export default Results;
+export default GridAnimais;
