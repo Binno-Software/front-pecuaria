@@ -24,7 +24,7 @@ const CustomNotificationsIcon = () => {
           <NotificationsIcon />
         </Badge>
       </IconButton>
-      <NotificationModal reload={count} open={open} onClose={() => setOpen(false)} />
+      <NotificationModal count={count} open={open} onClose={() => setOpen(false)} />
     </>
   );
 };

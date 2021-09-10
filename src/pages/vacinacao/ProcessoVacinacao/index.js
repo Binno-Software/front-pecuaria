@@ -16,6 +16,11 @@ import Page from 'src/components/Page';
 import api from 'src/service/api';
 import EmptyData from 'src/components/EmptyData';
 import GridAnimaisSelecionados from './GridAnimaisSelecionados';
+import GridAnimais from './GridAnimais';
+import FazendaSelect from 'src/components/FazendaSelect';
+import MedicamentoSelect from 'src/components/MedicamentoSelect';
+import { toastSuccess } from 'src/utils/toast';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +72,10 @@ const ProcessoVacinacao = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [fazenda, setFazenda] = useState({});
+  const [medicamento, setMedicamento] = useState({});
   const [tab, setTab] = useState(0);
+  const [animaisSelecionados, setAnimaisSelecionados] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.get('animais', {
@@ -95,7 +103,15 @@ const ProcessoVacinacao = () => {
     setPage(offset);
   }, []);
 
-  // eslint-disable-next-line no-unused-vars
+  const addAnimal = useCallback((data) => {
+    if (data instanceof Array) {
+      setAnimaisSelecionados(data);
+      return;
+    }
+
+    setAnimaisSelecionados([data, ...animaisSelecionados]);
+  }, [animaisSelecionados]);
+
   const addFazenda = useCallback(
     (_fazenda) => {
       setFazenda({
@@ -104,6 +120,25 @@ const ProcessoVacinacao = () => {
     },
     [setFazenda]
   );
+
+  const addMedicamento = useCallback(
+    (_medicamento) => {
+      setMedicamento({
+        id: _medicamento
+      });
+    },
+    [setMedicamento]
+  );
+
+  const iniciarProcesso = useCallback(() => {
+    api.post('vacinacao', {
+      medicamentoId: medicamento.id,
+      animaisId: animaisSelecionados.map(animal => animal.id)
+    }).then(() => {
+      toastSuccess('Processo de vacinação criado com sucesso');
+      navigate('../../animais');
+    });
+  }, [medicamento, animaisSelecionados, navigate]);
 
   if (loading) return <LinearProgress />;
 
@@ -120,17 +155,7 @@ const ProcessoVacinacao = () => {
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
-                  <TextField
-                    fullWidth
-                    label="Fazenda"
-                    name="selecionado"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.selecionado}
-                    variant="outlined"
-                  />
+                  <FazendaSelect fazendaSelected={fazenda.id} addFazenda={addFazenda} />
                 </Paper>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -201,17 +226,7 @@ const ProcessoVacinacao = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
-                  <TextField
-                    fullWidth
-                    label="Medicamento"
-                    name="selecionado"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.selecionado}
-                    variant="outlined"
-                  />
+                  <MedicamentoSelect medicamentoSelected={medicamento.id} addMedicamento={addMedicamento} />
                 </Paper>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -220,6 +235,7 @@ const ProcessoVacinacao = () => {
                     fullWidth
                     color="primary"
                     variant="contained"
+                    onClick={iniciarProcesso}
                   >
                     Medicar
                   </Button>
@@ -237,12 +253,12 @@ const ProcessoVacinacao = () => {
             </Tabs>
             <TabPanel value={tab} index={0}>
               <Box mt={3}>
-                <GridAnimaisSelecionados data={data} reload={reload} page={page} limit={limit} />
+                <GridAnimais addAnimal={addAnimal} data={data} reload={reload} page={page} limit={limit} />
               </Box>
             </TabPanel>
             <TabPanel value={tab} index={1}>
               <Box mt={3}>
-                <h1>ops</h1>
+                <GridAnimaisSelecionados data={animaisSelecionados} />
               </Box>
             </TabPanel>
           </>
