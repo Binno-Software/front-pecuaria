@@ -23,12 +23,13 @@ import {
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { Trash } from 'react-feather';
-import api from 'src/service/api';
+import api, { baseURL } from 'src/service/api';
 import { toastSuccess } from 'src/utils/toast';
 import PropTypes from 'prop-types';
 import useEnums from 'src/components/useEnums';
 import getDescricaoEnum from 'src/utils/getDescricaoEnum';
 import CreateIcon from '@material-ui/icons/Create';
+import HealingIcon from '@material-ui/icons/Healing';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -78,6 +79,11 @@ const Results = ({
   const update = useCallback((item) => {
     navigate(`../animais/${item.id}`, { replace: true, state: item });
   }, [navigate]);
+
+  const printProntuario = useCallback((item) => {
+    const nav = window.open(`${baseURL}/prontuario/imprimir?animalId=${item.id}`);
+    nav.focus();
+  }, []);
 
   const handleSelectAll = (event) => {
     let newSelectedIds;
@@ -260,6 +266,9 @@ const Results = ({
                             {element.apelido}
                           </Typography>
                         </Box>
+                      </TableCell>
+                      <TableCell padding="checkbox">
+                        <HealingIcon onClick={() => printProntuario(element)} />
                       </TableCell>
                       <TableCell padding="checkbox">
                         <CreateIcon onClick={() => update(element)} />
