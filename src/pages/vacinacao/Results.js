@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -20,11 +20,6 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
-import { Trash } from 'react-feather';
-import api from 'src/service/api';
-import { toastSuccess } from 'src/utils/toast';
-import CreateIcon from '@material-ui/icons/Create';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,10 +35,10 @@ const Results = ({
   const classes = useStyles();
   const funcionarios = data.content;
   const [selectedIds, setSelectedIds] = useState([]);
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(undefined);
 
+  // eslint-disable-next-line
   const handleClickOpen = (registro) => {
     setOpen(true);
     setSelectedItem(registro);
@@ -53,18 +48,6 @@ const Results = ({
   const handleClose = () => {
     setOpen(false);
   };
-
-  const excluir = useCallback(() => {
-    api.delete(`funcionarios/${selectedItem.id}`).then(() => {
-      toastSuccess('Funcionario excluido');
-      handleClose();
-      window.location.reload();
-    });
-  }, [selectedItem]);
-
-  const update = useCallback((item) => {
-    navigate(`../funcionarios/${item.id}`, { replace: true, state: item });
-  }, [navigate]);
 
   const handleSelectAll = (event) => {
     let newSelectedIds;
@@ -129,7 +112,7 @@ const Results = ({
               <Button onClick={handleClose} color="primary">
                 Voltar
               </Button>
-              <Button onClick={excluir} color="primary" autoFocus>
+              <Button color="primary" autoFocus>
                 Excluir
               </Button>
             </DialogActions>
@@ -212,12 +195,9 @@ const Results = ({
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <CreateIcon onClick={() => update(element)} />
-                  </TableCell>
-                  <TableCell padding="checkbox">
-                    <Trash onClick={() => handleClickOpen(element)} />
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>

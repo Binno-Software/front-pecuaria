@@ -82,13 +82,12 @@ const ProcessoVacinacao = () => {
       params: {
         size: limit,
         page,
-        fazenda: fazenda.id
       }
     }).then((response) => {
       setData(response.data);
       setLoading(false);
     });
-  }, [limit, page, fazenda.id]);
+  }, [limit, page]);
 
   const handleChange = (event) => {
     setValues({
@@ -139,6 +138,22 @@ const ProcessoVacinacao = () => {
       navigate('../../animais');
     });
   }, [medicamento, animaisSelecionados, navigate]);
+
+  const filtrarPesquisa = useCallback(() => {
+    setLoading(true);
+    const filter = {
+      numero: values.numeroEspecifico || null,
+      numeroInicial: values.numeroInicial || null,
+      numeroFinal: values.numeroFinal || null,
+      size: limit,
+      page,
+    };
+
+    api.get('animais', { params: filter }).then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+  }, [values, limit, page]);
 
   if (loading) return <LinearProgress />;
 
@@ -203,10 +218,10 @@ const ProcessoVacinacao = () => {
                   <TextField
                     label="Numero específico"
                     margin="normal"
-                    name="numeroInicial"
+                    name="numeroEspecifico"
                     onChange={handleChange}
                     type="text"
-                    value={values.numeroInicial}
+                    value={values.numeroEspecifico}
                     variant="outlined"
                   />
                 </Paper>
@@ -216,10 +231,10 @@ const ProcessoVacinacao = () => {
                   <TextField
                     label="Idade em dias"
                     margin="normal"
-                    name="numeroInicial"
+                    name="idadeEmDias"
                     onChange={handleChange}
                     type="text"
-                    value={values.numeroInicial}
+                    value={values.idadeEmDias}
                     variant="outlined"
                   />
                 </Paper>
@@ -238,6 +253,16 @@ const ProcessoVacinacao = () => {
                     onClick={iniciarProcesso}
                   >
                     Medicar
+                  </Button>
+                </Paper>
+                <Paper className={classes.paper}>
+                  <Button
+                    fullWidth
+                    color="primary"
+                    variant="contained"
+                    onClick={filtrarPesquisa}
+                  >
+                    Aplicar filtros
                   </Button>
                 </Paper>
               </Grid>
