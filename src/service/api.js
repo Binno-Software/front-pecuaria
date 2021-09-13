@@ -2,8 +2,8 @@ import axios from 'axios';
 import { toastError } from 'src/utils/toast';
 import clearStorage from 'src/utils/clearLocalStorage';
 
-export const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://api-pecuaria.herokuapp.com';
-// export const baseURL = 'https://api-pecuaria.herokuapp.com';
+// export const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://api-pecuaria.herokuapp.com';
+export const baseURL = 'https://api-pecuaria.herokuapp.com';
 
 const instance = axios.create({
   baseURL

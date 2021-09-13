@@ -8,7 +8,7 @@ import {
 import Page from 'src/components/Page';
 import EmptyData from 'src/components/EmptyData';
 import Toolbar from 'src/components/Toolbar';
-import Results from '../vacinacao/ProcessoVacinacao/GridAnimaisSelecionados';
+import Results from './Results';
 import api from '../../service/api';
 
 const useStyles = makeStyles((theme) => ({
