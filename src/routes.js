@@ -25,6 +25,8 @@ import CadastroMedicamento from 'src/pages/medicamentos/CadastroMedicamento';
 import VacinacaoListView from 'src/pages/vacinacao';
 import ProcessoVacinacao from 'src/pages/vacinacao/ProcessoVacinacao';
 
+import TransferenciaAnimais from 'src/pages/transferencia-animais';
+
 const routes = (isLoggedIn) => [
   {
     path: 'app',
@@ -43,6 +45,7 @@ const routes = (isLoggedIn) => [
       { path: 'cadastro-medicamento', element: <CadastroMedicamento /> },
       { path: 'vacinacao', element: <VacinacaoListView /> },
       { path: 'vacinacao/novo-processo', element: <ProcessoVacinacao /> },
+      { path: 'transferencia-animais', element: <TransferenciaAnimais /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
