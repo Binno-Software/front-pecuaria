@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FazendaSelect = ({
-  addFazenda, fazendaSelected, className, ...rest
+  addFazenda, fazendaSelected, className, overrideTitle, ...rest
 }) => {
   const classes = useStyles();
   const [data, setData] = useState([]);
@@ -62,7 +62,7 @@ const FazendaSelect = ({
     >
       <Card>
         <CardHeader
-          title="Fazenda"
+          title={overrideTitle ? overrideTitle : "Fazenda"}
         />
         <Divider />
         <CardContent>

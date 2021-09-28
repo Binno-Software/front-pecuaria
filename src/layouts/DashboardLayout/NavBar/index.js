@@ -18,7 +18,7 @@ import {
 } from 'react-feather';
 import { useAuth } from 'src/context/AuthContext';
 import { GiCow, GiMedicines } from 'react-icons/gi';
-import { FaSyringe } from 'react-icons/fa';
+import { FaSyringe, FaTruck } from 'react-icons/fa';
 import NavItem from './NavItem';
 
 const items = [
@@ -51,6 +51,11 @@ const items = [
     href: '/app/vacinacao',
     icon: FaSyringe,
     title: 'Vacinação'
+  },
+  {
+    href: '/app/transferencia-animais',
+    icon: FaTruck,
+    title: 'Transferir animais'
   },
 ];
 
