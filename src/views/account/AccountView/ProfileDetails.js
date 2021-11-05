@@ -76,8 +76,8 @@ const ProfileDetails = ({ className, ...rest }) => {
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
+          subheader="Suas informações podem ser editadas"
+          title="Perfil"
         />
         <Divider />
         <CardContent>
