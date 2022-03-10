@@ -152,6 +152,9 @@ const Results = ({
                 <TableCell>
                   Código fazenda
                 </TableCell>
+                <TableCell>
+                  Capacidade
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -191,6 +194,19 @@ const Results = ({
                         variant="body1"
                       >
                         {fazenda.codigoEstab}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      alignItems="center"
+                      display="flex"
+                    >
+                      <Typography
+                        color="textPrimary"
+                        variant="body1"
+                      >
+                        {fazenda.capacidadeMaxGado}
                       </Typography>
                     </Box>
                   </TableCell>
