@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import CardTotalizadorBySexo from 'src/components/CardTotalizadorBySexo';
+import QuantidadeAnimaisPorFazenda from 'src/components/QuantidadeAnimaisPorFazenda';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +48,8 @@ const Dash = () => {
           >
             <CardTotalizadorBySexo />
           </Grid>
+
+          <QuantidadeAnimaisPorFazenda />
 
         </Grid>
       </Container>
