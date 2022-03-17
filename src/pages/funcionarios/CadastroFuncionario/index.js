@@ -76,7 +76,7 @@ const CadastroFuncionario = ({ className, ...rest }) => {
       fazenda
     }).then(() => {
       toastSuccess('Funcionario alterado com sucesso');
-      navigate('../../funcionarios');
+      navigate('../funcionarios');
     });
 
     setLoading(true);

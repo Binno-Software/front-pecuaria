@@ -32,7 +32,6 @@ const QuantidadeAnimaisPorFazenda = ({ className, ...rest }) => {
 
   useEffect(() => {
     api.get('fazendas/total-animais-por-fazenda').then((response) => {
-      console.log(response.data)
       setData(response.data)
       setLoading(false);
     });

@@ -204,7 +204,7 @@ const CadastroAnimais = ({ className, ...rest }) => {
       })
       .then(() => {
         toastSuccess('Animal atualizado com sucesso');
-        navigate('../../animais');
+        navigate('../animais');
       });
   }, [values, fazenda, navigate]);
 

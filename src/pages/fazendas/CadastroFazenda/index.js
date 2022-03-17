@@ -106,7 +106,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
       })
       .then(() => {
         toastSuccess('Fazenda editada com sucesso');
-        navigate('../../fazendas');
+        navigate('../fazendas');
       });
   }, [values, navigate]);
 
