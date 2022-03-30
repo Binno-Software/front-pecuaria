@@ -35,13 +35,15 @@ const RegisterView = () => {
 
   const register = useCallback((values) => {
     setLoading(true);
-    api.post('usuarioacesso/criar', values).then((data) => {
+    api.post('usuarioacesso/criar', values).then(() => {
       login({
         login: values.login,
         password: values.password
       }).then(() => {
         navigate('/app/dashboard', { replace: true });
       });
+    }).catch(() => {
+      setLoading(false);
     });
   }, [login, navigate]);
 
