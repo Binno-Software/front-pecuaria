@@ -27,6 +27,9 @@ import ProcessoVacinacao from 'src/pages/vacinacao/ProcessoVacinacao';
 
 import TransferenciaAnimais from 'src/pages/transferencia-animais';
 
+import UsuariosListView from 'src/pages/usuarios';
+import CadastroUsuario from 'src/pages/usuarios/CadastroUsuario';
+
 const routes = (isLoggedIn) => [
   {
     path: 'app',
@@ -41,6 +44,8 @@ const routes = (isLoggedIn) => [
       { path: 'animais/:id', element: <CadastroAnimal /> },
       { path: 'funcionarios', element: <FuncionarioListView /> },
       { path: 'funcionarios/:id', element: <CadastroFuncionario /> },
+      { path: 'meus-usuarios', element: <UsuariosListView /> },
+      { path: 'cadastro-usuario', element: <CadastroUsuario /> },
       { path: 'medicamentos', element: <MedicamentosListView /> },
       { path: 'cadastro-medicamento', element: <CadastroMedicamento /> },
       { path: 'vacinacao', element: <VacinacaoListView /> },

@@ -14,11 +14,12 @@ import {
 import {
   BarChart as BarChartIcon,
   Home as HomeIcon,
-  User as UsersIcon
+  User as UsersIcon,
 } from 'react-feather';
 import { useAuth } from 'src/context/AuthContext';
 import { GiCow, GiMedicines } from 'react-icons/gi';
 import { FaSyringe, FaTruck } from 'react-icons/fa';
+import { FiUserPlus } from "react-icons/fi";
 import NavItem from './NavItem';
 
 const items = [
@@ -56,6 +57,11 @@ const items = [
     href: '/app/transferencia-animais',
     icon: FaTruck,
     title: 'Transferir animais'
+  },
+  {
+    href: '/app/meus-usuarios',
+    icon: FiUserPlus,
+    title: 'Gerenciar usuarios'
   },
 ];
 
