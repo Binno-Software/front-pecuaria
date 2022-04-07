@@ -13,7 +13,9 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles} from '@material-ui/core';
+  makeStyles,
+  Avatar
+} from '@material-ui/core';
 import showOnlySomeLetters from 'src/utils/ShowOnlySomeLetters';
 
 const useStyles = makeStyles((theme) => ({
@@ -104,7 +106,7 @@ const Results = ({
                   hover
                   key={element.id}
                   selected={selectedIds.indexOf(element.id) !== -1}
-                  // onClick={() => update(element)}
+                // onClick={() => update(element)}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
@@ -118,6 +120,12 @@ const Results = ({
                       alignItems="center"
                       display="flex"
                     >
+                      <Avatar
+                        className={classes.avatar}
+                        src={element.imagemUrl || '/static/images/avatars/logo.jpeg'}
+                      >
+                        {element.email}
+                      </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"

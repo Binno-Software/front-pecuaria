@@ -48,9 +48,21 @@ const Dash = () => {
           >
             <CardTotalizadorBySexo />
           </Grid>
+        </Grid>
 
-          <QuantidadeAnimaisPorFazenda />
-
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={12}
+            sm={6}
+            xl={12}
+            xs={12}
+          >
+            <QuantidadeAnimaisPorFazenda />
+          </Grid>
         </Grid>
       </Container>
     </Page>
