@@ -7,6 +7,7 @@ import DashboardView from 'src/pages/dashboard';
 import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import RegisterView from 'src/views/auth/RegisterView';
+import ChangePassword from 'src/views/auth/ChangePassword';
 import SettingsView from 'src/views/settings/SettingsView';
 import ReportsView from 'src/views/reports/DashboardView';
 
@@ -61,6 +62,7 @@ const routes = (isLoggedIn) => [
     children: [
       { path: 'login', element: <LoginView /> },
       { path: 'register', element: <RegisterView /> },
+      { path: 'alterar-senha/:id', element: <ChangePassword /> },
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <Navigate to="/app/dashboard" /> },
       { path: '*', element: <Navigate to="/404" /> }
