@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import api from 'src/service/api';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -29,6 +30,13 @@ const QuantidadeAnimaisPorFazenda = ({ className, ...rest }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
+
+  const balancear = useCallback(() => {
+    setLoading(true);
+    api.post('/fazendas/balancear').then(() => {
+      toast('Processo iniciado, você sera notificado quando finalizar');
+    });
+  }, []);
 
   useEffect(() => {
     api.get('fazendas/total-animais-por-fazenda').then((response) => {
@@ -89,8 +97,9 @@ const QuantidadeAnimaisPorFazenda = ({ className, ...rest }) => {
                 endIcon={<ArrowRightIcon />}
                 size="small"
                 variant="text"
+                onClick={balancear}
               >
-                View all
+                Balancear
               </Button>
             </Box>
           </Card>
