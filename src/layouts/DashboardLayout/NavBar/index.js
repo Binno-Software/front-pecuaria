@@ -19,7 +19,7 @@ import {
 import { useAuth } from 'src/context/AuthContext';
 import { GiCow, GiMedicines } from 'react-icons/gi';
 import { FaSyringe, FaTruck } from 'react-icons/fa';
-import { FiUserPlus } from "react-icons/fi";
+import { FiUserPlus, FiCalendar } from "react-icons/fi";
 import NavItem from './NavItem';
 
 const items = [
@@ -57,6 +57,11 @@ const items = [
     href: '/app/transferencia-animais',
     icon: FaTruck,
     title: 'Transferir animais'
+  },
+  {
+    href: '/app/agendamento-veterinario',
+    icon: FiCalendar,
+    title: 'Agendar veterinario'
   },
   {
     href: '/app/meus-usuarios',
