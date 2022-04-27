@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
@@ -17,6 +17,9 @@ import {
   Avatar
 } from '@material-ui/core';
 import showOnlySomeLetters from 'src/utils/ShowOnlySomeLetters';
+import { ExternalLink } from 'react-feather';
+import api from 'src/service/api';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -67,9 +70,22 @@ const Results = ({
     reload(event.target.value, page);
   };
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (_event, newPage) => {
     reload(limit, newPage);
   };
+
+  const solicitarAlteracaoSenha = useCallback((el) => {
+    if (el.jaSolicitado) {
+      toast('Ja foi solicitado alteração de senha para esse usuario')
+      return
+    }
+
+    api.post('usuarioacesso/solicitar-alteracao-senha', { login: el.login }).then(() => {
+      toast('Pedido de alteração de senha enviado')
+    })
+
+    el.jaSolicitado = true
+  }, [])
 
   return (
     <Card
@@ -146,6 +162,9 @@ const Results = ({
                         {showOnlySomeLetters(element.login, 25)}
                       </Typography>
                     </Box>
+                  </TableCell>
+                  <TableCell padding="checkbox">
+                    <ExternalLink onClick={() => solicitarAlteracaoSenha(element)} />
                   </TableCell>
                 </TableRow>
               ))}
