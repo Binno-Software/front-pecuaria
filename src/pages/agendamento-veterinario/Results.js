@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
@@ -13,20 +13,8 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button
-} from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
-import { Trash } from 'react-feather';
-import api from 'src/service/api';
-import { toastSuccess } from 'src/utils/toast';
+  makeStyles} from '@material-ui/core';
 import moment from 'moment';
-import showOnlySomeLetters from 'src/utils/ShowOnlySomeLetters';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -39,40 +27,14 @@ const Results = ({
   className, data, reload, page, limit, ...rest
 }) => {
   const classes = useStyles();
-  const medicamentos = data.content;
+  const content = data.content;
   const [selectedIds, setSelectedIds] = useState([]);
-  const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(undefined);
-
-  const handleClickOpen = (registro) => {
-    setOpen(true);
-    setSelectedItem(registro);
-    console.log(registro);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const excluir = useCallback(() => {
-    api.delete(`medicamentos/${selectedItem.id}`).then(() => {
-      toastSuccess('medicamento excluido');
-      handleClose();
-      window.location.reload();
-    });
-  }, [selectedItem]);
-
-  // eslint-disable-next-line
-  const update = useCallback((item) => {
-    navigate('../cadastro-animais', { replace: true, state: item });
-  }, [navigate]);
 
   const handleSelectAll = (event) => {
     let newSelectedIds;
 
     if (event.target.checked) {
-      newSelectedIds = medicamentos.map((element) => element.id);
+      newSelectedIds = content.map((element) => element.id);
     } else {
       newSelectedIds = [];
     }
@@ -80,7 +42,7 @@ const Results = ({
     setSelectedIds(newSelectedIds);
   };
 
-  const handleSelectOne = (event, id) => {
+  const handleSelectOne = (_event, id) => {
     const selectedIndex = selectedIds.indexOf(id);
     let newSelectedIds = [];
 
@@ -104,10 +66,10 @@ const Results = ({
     reload(event.target.value, page);
   };
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (_event, newPage) => {
     reload(limit, newPage);
   };
-
+  
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -115,56 +77,36 @@ const Results = ({
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">Você tem certeza que quer excluir esse Medicamento?</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {selectedItem?.nome}
-                {' '}
-                {selectedItem?.descricao}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Voltar
-              </Button>
-              <Button onClick={excluir} color="primary" autoFocus>
-                Excluir
-              </Button>
-            </DialogActions>
-          </Dialog>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedIds.length === medicamentos.length}
+                    checked={selectedIds.length === content.length}
                     color="primary"
                     indeterminate={
                       selectedIds.length > 0
-                      && selectedIds.length < medicamentos.length
+                      && selectedIds.length < content.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
                 <TableCell>
-                  Nome
+                  Data Agendamento
                 </TableCell>
                 <TableCell>
-                  Descrição
+                  Periodo
                 </TableCell>
                 <TableCell>
-                  Data de validade
+                  Status
+                </TableCell>
+                <TableCell>
+                  Observações
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {medicamentos.slice(0, limit).map((element) => (
+              {content.slice(0, limit).map((element) => (
                 <TableRow
                   hover
                   key={element.id}
@@ -187,7 +129,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.nome}
+                        {moment(element.dataAgendamento).format('DD/MM/YYYY')}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -200,7 +142,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {showOnlySomeLetters(element.descricao, 25)}
+                        {element.periodoDia}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -213,12 +155,22 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {moment(element.dataValidade).format('DD/MM/YYYY')}
+                        {element.statusAgendamento}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell padding="checkbox">
-                    <Trash onClick={() => handleClickOpen(element)} />
+                  <TableCell>
+                    <Box
+                      alignItems="center"
+                      display="flex"
+                    >
+                      <Typography
+                        color="textPrimary"
+                        variant="body1"
+                      >
+                        {element?.observacoesVeterinario}
+                      </Typography>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}

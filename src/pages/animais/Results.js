@@ -42,7 +42,7 @@ const Results = ({
   className, data, reload, page, limit, ...rest
 }) => {
   const classes = useStyles();
-  const funcionarios = data.content;
+  const _data = data.content;
   const [selectedIds, setSelectedIds] = useState([]);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -89,7 +89,7 @@ const Results = ({
     let newSelectedIds;
 
     if (event.target.checked) {
-      newSelectedIds = funcionarios.map((element) => element.id);
+      newSelectedIds = _data.map((element) => element.id);
     } else {
       newSelectedIds = [];
     }
@@ -162,12 +162,12 @@ const Results = ({
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedIds.length === funcionarios.length}
+                        checked={selectedIds.length === _data.length}
                         color="primary"
                         indeterminate={
-                selectedIds.length > 0
-                && selectedIds.length < funcionarios.length
-              }
+                        selectedIds.length > 0
+                        && selectedIds.length < _data.length
+                      }
                         onChange={handleSelectAll}
                       />
                     </TableCell>
@@ -189,7 +189,7 @@ const Results = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {funcionarios.slice(0, limit).map((element) => (
+                  {_data.slice(0, limit).map((element) => (
                     <TableRow
                       hover
                       key={element.id}
@@ -284,7 +284,7 @@ const Results = ({
           </PerfectScrollbar>
           <TablePagination
             component="div"
-            count={data.totalElements}
+            count={_data.totalElements}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handleLimitChange}
             page={page}

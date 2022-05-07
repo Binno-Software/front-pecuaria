@@ -19,15 +19,13 @@ instance.interceptors.response.use((response) => {
   console.log(error.response?.data);
 
   if (error?.response?.status === 403) {
-    console.log('403');
-    toastError('Houve um problema com sua autenticação');
+    toastError('Sessão expirada, necessario novo login');
     clearStorage();
     window.location.reload();
     return;
   }
 
   if (error?.response?.status === StatusConflict) {
-    console.log(StatusConflict);
     toastError('Conflito ao salvar o registro');
     return;
   }

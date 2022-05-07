@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -9,6 +9,7 @@ import Page from 'src/components/Page';
 import Toolbar from 'src/components/Toolbar';
 import Results from './Results';
 import EmptyData from 'src/components/EmptyData';
+import api from 'src/service/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,10 +22,22 @@ const useStyles = makeStyles((theme) => ({
 
 const AgendamentosListView = () => {
   const classes = useStyles();
-  const [data, ] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    api.get('agendamento-veterinario', {
+      params: {
+        size: limit,
+        page
+      }
+    }).then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+  }, [limit, page]);
 
   const reload = useCallback((_limit, offset) => {
     setLoading(true);
@@ -41,7 +54,7 @@ const AgendamentosListView = () => {
     >
       <Container maxWidth={false}>
         <Toolbar href="/app/cadastro-agendamento" title="agendamento" />
-        {data.length > 0 ? (
+        {data.content.length > 0 ? (
           <Box mt={3}>
             <Results data={data} reload={reload} page={page} limit={limit} />
           </Box>
