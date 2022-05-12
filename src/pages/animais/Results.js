@@ -97,7 +97,7 @@ const Results = ({
     setSelectedIds(newSelectedIds);
   };
 
-  const handleSelectOne = (event, id) => {
+  const handleSelectOne = (_event, id) => {
     const selectedIndex = selectedIds.indexOf(id);
     let newSelectedIds = [];
 
@@ -121,8 +121,12 @@ const Results = ({
     reload(event.target.value, page);
   };
 
-  const handlePageChange = (event, newPage) => {
+  const handlePageChange = (_event, newPage) => {
     reload(limit, newPage);
+  };
+
+  const order = () => {
+    reload(limit, page, 'desc')
   };
 
   return (
@@ -171,7 +175,7 @@ const Results = ({
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={order}>
                       Numero
                     </TableCell>
                     <TableCell>
@@ -284,7 +288,7 @@ const Results = ({
           </PerfectScrollbar>
           <TablePagination
             component="div"
-            count={_data.totalElements}
+            count={data.totalElements}
             onChangePage={handlePageChange}
             onChangeRowsPerPage={handleLimitChange}
             page={page}

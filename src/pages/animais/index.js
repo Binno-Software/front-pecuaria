@@ -26,23 +26,29 @@ const AnimaisListView = () => {
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [orderType, setOrderType] = useState('asc');
 
   useEffect(() => {
     api.get('animais', {
       params: {
         size: limit,
-        page
+        page,
+        orderByNumero: orderType
       }
     }).then((response) => {
       setData(response.data);
       setLoading(false);
     });
-  }, [limit, page]);
+  }, [limit, page, orderType]);
 
-  const reload = useCallback((_limit, offset) => {
+  const reload = useCallback((_limit, offset, orderType) => {
     setLoading(true);
     setLimit(_limit);
     setPage(offset);
+    
+    if (orderType) {
+      setOrderType(orderType);
+    }
   }, []);
 
   if (loading) return <LinearProgress />;

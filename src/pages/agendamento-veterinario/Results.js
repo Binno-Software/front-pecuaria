@@ -97,7 +97,7 @@ const Results = ({
                 <TableCell>
                   Periodo
                 </TableCell>
-                <TableCell>
+                <TableCell onClick={() => alert('on develop')}>
                   Status
                 </TableCell>
                 <TableCell>
