@@ -8,7 +8,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "linux": "export NODE_OPTIONS=--openssl-legacy-provider && npm start"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,6 +32,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
     "axios": "^0.21.0",
+    "binno-web-widget": "^0.0.7",
     "chart.js": "^2.9.3",
     "clsx": "^1.1.1",
     "coa": "^2.0.2",
