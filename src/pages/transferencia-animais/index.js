@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   makeStyles,
-  LinearProgress,
   TextField,
   Card,
   Grid,
@@ -68,7 +67,9 @@ function TabPanel(props) {
 function TransferenciaAnimais() {
   const classes = useStyles();
   const [values, setValues] = useState({});
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    content: []
+  });
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
@@ -158,8 +159,6 @@ function TransferenciaAnimais() {
       navigate('../dashboard')
     });
   }, [fazenda, fazendaDestino, values, animaisSelecionados, navigate])
-
-  if (loading) return <LinearProgress />;
 
   return (
     <Page
@@ -283,7 +282,7 @@ function TransferenciaAnimais() {
             </Tabs>
             <TabPanel value={tab} index={0}>
               <Box mt={3}>
-                <GridAnimais addAnimal={addAnimal} data={data} reload={reload} page={page} limit={limit} />
+                <GridAnimais loading={loading} addAnimal={addAnimal} data={data} reload={reload} page={page} limit={limit} />
               </Box>
             </TabPanel>
             <TabPanel value={tab} index={1}>

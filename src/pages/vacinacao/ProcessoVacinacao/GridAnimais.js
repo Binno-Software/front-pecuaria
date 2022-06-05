@@ -13,6 +13,7 @@ import {
   TableRow,
   Typography,
   makeStyles,
+  LinearProgress,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GridAnimais = ({
-  className, addAnimal, data, reload, page, limit, ...rest
+  className, addAnimal, data, reload, page, limit, loading, ...rest
 }) => {
   const classes = useStyles();
   const registros = data.content;
@@ -73,6 +74,8 @@ const GridAnimais = ({
   const handlePageChange = (_, newPage) => {
     reload(limit, newPage);
   };
+
+  if (loading) return <LinearProgress/>;
 
   return (
     <Card
