@@ -159,6 +159,9 @@ const Results = ({
                   Descrição
                 </TableCell>
                 <TableCell>
+                  Status
+                </TableCell>
+                <TableCell>
                   Data de validade
                 </TableCell>
               </TableRow>
@@ -201,6 +204,19 @@ const Results = ({
                         variant="body1"
                       >
                         {showOnlySomeLetters(element.descricao, 25)}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      alignItems="center"
+                      display="flex"
+                    >
+                      <Typography
+                        color="textPrimary"
+                        variant="body1"
+                      >
+                        {element.estadoMedicamento}
                       </Typography>
                     </Box>
                   </TableCell>
