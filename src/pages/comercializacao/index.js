@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
-  Box,
   Container,
   makeStyles,
-  LinearProgress,
   Stepper,
   Step,
   StepLabel,
@@ -11,9 +9,8 @@ import {
   Typography
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Toolbar from 'src/components/Toolbar';
-import Results from './Results';
-import api from '../../service/api';
+import SelecaoAnimal from './steps/selecao-animal';
+import api from 'src/service/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,9 +40,8 @@ function getStepContent(step) {
 
 const Comercializacao = () => {
   const classes = useStyles();
-  const [data, setData] = useState([]);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set());
   const steps = getSteps();
 
   const isStepOptional = (step) => {
@@ -56,6 +52,14 @@ const Comercializacao = () => {
     return skipped.has(step);
   };
 
+  const seEstaFinalizandoConfirmarProcesso = (activeStep, steps) => {
+    if (activeStep === 2 && steps === 3) {
+      api.post('comercializacao/confirmar').then(() => {
+        alert('processo enviado')
+      })
+    }
+  }
+
   const handleNext = () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
@@ -65,6 +69,8 @@ const Comercializacao = () => {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+
+    seEstaFinalizandoConfirmarProcesso(activeStep, steps.length)
   };
 
   const handleBack = () => {
@@ -156,6 +162,11 @@ const Comercializacao = () => {
             )}
           </div>
         </div>
+        {
+          activeStep === 1 && (
+            <SelecaoAnimal />
+          )
+        }
       </Container>
     </Page>
   );
