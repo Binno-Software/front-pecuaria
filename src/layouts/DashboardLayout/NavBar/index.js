@@ -18,7 +18,7 @@ import {
 } from 'react-feather';
 import { useAuth } from 'src/context/AuthContext';
 import { GiCow, GiMedicines } from 'react-icons/gi';
-import { FaSyringe, FaTruck } from 'react-icons/fa';
+import { FaSyringe, FaTruck, FaMoneyCheckAlt } from 'react-icons/fa';
 import { FiUserPlus, FiCalendar } from "react-icons/fi";
 import NavItem from './NavItem';
 
@@ -62,6 +62,11 @@ const items = [
     href: '/app/agendamento-veterinario',
     icon: FiCalendar,
     title: 'Agendar veterinario'
+  },
+  {
+    href: '/app/comercializacao',
+    icon: FaMoneyCheckAlt,
+    title: 'Comercialização'
   },
   {
     href: '/app/meus-usuarios',

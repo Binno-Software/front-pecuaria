@@ -34,6 +34,8 @@ import CadastroUsuario from 'src/pages/usuarios/CadastroUsuario';
 import AgendamentosListView from 'src/pages/agendamento-veterinario';
 import CadastroAgendamento from 'src/pages/agendamento-veterinario/CadastroAgendamento';
 
+import Comercializacao from 'src/pages/comercializacao';
+
 const routes = (isLoggedIn) => [
   {
     path: 'app',
@@ -57,6 +59,7 @@ const routes = (isLoggedIn) => [
       { path: 'transferencia-animais', element: <TransferenciaAnimais /> },
       { path: 'agendamento-veterinario', element: <AgendamentosListView /> },
       { path: 'cadastro-agendamento', element: <CadastroAgendamento /> },
+      { path: 'comercializacao', element: <Comercializacao /> },
       { path: 'settings', element: <SettingsView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
