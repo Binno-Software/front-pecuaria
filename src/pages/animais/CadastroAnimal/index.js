@@ -75,6 +75,11 @@ const CadastroAnimais = ({ className, ...rest }) => {
         id: state.fazenda.id,
         nome: state.fazenda.nome
       });
+    } else {
+      api.get('animais/ultimo-numero').then(({ data }) => {
+        const atualNumber = data === 1 ? 1 : data + 1
+        setValues(values => ({...values, numero: atualNumber}))
+      })
     }
   }, [state]);
 

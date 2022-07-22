@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import api from 'src/service/api';
 import Cotacao from './cotacao';
+import { toastSuccess } from 'src/utils/toast';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,15 +49,12 @@ export default function SelecaoAnimal() {
     const [checked, setChecked] = React.useState([]);
     const [left, setLeft] = React.useState([]);
     const [right, setRight] = React.useState([]);
-    // eslint-disable-next-line
-    const [animaisDescarteFuturo, setAnimaisDescarteFuturo] = useState([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
     useEffect(() => {
         api.get('animais', { params: { descarteFuturo: true, page: 0, size: 1000 } }).then(({ data }) => {
-            setAnimaisDescarteFuturo(data.content)
             setLeft(data.content.map(item => ({
                 id: item.id,
                 display: `${item.numero}-${item.apelido}`,
@@ -104,7 +102,7 @@ export default function SelecaoAnimal() {
                 sequencial: null,
                 valorCambio: 0,
                 valorSugerido: 0
-            }).then(() => console.log('animal add'))
+            }).then(() => toastSuccess('Animal Adicionado'))
         })
         
         setRight(right.concat(leftChecked));
@@ -119,7 +117,7 @@ export default function SelecaoAnimal() {
                 sequencial: null,
                 valorCambio: 0,
                 valorSugerido: 0
-            }).then(() => console.log('animal removed'))
+            }).then(() => toastSuccess('Animal Removido'))
         })
 
         setLeft(left.concat(rightChecked));
