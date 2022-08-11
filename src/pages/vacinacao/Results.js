@@ -21,6 +21,7 @@ import {
   Button
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -165,7 +166,7 @@ const Results = ({
                         color="textPrimary"
                         variant="body1"
                       >
-                        {element.dataProcesso}
+                        {moment(element.dataProcesso).format('DD/MM/YYYY')}
                       </Typography>
                     </Box>
                   </TableCell>
