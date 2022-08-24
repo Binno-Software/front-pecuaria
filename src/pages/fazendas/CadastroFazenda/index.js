@@ -16,6 +16,7 @@ import api from 'src/service/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toastSuccess } from 'src/utils/toast';
 import TipoMetragemSelect from 'src/components/TipoMetragemSelect';
+import { useAuth } from 'src/context/AuthContext';
 
 const useStyles = makeStyles({
   root: {}
@@ -34,6 +35,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { user, atualizarDadosUsuarioLocal } = useAuth();
 
   useEffect(() => {
     if (state) {
@@ -79,6 +81,11 @@ const CadastroFazenda = ({ className, ...rest }) => {
       })
       .then(() => {
         toastSuccess('Fazenda cadastrada com sucesso');
+
+        if (!user.jaTemFazendas) {
+          atualizarDadosUsuarioLocal({...user, jaTemFazendas: true});
+        }
+
         setValues({
           nome: undefined,
           codigoEstab: 0,
@@ -91,7 +98,7 @@ const CadastroFazenda = ({ className, ...rest }) => {
       .catch(() => setLoading(false));
 
     setLoading(true);
-  }, [values]);
+  }, [values, user, atualizarDadosUsuarioLocal]);
 
   const update = useCallback(() => {
     api

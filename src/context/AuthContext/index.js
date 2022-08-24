@@ -4,7 +4,7 @@ import React, {
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import api from 'src/service/api';
-import { auth, provider, facebookProvider } from 'src/service/fire';
+import { auth, provider } from 'src/service/fire';
 import clearStorage from 'src/utils/clearLocalStorage';
 
 toast.configure();
@@ -26,22 +26,34 @@ const AuthProvider = ({ children }) => {
   });
 
   const atualizarDadosUsuarioLocal = useCallback((data) => {
-    localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
-    setUser({ isLoggedIn: true, ...data });
+    const user = {...data, isLoggedIn: true};
+    localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify(user));
+    setUser(user);
+  }, []);
+
+  const verificarSeTemFazendas = useCallback(async () => {
+    const { data } = await api.get('fazendas/listagem');
+    return data.length > 0;
   }, []);
 
   const login = useCallback(async (credentials) => {
     try {
       const { data } = await api.post('auth', credentials);
-      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
       api.defaults.headers.authorization = `Bearer ${data.token}`;
-      setUser({ isLoggedIn: true, ...data });
+
+      const jaTemFazendas = await verificarSeTemFazendas();
+
+      const user = { isLoggedIn: true, jaTemFazendas, ...data };
+
+      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify(user));
+      
+      setUser(user);
       return true;
     } catch (error) {
       toast.error('Falha no login');
       return false;
     }
-  }, [setUser]);
+  }, [setUser, verificarSeTemFazendas]);
 
   const loginWithGoogle = useCallback(async () => {
     try {
@@ -52,34 +64,41 @@ const AuthProvider = ({ children }) => {
         uid: result.user.uid,
         photoURL: result.user.photoURL
       })
-      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
-      setUser({ isLoggedIn: true, ...data });
+
       api.defaults.headers.authorization = `Bearer ${data.token}`;
+
+      const jaTemFazendas = await verificarSeTemFazendas();
+      const user = { isLoggedIn: true, jaTemFazendas, ...data };
+
+      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify(user));
+      
+      setUser(user);
+      
       return true;
     } catch (error) {
       toast.error('Falha no login');
       return false;
     }
-  }, []);
+  }, [verificarSeTemFazendas]);
 
   const loginWithFacebook = useCallback(async () => {
-    try {
-      const result = await auth.signInWithPopup(facebookProvider)
-      console.log(result)
-      const { data } = await api.post('auth/google', {
-        nome: result.user.displayName,
-        email: result.user.email,
-        uid: result.user.uid,
-        photoURL: result.user.photoURL
-      })
-      localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
-      setUser({ isLoggedIn: true, ...data });
-      api.defaults.headers.authorization = `Bearer ${data.token}`;
-      return true;
-    } catch (error) {
-      toast.error('Falha no login');
-      return false;
-    }
+    // try {
+    //   const result = await auth.signInWithPopup(facebookProvider)
+    //   console.log(result)
+    //   const { data } = await api.post('auth/google', {
+    //     nome: result.user.displayName,
+    //     email: result.user.email,
+    //     uid: result.user.uid,
+    //     photoURL: result.user.photoURL
+    //   })
+    //   localStorage.setItem('@BINNO_AGRO_UUI', JSON.stringify({ isLoggedIn: true, ...data }));
+    //   setUser({ isLoggedIn: true, ...data });
+    //   api.defaults.headers.authorization = `Bearer ${data.token}`;
+    //   return true;
+    // } catch (error) {
+    //   toast.error('Falha no login');
+    //   return false;
+    // }
   }, []);
 
   const logout = useCallback(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -26,52 +26,62 @@ const items = [
   {
     href: '/app/dashboard',
     icon: BarChartIcon,
-    title: 'Dashboard'
+    title: 'Dashboard',
+    availableOnFirstLogin: true
   },
   {
     href: '/app/fazendas',
     icon: HomeIcon,
-    title: 'Fazendas'
+    title: 'Fazendas',
+    availableOnFirstLogin: true
   },
   {
     href: '/app/funcionarios',
     icon: UsersIcon,
-    title: 'Funcionarios'
+    title: 'Funcionarios',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/animais',
     icon: GiCow,
-    title: 'Animais'
+    title: 'Animais',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/medicamentos',
     icon: GiMedicines,
-    title: 'Medicamentos'
+    title: 'Medicamentos',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/vacinacao',
     icon: FaSyringe,
-    title: 'Vacinação'
+    title: 'Vacinação',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/transferencia-animais',
     icon: FaTruck,
-    title: 'Transferir animais'
+    title: 'Transferir animais',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/agendamento-veterinario',
     icon: FiCalendar,
-    title: 'Agendar veterinario'
+    title: 'Agendar veterinario',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/comercializacao',
     icon: FaMoneyCheckAlt,
-    title: 'Comercialização'
+    title: 'Comercialização',
+    availableOnFirstLogin: false
   },
   {
     href: '/app/meus-usuarios',
     icon: FiUserPlus,
-    title: 'Gerenciar usuarios'
+    title: 'Gerenciar usuarios',
+    availableOnFirstLogin: true
   },
 ];
 
@@ -95,14 +105,20 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
   const { user: userReal } = useAuth();
+  const [navItems, setNavItems] = useState([])
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-
+    console.log(userReal.jaTemFazendas)
+    if (userReal.jaTemFazendas) {
+      setNavItems(items)
+    } else {
+      setNavItems(items.filter(i => i.availableOnFirstLogin))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [location.pathname, userReal]);
 
   const content = (
     <Box
@@ -139,7 +155,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {navItems.map((item) => (
             <NavItem
               href={item.href}
               key={item.title}
