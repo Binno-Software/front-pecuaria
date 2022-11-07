@@ -32,7 +32,6 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
     "axios": "^0.21.0",
-    "binno-web-widget": "^0.0.7",
     "chart.js": "^2.9.3",
     "clsx": "^1.1.1",
     "coa": "^2.0.2",
