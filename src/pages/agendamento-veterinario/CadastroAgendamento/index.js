@@ -35,7 +35,7 @@ const CadastroAgendamento = ({ className, ...rest }) => {
   const [values, setValues] = useState({
     periodoDia: 'MANHA',
     veterinarioId: 0,
-    dataAgendamento: moment().format('YYYY-MM-DD'),
+    dataAgendamento: moment().add(1).format('YYYY-MM-DD'),
     medicamentosId: []
   });
   const [medicamentos, setMedicamentos] = useState([]);
